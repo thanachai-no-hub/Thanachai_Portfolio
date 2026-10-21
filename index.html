@@ -913,6 +913,10 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
 (() => {
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Vercel Web Analytics custom events. trackOnce keeps busy demos from sending an event per click.
+  const track = (name, data) => { try { window.va && window.va('event', data ? { name, data } : { name }); } catch (e) {} };
+  const sent = new Set();
+  const trackOnce = (name, data) => { const key = name + JSON.stringify(data || {}); if (sent.has(key)) return; sent.add(key); track(name, data); };
   const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
 
   // Toast
@@ -923,7 +927,7 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
   const root = document.documentElement;
   const saved = store.get('tj-theme'); if (saved) root.dataset.theme = saved;
   const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-  const toggleTheme = () => { const t = isDark() ? 'light' : 'dark'; root.dataset.theme = t; store.set('tj-theme', t); readColors(); toast(t === 'dark' ? 'Dark theme' : 'Light theme'); };
+  const toggleTheme = () => { const t = isDark() ? 'light' : 'dark'; root.dataset.theme = t; store.set('tj-theme', t); track('Theme Toggle', { theme: t }); readColors(); toast(t === 'dark' ? 'Dark theme' : 'Light theme'); };
   $('#themeBtn').addEventListener('click', toggleTheme);
 
   // Nav: scroll progress + active section
@@ -945,13 +949,23 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
     $$('.reveal').forEach(el => { if (el.getBoundingClientRect().top > innerHeight) { el.classList.add('pre'); io.observe(el); } });
   }
 
+  // Section reach
+  if ('IntersectionObserver' in window) {
+    const reach = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { trackOnce('Section View', { section: e.target.id }); reach.unobserve(e.target); } }), { threshold: .35 });
+    $('main section[id]').forEach(s => reach.observe(s));
+  }
+
   // Role rotator
   const words = $$('#rotator span'); let wi = 0;
   if (!reduce) setInterval(() => { words[wi].classList.remove('on'); wi = (wi + 1) % words.length; words[wi].classList.add('on'); }, 2400);
 
+  // Outbound link clicks
+  document.addEventListener('click', e => { const a = e.target.closest('a[href^="http"]'); if (a) track('Outbound Link', { url: a.hostname + a.pathname }); });
+
   // Copy contact
   $$('[data-copy]').forEach(b => b.addEventListener('click', () => {
     const v = b.dataset.copy;
+    track('Contact Copy', { type: v.includes('@') ? 'email' : 'phone' });
     const ok = () => toast('Copied ' + v);
     try { navigator.clipboard.writeText(v).then(ok, () => toast(v)); } catch (e) { toast(v); }
   }));
@@ -981,6 +995,7 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
       if (k && hit) it.classList.contains('job') ? roles++ : projs++;
     });
     if (!k) { bar.textContent = 'Showing all roles and projects.'; return; }
+    track('Skill Filter', { skill: names[k] });
     bar.innerHTML = '';
     const msg = document.createElement('span');
     msg.innerHTML = roles + projs
@@ -1023,7 +1038,7 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
       list.appendChild(li);
     });
   };
-  const openP = () => { bg.hidden = false; input.value = ''; sel = 0; render(); input.focus(); };
+  const openP = () => { trackOnce('Quick Jump Open'); bg.hidden = false; input.value = ''; sel = 0; render(); input.focus(); };
   const closeP = () => { bg.hidden = true; };
   $('#openPalette').addEventListener('click', openP);
   bg.addEventListener('click', e => { if (e.target === bg) closeP(); });
@@ -1046,6 +1061,7 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
     b.querySelector('.viewport').scrollTop = 0;
     $$(`.screens[data-for="${browserId}"] button`).forEach(t => t.setAttribute('aria-selected', t.dataset.scr === scr));
     if (scr === 'nt-queue') startQueue();
+    trackOnce('Preview Screen', { project: browserId === 'pv-so' ? 'SynnexOnline' : 'Switch 2 Pre-order', screen: scr });
   };
   $$('.screens').forEach(tl => tl.addEventListener('click', e => { const t = e.target.closest('button'); if (!t) return; tl.dataset.for === 'pv-go' ? goScreen(t.dataset.scr) : showScreen(tl.dataset.for, t.dataset.scr); }));
   const baht = n => '฿' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -1061,7 +1077,7 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
   coupons.forEach(c => {
     const el = document.createElement('div'); el.className = 'so-coupon';
     el.innerHTML = `<b>${c.t}</b><small>${c.d}</small><small>ใช้ไปแล้ว <span style="color:#ef4444">${c.p}%</span></small><span class="so-prog"><i style="width:${c.p}%"></i></span><span class="cut"></span><button type="button">เก็บคูปอง</button>`;
-    el.querySelector('button').onclick = e => { if (e.target.classList.contains('got')) return; e.target.classList.add('got'); e.target.textContent = 'เก็บแล้ว'; discount += c.v; renderCart(); toast('Coupon claimed: ' + c.t); };
+    el.querySelector('button').onclick = e => { if (e.target.classList.contains('got')) return; e.target.classList.add('got'); e.target.textContent = 'เก็บแล้ว'; discount += c.v; renderCart(); trackOnce('SynnexOnline Action', { action: 'coupon' }); toast('Coupon claimed: ' + c.t); };
     cWrap.appendChild(el);
   });
 
@@ -1074,7 +1090,7 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
       const n = i + 1, price = prices[(i + k * 3) % prices.length], stock = 3 + ((i * 7 + k * 5) % 17);
       const el = document.createElement('div'); el.className = 'so-card';
       el.innerHTML = `<div class="so-img">200 × 200</div><h4>สินค้าที่ ${n}</h4><p>InkJet MFC A3 6-in-1 : Print/Fax/Copy/Scan</p><p>SKU : 4080 super ti · คงเหลือ ${stock} ชิ้น</p><span class="so-price">${baht(price)}</span><div class="so-btns"><button type="button" class="so-buy">ซื้อทันที</button><button type="button" class="so-add" aria-label="Add to cart"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L20 8H6M13 9v4M11 11h4"/></svg></button></div>`;
-      const add = () => { addToCart({ id: 'p' + (++pid), name: `สินค้าที่ ${n}`, price, quantity: 1 }); toast(`Added สินค้าที่ ${n} to cart`); };
+      const add = () => { addToCart({ id: 'p' + (++pid), name: `สินค้าที่ ${n}`, price, quantity: 1 }); toast(`Added สินค้าที่ ${n} to cart`); trackOnce('SynnexOnline Action', { action: 'add to cart' }); };
       el.querySelector('.so-add').onclick = add;
       el.querySelector('.so-buy').onclick = () => { add(); showScreen('pv-so', 'so-cart'); };
       row.appendChild(el);
@@ -1135,6 +1151,7 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
       const no = 'NSW2-' + String(Math.floor(Math.random() * 90000) + 10000);
       sheet.innerHTML = `<div style="text-align:center;display:grid;gap:10px;padding:10px 0"><div style="font-size:40px">🎉</div><h4 style="color:#e60012">คุณคือแฟนพันธุ์แท้ของเรา!</h4><div style="display:grid;gap:6px;text-align:left;background:#fafafa;border-radius:10px;padding:12px"><div>หมายเลขการจอง: <b>${no}</b></div><div>สินค้า: <b>${model}</b></div><div>สาขาที่เลือก: <b>เซ็นทรัล พระราม 9</b></div><div>วันที่รับสินค้า: <b>${day} มิถุนายน 2568</b></div></div><small style="color:#666">กรุณานำบัตรประชาชนมาในวันรับสินค้า</small><button type="button" class="nt-submit" data-again>See the branch dashboard</button></div>`;
       bumpDash(no, model, day);
+      track('Switch 2 Booking Completed', { model });
       sheet.querySelector('[data-again]').onclick = () => { showScreen('pv-nt', 'nt-dash'); sheet.innerHTML = sheetHTML; bindSubmit(); };
     };
   }
@@ -1154,6 +1171,7 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
   // SynnexGo: phone app preview
   const phone = $('#pv-go');
   function goScreen(scr) {
+    trackOnce('Preview Screen', { project: 'SynnexGo', screen: scr });
     phone.querySelectorAll('.g-scr').forEach(s => s.hidden = s.dataset.scr !== scr);
     phone.querySelector(`.g-scr[data-scr="${scr}"]`).scrollTop = 0;
     $$('.screens[data-for="pv-go"] button').forEach(t => t.setAttribute('aria-selected', t.dataset.scr === scr));
@@ -1373,15 +1391,16 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
     // Seed traffic so the first frame already shows the lane working
     [[0, .15], [1, .5], [2, .82]].forEach(([l, f]) => { spawn(l === 1 ? 'truck' : 'car', l); const c = cars.at(-1); c.x = W * f; if (c.x + c.len >= geo().gx) c.read = true; });
     requestAnimationFrame(t => { last = t; frame(t); });
-    $('#addCar').onclick = () => spawn('car');
-    $('#addTruck').onclick = () => spawn('truck');
+    $('#addCar').onclick = () => { spawn('car'); trackOnce('MFlow Demo', { action: 'car' }); };
+    $('#addTruck').onclick = () => { spawn('truck'); trackOnce('MFlow Demo', { action: 'truck' }); };
   }
   cv.addEventListener('click', e => {
     const r = cv.getBoundingClientRect(), { top, lh } = geo();
     const l = Math.max(0, Math.min(LANES - 1, Math.floor((e.clientY - r.top - top) / lh)));
-    spawn('car', l);
+    spawn('car', l); trackOnce('MFlow Demo', { action: 'road click' });
   });
   $('#rush').addEventListener('click', e => {
+    trackOnce('MFlow Demo', { action: 'rush hour' });
     rushOn = !rushOn; e.currentTarget.setAttribute('aria-pressed', rushOn); spawnT = 0;
     toast(rushOn ? 'Rush hour on. Traffic still never stops.' : 'Rush hour off');
   });
