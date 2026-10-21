@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<title>Thanachai Jankaew</title>
+<meta name="description" content="Thanachai Jankaew, AIP Engineer and Full Stack Developer. Mission log of selected work.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Orbitron:wght@500;700;800;900&family=Share+Tech+Mono&display=swap">
+<style>
+/* Layout: a mission log in deep space. A live starfield runs behind everything; the hero is a
+   planet (the portrait) with orbiting tech; projects are missions on holographic panels;
+   experience is a flight trajectory; skills are constellations; contact is a transmission. */
+:root {
+  color-scheme: dark;
+  --void: #04050d;
+  --deep: #0a0d22;
+  --panel: rgba(16, 20, 48, .55);
+  --panel-solid: #10142e;
+  --edge: rgba(140, 160, 255, .18);
+  --fg: #e9ecff;
+  --muted: #9aa3d0;
+  --cyan: #5ef0ff;
+  --violet: #a678ff;
+  --magenta: #ff5fd2;
+  --sun: #ffc864;
+  --ok: #4dffa8;
+
+  /* Orbitron: spacecraft-hull display caps. Chakra Petch: angular sci-fi face with full Thai support.
+     Share Tech Mono: mission-control readouts. */
+  --f-display: "Orbitron", "Chakra Petch", system-ui, sans-serif;
+  --f-body: "Chakra Petch", system-ui, sans-serif;
+  --f-mono: "Share Tech Mono", "Chakra Petch", ui-monospace, Consolas, monospace;
+
+  --s-1: .8125rem; --s0: 1.0625rem; --s1: 1.25rem; --s2: 1.45rem; --s3: clamp(1.6rem, 3.6vw, 2.4rem);
+  --s4: clamp(2rem, 5.6vw, 4.3rem);
+  --wrap: 74rem;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: clip; }
+.hero, section { overflow-x: clip; }
+body {
+  background: var(--void); color: var(--fg);
+  font-family: var(--f-body); font-size: var(--s0); line-height: 1.65;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--void); }
+html[data-lang="th"] [data-l="en"], html:not([data-lang="th"]) [data-l="th"] { display: none !important; }
+::selection { background: var(--violet); color: #fff; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 6px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.12; }
+p { margin: 0; }
+
+/* ---------- space backdrop ---------- */
+#stars { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display: block; }
+.nebula { position: fixed; inset: -20%; z-index: 0; pointer-events: none; filter: blur(40px); opacity: .85;
+  background:
+    radial-gradient(38% 30% at 18% 22%, rgba(166,120,255,.30), transparent 70%),
+    radial-gradient(30% 26% at 82% 18%, rgba(94,240,255,.18), transparent 70%),
+    radial-gradient(44% 36% at 70% 78%, rgba(255,95,210,.18), transparent 70%),
+    radial-gradient(36% 30% at 12% 86%, rgba(60,90,255,.22), transparent 70%);
+  animation: drift 38s ease-in-out infinite alternate;
+}
+@keyframes drift { to { transform: translate3d(3%, -2%, 0) rotate(6deg) scale(1.06); } }
+.grain { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .06; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.cursor-glow { position: fixed; left: 0; top: 0; width: 520px; height: 520px; margin: -260px 0 0 -260px; border-radius: 50%;
+  pointer-events: none; z-index: 1; background: radial-gradient(circle, rgba(94,240,255,.10), rgba(166,120,255,.06) 40%, transparent 70%);
+  transform: translate3d(-999px, -999px, 0); transition: opacity .3s; }
+.page { position: relative; z-index: 2; }
+
+.wrap {
+  max-width: var(--wrap); margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ---------- HUD top bar ---------- */
+.fuel { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; height: 2px; z-index: 70; pointer-events: none; }
+.fuel i { display: block; height: 100%; width: 100%; transform-origin: 0 50%; transform: scaleX(0);
+  background: linear-gradient(90deg, var(--cyan), var(--violet), var(--magenta)); box-shadow: 0 0 12px var(--cyan); }
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: rgba(4,5,13,.55);
+  backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); border-bottom: 1px solid var(--edge); }
+.top .wrap { display: flex; align-items: center; gap: 1rem; padding-block: .7rem; }
+.mark { display: flex; align-items: center; gap: .6rem; text-decoration: none; font-family: var(--f-display); font-weight: 800; font-size: .9rem; letter-spacing: .04em; white-space: nowrap; }
+.mark i { width: 1.7rem; height: 1.7rem; border-radius: 50%; position: relative; font-style: normal;
+  background: radial-gradient(circle at 35% 30%, #fff, var(--cyan) 30%, var(--violet) 70%); box-shadow: 0 0 18px rgba(94,240,255,.6); }
+.mark i::after { content: ""; position: absolute; inset: -5px -9px; border: 1.5px solid rgba(255,255,255,.6); border-radius: 50%; transform: rotate(-22deg) scaleY(.38); }
+.nav { display: flex; gap: 1.4rem; margin-left: auto; font-family: var(--f-mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; }
+.nav a { text-decoration: none; color: var(--muted); position: relative; }
+.nav a:hover { color: var(--cyan); text-shadow: 0 0 10px var(--cyan); }
+.ctrl { display: flex; gap: .5rem; align-items: center; }
+.pill { display: flex; border: 1px solid var(--edge); border-radius: 999px; padding: 2px; }
+.pill button, .warp-btn { font: 600 .72rem/1 var(--f-mono); letter-spacing: .08em; border: 0; background: transparent; color: var(--muted); padding: .48rem .7rem; border-radius: 999px; cursor: pointer; }
+.pill button[aria-pressed="true"] { background: var(--fg); color: var(--void); }
+.warp-btn { border: 1px solid rgba(94,240,255,.45); color: var(--cyan); }
+.warp-btn[aria-pressed="true"] { background: var(--cyan); color: var(--void); box-shadow: 0 0 20px var(--cyan); }
+@media (max-width: 760px) { .nav { display: none; } .ctrl { margin-left: auto; } }
+
+/* ---------- hero ---------- */
+.hero { min-height: min(56rem, calc(100svh - 3.5rem)); display: grid; align-items: center; padding-block: 3rem 4rem; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+.hud-line { font-family: var(--f-mono); font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--cyan); display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+.hud-line .blink { width: .55rem; height: .55rem; border-radius: 50%; background: var(--ok); box-shadow: 0 0 10px var(--ok); animation: blink 1.6s infinite; }
+@keyframes blink { 50% { opacity: .25; } }
+.hero h1 { font-size: var(--s4); font-weight: 900; letter-spacing: .04em; text-transform: uppercase; margin-top: 1.1rem; line-height: 1.08; }
+.shine { background: linear-gradient(100deg, #fff 0%, #cfd6ff 30%, var(--cyan) 45%, #fff 55%, var(--violet) 70%, #fff 100%);
+  background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shine 7s linear infinite; filter: drop-shadow(0 0 24px rgba(94,240,255,.25)); }
+@keyframes shine { to { background-position: -250% 0; } }
+.role { margin-top: 1rem; font-family: var(--f-mono); font-size: .95rem; color: var(--sun); letter-spacing: .04em; min-height: 1.6em; }
+.role .caret { display: inline-block; width: .55em; height: 1.05em; vertical-align: -0.15em; background: var(--sun); margin-left: 2px; animation: blink 1s steps(1) infinite; }
+.lede { margin-top: 1.4rem; font-size: var(--s1); max-width: 36rem; }
+.summary { margin-top: .9rem; color: var(--muted); max-width: 38rem; }
+.cta { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+.btn { position: relative; display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; font-weight: 600; font-size: .95rem;
+  padding: .85rem 1.35rem; border-radius: 999px; border: 1px solid var(--edge); color: var(--fg); background: rgba(255,255,255,.04); cursor: pointer; overflow: hidden;
+  transition: transform .25s, box-shadow .25s, border-color .25s; }
+.btn:hover { transform: translateY(-2px); border-color: var(--cyan); box-shadow: 0 0 24px rgba(94,240,255,.35); }
+.btn.primary { border: 0; color: #050616; background: linear-gradient(120deg, var(--cyan), var(--violet) 60%, var(--magenta)); box-shadow: 0 0 30px rgba(166,120,255,.45); }
+.btn.primary::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.6) 50%, transparent 70%); transform: translateX(-120%); animation: sweep 3.2s ease-in-out infinite; }
+@keyframes sweep { 60%, 100% { transform: translateX(120%); } }
+.telemetry { margin-top: 2.2rem; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--edge); border: 1px solid var(--edge); border-radius: 14px; overflow: hidden; max-width: 36rem; }
+.telemetry div { background: rgba(8,10,28,.75); padding: .8rem 1rem; display: grid; gap: .15rem; min-width: 0; }
+.telemetry small { font-family: var(--f-mono); font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.telemetry b { font-family: var(--f-mono); font-size: .9rem; color: var(--fg); font-weight: 600; overflow-wrap: anywhere; }
+@media (max-width: 480px) { .telemetry { grid-template-columns: 1fr; } }
+
+/* planet + orbits */
+.system { position: relative; width: min(100%, 30rem); aspect-ratio: 1; max-width: 100%; margin-inline: auto; display: grid; place-items: center; }
+.planet { position: relative; width: 44%; aspect-ratio: 1; border-radius: 50%; z-index: 3; }
+.planet img { width: 100%; height: auto; aspect-ratio: 1; border-radius: 50%; object-fit: cover; display: block; filter: saturate(1.05) contrast(1.05); }
+.planet::before { content: ""; position: absolute; inset: -14%; border-radius: 50%; z-index: -1;
+  background: radial-gradient(circle, rgba(94,240,255,.55) 0 48%, rgba(166,120,255,.35) 56%, transparent 72%); filter: blur(12px); animation: pulse 5s ease-in-out infinite; }
+.planet::after { content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle at 70% 75%, transparent 45%, rgba(4,5,13,.75) 78%), radial-gradient(circle at 28% 22%, rgba(255,255,255,.35), transparent 35%);
+  box-shadow: inset 0 0 0 2px rgba(94,240,255,.6), inset -18px -24px 40px rgba(20,0,60,.6); }
+@keyframes pulse { 50% { transform: scale(1.06); opacity: .75; } }
+.ring { position: absolute; border-radius: 50%; border: 1px dashed rgba(154,163,208,.35); animation: spin linear infinite; }
+.ring.r1 { inset: 22%; animation-duration: 26s; }
+.ring.r2 { inset: 12%; animation-duration: 42s; animation-direction: reverse; border-style: solid; border-color: rgba(166,120,255,.25); }
+.ring.r3 { inset: 3%; animation-duration: 64s; border-color: rgba(94,240,255,.18); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.sat { position: absolute; left: 50%; top: 0; transform: translate(-50%, -50%); }
+.sat span { display: inline-block; font-family: var(--f-mono); font-size: .72rem; font-weight: 600; padding: .3rem .6rem; border-radius: 999px; white-space: nowrap;
+  background: rgba(10,13,34,.85); border: 1px solid var(--edge); color: var(--fg); box-shadow: 0 0 14px rgba(94,240,255,.25); animation: spin linear infinite reverse; }
+.r1 .sat span { animation-duration: 26s; } .r2 .sat span { animation-duration: 42s; animation-direction: normal; } .r3 .sat span { animation-duration: 64s; }
+.sat.b { top: 100%; } .sat.c { top: 50%; left: 0; } .sat.d { top: 50%; left: 100%; }
+.sat.hot span { color: var(--sun); border-color: rgba(255,200,100,.5); box-shadow: 0 0 16px rgba(255,200,100,.35); }
+.moon { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--magenta); box-shadow: 0 0 14px var(--magenta); top: -5px; left: calc(50% - 5px); }
+@media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } .system { width: min(100%, 24rem); order: -1; } .hero { min-height: 0; } }
+@media (max-width: 480px) { .sat span { font-size: .62rem; padding: .22rem .45rem; } }
+
+/* ---------- sections ---------- */
+section { padding-block: clamp(4rem, 9vw, 7rem); position: relative; }
+.sec-head { display: grid; gap: .8rem; margin-bottom: 2.6rem; max-width: 46rem; }
+.tag { font-family: var(--f-mono); font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; color: var(--cyan); display: flex; align-items: center; gap: .7rem; }
+.tag::before { content: ""; width: 2.2rem; height: 1px; background: linear-gradient(90deg, transparent, var(--cyan)); box-shadow: 0 0 8px var(--cyan); }
+.sec-head h2 { font-size: var(--s3); font-weight: 800; letter-spacing: .03em; }
+.sec-head p { color: var(--muted); }
+.reveal { transition: transform .9s cubic-bezier(.2,.7,.2,1), filter .9s; }
+.reveal.below { transform: translateY(36px) scale(.985); filter: saturate(.4) brightness(.8); }
+
+/* ---------- missions (projects) ---------- */
+.missions { display: grid; gap: 1.6rem; }
+.mission { position: relative; border-radius: 22px; padding: 1px; background: linear-gradient(140deg, rgba(94,240,255,.55), rgba(166,120,255,.15) 35%, rgba(255,95,210,.4) 100%);
+  transform-style: preserve-3d; transition: transform .25s ease-out; --mx: 50%; --my: 50%; }
+.mission-in { position: relative; border-radius: 21px; background: rgba(8,10,28,.86); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  padding: clamp(1.3rem, 3vw, 2.2rem); display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(1.3rem, 3vw, 2.6rem); overflow: hidden; }
+.mission-in::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s;
+  background: radial-gradient(420px circle at var(--mx) var(--my), rgba(94,240,255,.14), transparent 60%); }
+.mission:hover .mission-in::before { opacity: 1; }
+.mission-in::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .35;
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 3px); }
+.mission-info { display: grid; gap: .95rem; align-content: start; min-width: 0; position: relative; z-index: 1; }
+.code { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); display: flex; flex-wrap: wrap; gap: .4rem .9rem; align-items: center; }
+.code b { color: #050616; background: var(--sun); padding: .18rem .5rem; border-radius: 4px; font-weight: 700; }
+.mission h3 { font-size: var(--s2); font-weight: 800; }
+.mission p { color: #c9cff0; }
+.ticks { margin: 0; padding: 0; list-style: none; display: grid; gap: .5rem; }
+.ticks li { position: relative; padding-left: 1.4rem; color: var(--muted); }
+.ticks li::before { content: ""; position: absolute; left: .1rem; top: .62em; width: .45rem; height: .45rem; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+.chips { display: flex; flex-wrap: wrap; gap: .45rem; padding: 0; margin: 0; list-style: none; }
+.chips li { font-family: var(--f-mono); font-size: .74rem; padding: .3rem .65rem; border-radius: 999px; border: 1px solid var(--edge); background: rgba(166,120,255,.08); color: var(--fg); transition: all .2s; }
+.chips li:hover { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 14px rgba(94,240,255,.35); transform: translateY(-2px); }
+.repo { font-family: var(--f-mono); font-size: .85rem; font-weight: 600; color: var(--cyan); text-underline-offset: 4px; overflow-wrap: anywhere; }
+.private { font-family: var(--f-mono); font-size: .8rem; color: var(--muted); }
+
+.flow { position: relative; z-index: 1; min-width: 0; border-radius: 16px; padding: 1.2rem; display: grid; gap: .85rem; align-content: start;
+  background: radial-gradient(120% 90% at 100% 0%, rgba(166,120,255,.16), transparent 60%), rgba(4,5,13,.7); border: 1px solid var(--edge); }
+.flow-title { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.path { display: flex; flex-wrap: wrap; align-items: stretch; gap: .45rem; }
+.node { flex: 1 1 7.5rem; min-width: 0; border: 1px solid rgba(154,163,208,.3); border-radius: 10px; padding: .6rem .7rem; background: rgba(16,20,48,.8); display: grid; gap: .12rem; }
+.node b { font-family: var(--f-body); font-size: .92rem; font-weight: 700; color: #fff; }
+.node small { font-family: var(--f-mono); font-size: .68rem; color: var(--muted); line-height: 1.35; }
+.node.hot { border-color: var(--cyan); box-shadow: 0 0 18px rgba(94,240,255,.3), inset 0 0 12px rgba(94,240,255,.12); }
+.node.hot b { color: var(--cyan); }
+.arrow { align-self: center; flex: 0 0 auto; width: 22px; height: 2px; position: relative; background: rgba(154,163,208,.3); overflow: hidden; }
+.arrow::after { content: ""; position: absolute; top: 0; left: -40%; width: 40%; height: 100%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); animation: packet 1.4s linear infinite; }
+@keyframes packet { to { left: 100%; } }
+.side { display: flex; flex-wrap: wrap; gap: .45rem; padding-top: .8rem; border-top: 1px dashed rgba(154,163,208,.3); }
+.side .node { flex-basis: 9rem; }
+@media (max-width: 880px) { .mission-in { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .path { flex-direction: column; } .arrow { width: 2px; height: 16px; margin-left: 1.2rem; } .arrow::after { width: 100%; height: 40%; left: 0; top: -40%; animation-name: packetv; } }
+@keyframes packetv { to { top: 100%; } }
+
+/* ---------- trajectory (experience) ---------- */
+.trajectory { position: relative; display: grid; gap: 2.6rem; padding-left: 3rem; }
+.trajectory::before { content: ""; position: absolute; left: 11px; top: .4rem; bottom: .4rem; width: 2px;
+  background: linear-gradient(var(--cyan), var(--violet), var(--magenta)); opacity: .35; }
+.comet { position: absolute; left: 4px; top: 0; width: 16px; height: 16px; border-radius: 50%; background: #fff;
+  box-shadow: 0 0 10px #fff, 0 0 24px var(--cyan), 0 0 48px var(--violet); z-index: 2; }
+.comet::after { content: ""; position: absolute; left: 6px; bottom: 12px; width: 4px; height: 90px; border-radius: 4px;
+  background: linear-gradient(transparent, rgba(94,240,255,.7)); }
+.orbit-stop { position: relative; display: grid; grid-template-columns: 12rem minmax(0, 1fr); gap: 1.6rem; padding: 1.4rem 1.6rem; border-radius: 18px; background: var(--panel); border: 1px solid var(--edge); }
+.orbit-stop::before { content: ""; position: absolute; left: calc(-3rem + 4px); top: 1.7rem; width: 16px; height: 16px; border-radius: 50%; background: var(--void); border: 2px solid var(--violet); }
+.orbit-stop.now::before { border-color: var(--ok); box-shadow: 0 0 14px var(--ok); background: var(--ok); }
+.when { display: grid; gap: .3rem; align-content: start; }
+.date { font-family: var(--f-mono); font-size: .8rem; font-weight: 700; color: var(--sun); letter-spacing: .03em; }
+.when span:last-child { color: var(--muted); }
+.what { display: grid; gap: .75rem; min-width: 0; }
+.what h3 { font-size: var(--s1); font-weight: 800; }
+.live { display: inline-flex; align-items: center; gap: .4rem; font-family: var(--f-mono); font-size: .66rem; letter-spacing: .14em; color: var(--ok); border: 1px solid rgba(77,255,168,.4); padding: .15rem .5rem; border-radius: 999px; margin-left: .5rem; vertical-align: middle; }
+@media (max-width: 720px) { .orbit-stop { grid-template-columns: 1fr; gap: .6rem; padding: 1.2rem; } .trajectory { padding-left: 2.2rem; } .orbit-stop::before { left: calc(-2.2rem + 4px); } }
+
+/* ---------- constellations (skills) ---------- */
+.constellations { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+.const { position: relative; padding: 1.3rem; border-radius: 18px; background: var(--panel); border: 1px solid var(--edge); overflow: hidden; display: grid; gap: 1rem; align-content: start; }
+.const svg { width: 100%; height: 70px; display: block; overflow: visible; }
+.const svg line { stroke: rgba(154,163,208,.35); stroke-width: 1; }
+.const svg circle { fill: #fff; filter: drop-shadow(0 0 4px var(--cyan)); transition: r .3s; }
+.const:hover svg circle { r: 3.4; }
+.const:hover svg line { stroke: rgba(94,240,255,.7); }
+.const h3 { font-family: var(--f-mono); font-size: .78rem; letter-spacing: .16em; text-transform: uppercase; color: var(--cyan); font-weight: 700; }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+.fact { padding: 1.5rem; border-radius: 18px; background: var(--panel); border: 1px solid var(--edge); display: grid; gap: .55rem; align-content: start; }
+.fact h3 { font-family: var(--f-mono); font-size: .75rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.fact strong { font-family: var(--f-display); font-weight: 600; font-size: 1.05rem; line-height: 1.35; }
+.fact p { color: var(--muted); }
+.lang-row { display: flex; justify-content: space-between; gap: 1rem; align-items: center; padding-block: .5rem; }
+.bar { flex: 1; height: 4px; border-radius: 4px; background: rgba(154,163,208,.2); position: relative; overflow: hidden; max-width: 10rem; }
+.bar i { position: absolute; inset: 0 auto 0 0; border-radius: 4px; background: linear-gradient(90deg, var(--cyan), var(--violet)); box-shadow: 0 0 10px var(--cyan); }
+.lang-row em { font-style: normal; font-family: var(--f-mono); font-size: .78rem; color: var(--sun); min-width: 6.5rem; text-align: right; }
+@media (max-width: 960px) { .constellations { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .constellations, .facts { grid-template-columns: 1fr; } }
+
+/* ---------- transmission (contact) ---------- */
+.transmit { position: relative; border-radius: 28px; overflow: hidden; padding: clamp(1.6rem, 5vw, 3.5rem);
+  background: radial-gradient(80% 120% at 0% 0%, rgba(166,120,255,.35), transparent 60%), radial-gradient(70% 100% at 100% 100%, rgba(94,240,255,.22), transparent 60%), var(--deep);
+  border: 1px solid var(--edge); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 2.4rem; align-items: center; }
+.radar { position: relative; width: min(100%, 15rem); aspect-ratio: 1; max-width: 100%; border-radius: 50%; margin-top: 1.6rem;
+  background: repeating-radial-gradient(circle, transparent 0 22px, rgba(94,240,255,.18) 22px 23px), radial-gradient(circle, rgba(94,240,255,.08), transparent 70%);
+  border: 1px solid rgba(94,240,255,.35); overflow: hidden; }
+.radar::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 0deg, rgba(94,240,255,.55), transparent 22%); animation: spin 3.2s linear infinite; }
+.radar::after { content: ""; position: absolute; left: 62%; top: 30%; width: 8px; height: 8px; border-radius: 50%; background: var(--sun); box-shadow: 0 0 12px var(--sun); animation: blink 1.6s infinite; }
+.transmit h2 { font-size: var(--s3); font-weight: 900; margin-top: .8rem; }
+.transmit .note { margin-top: .8rem; color: var(--muted); max-width: 28rem; }
+.lines { display: grid; gap: .6rem; }
+.line { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr) auto; gap: .8rem; align-items: center; padding: .9rem 1rem; border-radius: 14px; background: rgba(4,5,13,.55); border: 1px solid var(--edge); transition: border-color .2s, box-shadow .2s; }
+.line:hover { border-color: rgba(94,240,255,.5); box-shadow: 0 0 22px rgba(94,240,255,.15); }
+.line .k { font-family: var(--f-mono); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.line .v { font-weight: 600; font-size: 1.02rem; overflow-wrap: anywhere; user-select: all; }
+.line .v a { user-select: auto; text-underline-offset: 4px; color: var(--cyan); }
+.copy { font: 600 .72rem/1 var(--f-mono); letter-spacing: .06em; color: var(--cyan); background: transparent; border: 1px solid rgba(94,240,255,.5); border-radius: 999px; padding: .5rem .8rem; cursor: pointer; white-space: nowrap; }
+.copy:hover { background: var(--cyan); color: var(--void); box-shadow: 0 0 16px var(--cyan); }
+@media (max-width: 800px) { .transmit { grid-template-columns: 1fr; } .radar { width: 9rem; } }
+@media (max-width: 440px) { .line { grid-template-columns: minmax(0, 1fr) auto; } .line .k { grid-column: 1 / -1; } }
+
+footer { padding-block: 2rem 3rem; }
+footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .08em; color: var(--muted); }
+.hint { color: var(--cyan); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal.below { transform: none; filter: none; }
+}
+@media (hover: none) { .cursor-glow { display: none; } }
+</style>
+</head>
+<body>
+
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="nebula" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor-glow" id="glow" aria-hidden="true"></div>
+<div class="fuel" aria-hidden="true"><i id="fuel"></i></div>
+
+<div class="page">
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#top"><i></i><span>THANACHAI</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#work"><span data-l="en">Missions</span><span data-l="th">ผลงาน</span></a>
+      <a href="#experience"><span data-l="en">Trajectory</span><span data-l="th">ประสบการณ์</span></a>
+      <a href="#skills"><span data-l="en">Skills</span><span data-l="th">ทักษะ</span></a>
+      <a href="#contact"><span data-l="en">Contact</span><span data-l="th">ติดต่อ</span></a>
+    </nav>
+    <div class="ctrl">
+      <button type="button" class="warp-btn" id="warp" aria-pressed="false" title="Hyperdrive">WARP</button>
+      <div class="pill" role="group" aria-label="Language">
+        <button type="button" id="lang-en" data-set="en" aria-pressed="true">EN</button>
+        <button type="button" id="lang-th" data-set="th" aria-pressed="false">TH</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- ===== HERO ===== -->
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="hud-line"><span class="blink"></span><span data-l="en">Signal live · AIP Engineer at FETCI</span><span data-l="th">สัญญาณออนไลน์ · AIP Engineer ที่ FETCI</span></div>
+        <h1><span class="shine" id="name">Thanachai Jankaew</span></h1>
+        <p class="role"><span id="typed">AIP Engineer · Full Stack Developer</span><span class="caret" aria-hidden="true"></span></p>
+        <p class="lede">
+          <span data-l="en">I build software for toll lanes and smart parking, and the web apps businesses run on.</span>
+          <span data-l="th">พัฒนาซอฟต์แวร์สำหรับระบบเก็บค่าผ่านทางและลานจอดรถอัจฉริยะ รวมถึงเว็บแอปที่ธุรกิจใช้งานจริง</span>
+        </p>
+        <p class="summary">
+          <span data-l="en">Software engineer working in React.js, Next.js, Node.js, C#/.NET, Java, Python, and Go. At FETCI I deliver the M-Flow toll collection and smart parking system across the front end, back end, and database. Before that I built responsive web apps, RESTful APIs, and internal business systems at Synnex Thailand.</span>
+          <span data-l="th">วิศวกรซอฟต์แวร์ที่ทำงานกับ React.js, Next.js, Node.js, C#/.NET, Java, Python และ Go ปัจจุบันดูแลระบบ M-Flow สำหรับเก็บค่าผ่านทางและลานจอดรถอัจฉริยะที่ FETCI ครอบคลุมทั้ง front-end, back-end และฐานข้อมูล ก่อนหน้านี้พัฒนาเว็บแอป RESTful API และระบบภายในองค์กรที่ Synnex Thailand</span>
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="#work"><span data-l="en">Launch into my work</span><span data-l="th">ดูผลงานตัวอย่าง</span> <span aria-hidden="true">🚀</span></a>
+          <a class="btn" href="#contact"><span data-l="en">Open a channel</span><span data-l="th">ติดต่อ</span></a>
+          <a class="btn" href="https://github.com/Almzana" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+        <div class="telemetry">
+          <div><small><span data-l="en">Coordinates</span><span data-l="th">พิกัด</span></small><b>13.86°N 100.51°E</b></div>
+          <div><small><span data-l="en">Base</span><span data-l="th">ฐาน</span></small><b><span data-l="en">Nonthaburi</span><span data-l="th">นนทบุรี</span></b></div>
+          <div><small><span data-l="en">Launched</span><span data-l="th">เริ่มภารกิจ</span></small><b>KMUTNB · 2020</b></div>
+        </div>
+      </div>
+
+      <div class="system" aria-label="Portrait with orbiting technologies">
+        <div class="ring r3"><span class="sat"><span>AWS</span></span><span class="sat b"><span>Docker</span></span><span class="sat c hot"><span>Go</span></span><span class="sat d"><span>PostgreSQL</span></span></div>
+        <div class="ring r2"><span class="sat hot"><span>.NET</span></span><span class="sat b"><span>Node.js</span></span><span class="sat c"><span>Java</span></span><span class="sat d"><span>Python</span></span></div>
+        <div class="ring r1"><span class="moon"></span><span class="sat b"><span>React</span></span><span class="sat c"><span>Next.js</span></span><span class="sat d hot"><span>C#</span></span></div>
+        <div class="planet"><img src="photo.jpg" alt="Portrait of Thanachai Jankaew" width="400" height="400"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MISSIONS ===== -->
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="tag"><span data-l="en">Mission log</span><span data-l="th">ผลงานตัวอย่าง</span></span>
+        <h2><span data-l="en">Four missions, flown and shipped</span><span data-l="th">สี่ภารกิจที่ส่งขึ้นสู่วงโคจรแล้ว</span></h2>
+        <p><span data-l="en">A production system I work on today, an open-source Go back end, and two full-stack projects. Each panel shows the stack and how the parts connect. Move your cursor over a panel.</span><span data-l="th">ระบบที่ใช้งานจริงซึ่งดูแลอยู่ในปัจจุบัน back-end ภาษา Go ที่เปิดโค้ดบน GitHub และโปรเจกต์ full-stack อีกสองชิ้น พร้อมแผนภาพการเชื่อมต่อของแต่ละส่วน ลองเลื่อนเมาส์ไปบนการ์ดดูครับ</span></p>
+      </div>
+
+      <div class="missions">
+        <!-- M-Flow -->
+        <article class="mission reveal"><div class="mission-in">
+          <div class="mission-info">
+            <div class="code"><b>MSN-01</b><span data-l="en">Production · FETCI · 2026–now</span><span data-l="th">ระบบจริง · FETCI · 2026–ปัจจุบัน</span></div>
+            <h3>M-Flow Toll &amp; Smart Parking</h3>
+            <p><span data-l="en">A toll collection and smart parking system. I install, maintain, and extend it across the front end, back end, and database, and test it against the lane equipment on site.</span><span data-l="th">ระบบเก็บค่าผ่านทางและลานจอดรถอัจฉริยะ ทำหน้าที่ติดตั้ง ดูแล และพัฒนาต่อยอดทั้ง front-end, back-end และฐานข้อมูล รวมถึงทดสอบกับอุปกรณ์หน้างานจริง</span></p>
+            <ul class="ticks">
+              <li><span data-l="en">Programs and scripts that talk to the database in C#, Java, SQL, Python, and .NET Core</span><span data-l="th">เขียนโปรแกรมและสคริปต์เชื่อมต่อฐานข้อมูลด้วย C#, Java, SQL, Python และ .NET Core</span></li>
+              <li><span data-l="en">Requirements and issue work with FETC experts from Taiwan, in English</span><span data-l="th">ทำงานร่วมกับทีมผู้เชี่ยวชาญ FETC จากไต้หวัน สื่อสารเป็นภาษาอังกฤษ</span></li>
+              <li><span data-l="en">On-site testing with front-end engineers</span><span data-l="th">ทดสอบระบบหน้างานร่วมกับวิศวกร front-end</span></li>
+            </ul>
+            <ul class="chips"><li>C#</li><li>.NET Core</li><li>Java</li><li>Python</li><li>SQL</li></ul>
+            <span class="private"><span data-l="en">Client system · no public repository</span><span data-l="th">ระบบของลูกค้า · ไม่มีโค้ดสาธารณะ</span></span>
+          </div>
+          <div class="flow" aria-label="M-Flow system layers">
+            <span class="flow-title"><span data-l="en">How it fits together</span><span data-l="th">โครงสร้างระบบ</span></span>
+            <div class="path">
+              <div class="node"><b>Lane equipment</b><small>toll gantry · parking gate</small></div>
+              <span class="arrow" aria-hidden="true"></span>
+              <div class="node hot"><b>M-Flow services</b><small>C# · .NET Core · Java</small></div>
+              <span class="arrow" aria-hidden="true"></span>
+              <div class="node"><b>Database</b><small>SQL scripts · Python</small></div>
+            </div>
+            <div class="side"><div class="node"><b>Front end</b><small>operator screens · testing</small></div></div>
+          </div>
+        </div></article>
+
+        <!-- Agnos -->
+        <article class="mission reveal"><div class="mission-in">
+          <div class="mission-info">
+            <div class="code"><b>MSN-02</b><span data-l="en">Back end · open source · 2026</span><span data-l="th">Back-end · โอเพนซอร์ส · 2026</span></div>
+            <h3>Agnos Hospital Middleware</h3>
+            <p><span data-l="en">A middleware API that lets hospital staff log in and search patients of their own hospital only. When a patient is not in the local database yet, it pulls the record from that hospital's HIS API.</span><span data-l="th">Middleware API ให้เจ้าหน้าที่โรงพยาบาลล็อกอินและค้นหาข้อมูลผู้ป่วยได้เฉพาะของโรงพยาบาลตัวเอง ถ้ายังไม่มีข้อมูลในฐานข้อมูล ระบบจะดึงจาก HIS API ของโรงพยาบาลนั้นมาให้</span></p>
+            <ul class="ticks">
+              <li><span data-l="en">JWT login with access scoped per hospital</span><span data-l="th">ล็อกอินด้วย JWT และจำกัดสิทธิ์ตามโรงพยาบาล</span></li>
+              <li><span data-l="en">Search still answers cleanly when the HIS fails or times out</span><span data-l="th">ค้นหายังตอบกลับได้ปกติ แม้ HIS ล่มหรือตอบช้าเกินเวลา</span></li>
+              <li><span data-l="en">Unit tests with in-memory fakes and httptest, no database needed</span><span data-l="th">Unit test ด้วย in-memory fake และ httptest ไม่ต้องใช้ฐานข้อมูลจริง</span></li>
+              <li><span data-l="en">Docker Compose stack with a mock HIS, OpenAPI spec, and Swagger UI</span><span data-l="th">รันทั้งระบบด้วย Docker Compose พร้อม mock HIS, OpenAPI spec และ Swagger UI</span></li>
+            </ul>
+            <ul class="chips"><li>Go</li><li>Gin</li><li>GORM</li><li>PostgreSQL</li><li>JWT</li><li>Docker</li><li>Nginx</li></ul>
+            <a class="repo" href="https://github.com/Almzana/AgnosHospitalMiddleware" target="_blank" rel="noopener">github.com/Almzana/AgnosHospitalMiddleware ↗</a>
+          </div>
+          <div class="flow" aria-label="Hospital middleware architecture">
+            <span class="flow-title"><span data-l="en">Patient search path</span><span data-l="th">เส้นทางการค้นหาผู้ป่วย</span></span>
+            <div class="path">
+              <div class="node"><b>Staff</b><small>JWT token</small></div>
+              <span class="arrow" aria-hidden="true"></span>
+              <div class="node"><b>Nginx</b><small>only public port</small></div>
+              <span class="arrow" aria-hidden="true"></span>
+              <div class="node hot"><b>Go API</b><small>Gin · auth middleware</small></div>
+              <span class="arrow" aria-hidden="true"></span>
+              <div class="node"><b>PostgreSQL</b><small>GORM · pgx</small></div>
+            </div>
+            <div class="side">
+              <div class="node"><b>Hospital HIS API</b><small>fetched when patient is new</small></div>
+              <div class="node"><b>Swagger UI</b><small>OpenAPI spec</small></div>
+            </div>
+          </div>
+        </div></article>
+
+        <!-- E-commerce -->
+        <article class="mission reveal"><div class="mission-in">
+          <div class="mission-info">
+            <div class="code"><b>MSN-03</b><span data-l="en">Full-stack project</span><span data-l="th">โปรเจกต์ full-stack</span></div>
+            <h3><span data-l="en">E-Commerce Web Application</span><span data-l="th">เว็บแอปพลิเคชันอีคอมเมิร์ซ</span></h3>
+            <p><span data-l="en">A full online store, from product pages to checkout, with its own back office.</span><span data-l="th">ร้านค้าออนไลน์ครบวงจร ตั้งแต่หน้าสินค้าจนถึงการชำระเงิน พร้อมระบบหลังบ้าน</span></p>
+            <ul class="ticks">
+              <li><span data-l="en">JWT authentication and role-based authorization</span><span data-l="th">ระบบยืนยันตัวตนและกำหนดสิทธิ์การเข้าถึงด้วย JWT</span></li>
+              <li><span data-l="en">Stripe integration for online payments</span><span data-l="th">เชื่อมต่อ Stripe สำหรับการชำระเงินออนไลน์</span></li>
+              <li><span data-l="en">Admin dashboard to manage products and orders</span><span data-l="th">แดชบอร์ดผู้ดูแลสำหรับจัดการสินค้าและคำสั่งซื้อ</span></li>
+            </ul>
+            <ul class="chips"><li>Next.js</li><li>Node.js</li><li>MongoDB</li><li>Stripe</li><li>JWT</li></ul>
+            <span class="private"><span data-l="en">Source code not public</span><span data-l="th">ยังไม่เปิดโค้ดสาธารณะ</span></span>
+          </div>
+          <div class="flow" aria-label="E-commerce architecture">
+            <span class="flow-title"><span data-l="en">Request path</span><span data-l="th">เส้นทางของคำสั่งซื้อ</span></span>
+            <div class="path">
+              <div class="node"><b>Storefront</b><small>Next.js</small></div>
+              <span class="arrow" aria-hidden="true"></span>
+              <div class="node hot"><b>REST API</b><small>Node.js · JWT auth</small></div>
+              <span class="arrow" aria-hidden="true"></span>
+              <div class="node"><b>MongoDB</b><small>products · orders · users</small></div>
+            </div>
+            <div class="side">
+              <div class="node"><b>Stripe</b><small>checkout · payments</small></div>
+              <div class="node"><b>Admin dashboard</b><small>products · orders</small></div>
+            </div>
+          </div>
+        </div></article>
+
+        <!-- Nintendo -->
+        <article class="mission reveal"><div class="mission-in">
+          <div class="mission-info">
+            <div class="code"><b>MSN-04</b><span data-l="en">Full stack · AWS</span><span data-l="th">Full stack · AWS</span></div>
+            <h3>Nintendo Booking Platform</h3>
+            <p><span data-l="en">A booking platform built to stay fast when many people book at the same moment.</span><span data-l="th">แพลตฟอร์มการจองที่ออกแบบให้ยังทำงานได้เร็ว แม้มีผู้ใช้จองพร้อมกันจำนวนมาก</span></p>
+            <ul class="ticks">
+              <li><span data-l="en">Secure RESTful APIs, back end deployed on Amazon EC2</span><span data-l="th">RESTful API ที่ปลอดภัย และ deploy back-end บน Amazon EC2</span></li>
+              <li><span data-l="en">Static assets served from Amazon S3</span><span data-l="th">จัดเก็บ static assets บน Amazon S3</span></li>
+              <li><span data-l="en">AWS Lambda and Amazon SQS for event-driven, asynchronous work</span><span data-l="th">ใช้ AWS Lambda และ Amazon SQS สำหรับงานแบบ event-driven และ asynchronous</span></li>
+              <li><span data-l="en">Decoupled architecture tuned for concurrent booking transactions</span><span data-l="th">สถาปัตยกรรมแบบ decoupled ปรับจูนสำหรับธุรกรรมการจองพร้อมกัน</span></li>
+            </ul>
+            <ul class="chips"><li>EC2</li><li>S3</li><li>Lambda</li><li>SQS</li><li>REST API</li></ul>
+            <span class="private"><span data-l="en">Source code not public</span><span data-l="th">ยังไม่เปิดโค้ดสาธารณะ</span></span>
+          </div>
+          <div class="flow" aria-label="Booking platform architecture on AWS">
+            <span class="flow-title"><span data-l="en">Booking path on AWS</span><span data-l="th">เส้นทางการจองบน AWS</span></span>
+            <div class="path">
+              <div class="node"><b>Client</b><small>web app</small></div>
+              <span class="arrow" aria-hidden="true"></span>
+              <div class="node hot"><b>REST API</b><small>Amazon EC2</small></div>
+              <span class="arrow" aria-hidden="true"></span>
+              <div class="node"><b>Queue</b><small>Amazon SQS</small></div>
+              <span class="arrow" aria-hidden="true"></span>
+              <div class="node"><b>Worker</b><small>AWS Lambda</small></div>
+            </div>
+            <div class="side"><div class="node"><b>Static assets</b><small>Amazon S3</small></div></div>
+          </div>
+        </div></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRAJECTORY ===== -->
+  <section id="experience">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="tag"><span data-l="en">Flight trajectory</span><span data-l="th">ประสบการณ์ทำงาน</span></span>
+        <h2><span data-l="en">Where this ship has been</span><span data-l="th">เส้นทางการบินที่ผ่านมา</span></h2>
+      </div>
+      <div class="trajectory" id="trajectory">
+        <span class="comet" id="comet" aria-hidden="true"></span>
+
+        <div class="orbit-stop now reveal">
+          <div class="when"><span class="date"><span data-l="en">Mar 2026 – Present</span><span data-l="th">มี.ค. 2026 – ปัจจุบัน</span></span><span>FETCI</span></div>
+          <div class="what">
+            <h3>AIP Engineer <span class="live">● LIVE</span></h3>
+            <ul class="ticks">
+              <li><span data-l="en">Install, maintain, and develop the M-Flow system, front end and back end, for toll collection and smart parking projects.</span><span data-l="th">ติดตั้ง ดูแล และพัฒนาระบบ M-Flow ทั้ง front-end และ back-end สำหรับโครงการเก็บค่าผ่านทางและลานจอดรถอัจฉริยะ</span></li>
+              <li><span data-l="en">Write programs and scripts that interface with databases using C#, Java, SQL scripts, Python, and .NET Core.</span><span data-l="th">เขียนโปรแกรมและสคริปต์เชื่อมต่อฐานข้อมูลด้วย C#, Java, SQL script, Python และ .NET Core</span></li>
+              <li><span data-l="en">Work with FETC expert teams from Taiwan, in English, on system requirements and issues.</span><span data-l="th">ทำงานร่วมกับทีมผู้เชี่ยวชาญ FETC จากไต้หวัน สื่อสารเป็นภาษาอังกฤษเรื่องความต้องการและปัญหาของระบบ</span></li>
+              <li><span data-l="en">Test the system and on-site equipment together with front-end engineers.</span><span data-l="th">ทดสอบระบบและอุปกรณ์หน้างานร่วมกับวิศวกร front-end</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="orbit-stop reveal">
+          <div class="when"><span class="date"><span data-l="en">Mar 2024 – Apr 2026</span><span data-l="th">มี.ค. 2024 – เม.ย. 2026</span></span><span>Synnex Thailand</span></div>
+          <div class="what">
+            <h3>Full Stack Developer</h3>
+            <ul class="ticks">
+              <li><span data-l="en">Developed and maintained full-stack web applications and internal business systems.</span><span data-l="th">พัฒนาและดูแลเว็บแอปพลิเคชันแบบ full-stack และระบบภายในองค์กร</span></li>
+              <li><span data-l="en">Built responsive interfaces with React.js, Next.js, TypeScript/JavaScript, and Tailwind CSS.</span><span data-l="th">สร้างหน้าจอแบบ responsive ด้วย React.js, Next.js, TypeScript/JavaScript และ Tailwind CSS</span></li>
+              <li><span data-l="en">Designed and implemented RESTful APIs with Node.js/Express.js and ASP.NET Core.</span><span data-l="th">ออกแบบและพัฒนา RESTful API ด้วย Node.js/Express.js และ ASP.NET Core</span></li>
+              <li><span data-l="en">Worked with SQL Server, MySQL, and MongoDB for application data and business workflows.</span><span data-l="th">ทำงานกับ SQL Server, MySQL และ MongoDB สำหรับข้อมูลแอปพลิเคชันและ workflow ทางธุรกิจ</span></li>
+              <li><span data-l="en">Troubleshot production issues, improved performance, and fixed system defects.</span><span data-l="th">แก้ปัญหาบน production ปรับปรุงประสิทธิภาพ และแก้ไขข้อบกพร่องของระบบ</span></li>
+              <li><span data-l="en">Collaborated with UX/UI designers, QA, DevOps engineers, and business stakeholders.</span><span data-l="th">ทำงานร่วมกับ UX/UI designer, QA, DevOps engineer และฝ่ายธุรกิจ</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="orbit-stop reveal">
+          <div class="when"><span class="date"><span data-l="en">Earlier</span><span data-l="th">ก่อนหน้า</span></span><span>Synnex Thailand</span></div>
+          <div class="what">
+            <h3>Web Developer</h3>
+            <ul class="ticks">
+              <li><span data-l="en">Developed web applications and internal admin and dashboard systems.</span><span data-l="th">พัฒนาเว็บแอปพลิเคชันและระบบหลังบ้าน/แดชบอร์ดภายในองค์กร</span></li>
+              <li><span data-l="en">Built and integrated RESTful APIs for business applications.</span><span data-l="th">สร้างและเชื่อมต่อ RESTful API สำหรับแอปพลิเคชันทางธุรกิจ</span></li>
+              <li><span data-l="en">Worked with relational databases and application data management.</span><span data-l="th">ทำงานกับฐานข้อมูลเชิงสัมพันธ์และการจัดการข้อมูลของแอปพลิเคชัน</span></li>
+              <li><span data-l="en">Deployed and maintained applications with Docker and CI/CD workflows.</span><span data-l="th">Deploy และดูแลแอปพลิเคชันด้วย Docker และ CI/CD</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONSTELLATIONS ===== -->
+  <section id="skills">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="tag"><span data-l="en">Star chart</span><span data-l="th">ทักษะหลัก</span></span>
+        <h2><span data-l="en">Constellations I navigate by</span><span data-l="th">กลุ่มดาวที่ใช้นำทาง</span></h2>
+      </div>
+      <div class="constellations">
+        <div class="const reveal" data-stars="5"><svg aria-hidden="true"></svg><h3>Frontend</h3><ul class="chips"><li>React.js</li><li>Next.js</li><li>TypeScript</li><li>JavaScript</li><li>Tailwind CSS</li></ul></div>
+        <div class="const reveal" data-stars="7"><svg aria-hidden="true"></svg><h3>Backend</h3><ul class="chips"><li>Node.js</li><li>Express.js</li><li>ASP.NET Core</li><li>C#</li><li>Java</li><li>Python</li><li>Go · Gin</li><li>RESTful API</li></ul></div>
+        <div class="const reveal" data-stars="4"><svg aria-hidden="true"></svg><h3>Database</h3><ul class="chips"><li>SQL Server</li><li>MySQL</li><li>MongoDB</li><li>PostgreSQL</li></ul></div>
+        <div class="const reveal" data-stars="5"><svg aria-hidden="true"></svg><h3>DevOps / Cloud</h3><ul class="chips"><li>Git</li><li>Docker</li><li>CI/CD</li><li>AWS</li><li>Nginx</li></ul></div>
+      </div>
+      <div class="facts">
+        <div class="fact reveal">
+          <h3><span data-l="en">Education</span><span data-l="th">การศึกษา</span></h3>
+          <strong><span data-l="en">B.Eng. in Computer Engineering</span><span data-l="th">วิศวกรรมศาสตรบัณฑิต สาขาวิศวกรรมคอมพิวเตอร์</span></strong>
+          <p><span data-l="en">King Mongkut’s University of Technology North Bangkok</span><span data-l="th">มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ</span><br>2020 – 2024 · Nonthaburi</p>
+        </div>
+        <div class="fact reveal">
+          <h3><span data-l="en">Languages</span><span data-l="th">ภาษา</span></h3>
+          <div>
+            <div class="lang-row"><span><span data-l="en">Thai</span><span data-l="th">ไทย</span></span><span class="bar"><i style="width:100%"></i></span><em><span data-l="en">Native</span><span data-l="th">ภาษาแม่</span></em></div>
+            <div class="lang-row"><span><span data-l="en">English</span><span data-l="th">อังกฤษ</span></span><span class="bar"><i style="width:60%"></i></span><em><span data-l="en">Intermediate</span><span data-l="th">ระดับกลาง</span></em></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRANSMISSION ===== -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="transmit reveal">
+        <div>
+          <span class="tag"><span data-l="en">Incoming transmission</span><span data-l="th">เปิดช่องสัญญาณ</span></span>
+          <h2><span data-l="en">Let’s talk</span><span data-l="th">ติดต่อพูดคุย</span></h2>
+          <p class="note"><span data-l="en">Open to full-stack and systems engineering roles. Based in Nonthaburi, Thailand.</span><span data-l="th">พร้อมรับโอกาสงานด้าน full-stack และวิศวกรรมระบบ อยู่ที่นนทบุรี</span></p>
+          <div class="radar" aria-hidden="true"></div>
+        </div>
+        <div class="lines">
+          <div class="line">
+            <span class="k"><span data-l="en">Email</span><span data-l="th">อีเมล</span></span>
+            <span class="v">thanachaino168@gmail.com</span>
+            <button class="copy" type="button" id="copy-email" data-copy="thanachaino168@gmail.com"><span data-l="en">Copy</span><span data-l="th">คัดลอก</span></button>
+          </div>
+          <div class="line">
+            <span class="k"><span data-l="en">Phone</span><span data-l="th">โทร</span></span>
+            <span class="v">062 248 4854</span>
+            <button class="copy" type="button" id="copy-phone" data-copy="0622484854"><span data-l="en">Copy</span><span data-l="th">คัดลอก</span></button>
+          </div>
+          <div class="line">
+            <span class="k">GitHub</span>
+            <span class="v"><a href="https://github.com/Almzana" target="_blank" rel="noopener">github.com/Almzana</a></span>
+            <span></span>
+          </div>
+          <div class="line">
+            <span class="k"><span data-l="en">Base</span><span data-l="th">ที่อยู่</span></span>
+            <span class="v"><span data-l="en">Nonthaburi, Thailand</span><span data-l="th">นนทบุรี ประเทศไทย</span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Thanachai Jankaew</span>
+    <span class="hint"><span data-l="en">Tip: press WARP, or click anywhere in space</span><span data-l="th">ลองกด WARP หรือคลิกที่ว่างในอวกาศดูครับ</span></span>
+  </div>
+</footer>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- language ---- */
+  function setLang(l) {
+    root.setAttribute('data-lang', l); root.lang = l;
+    document.querySelectorAll('.pill button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.set === l)); });
+    try { localStorage.setItem('tj-lang', l); } catch (e) {}
+  }
+  var saved = null; try { saved = localStorage.getItem('tj-lang'); } catch (e) {}
+  setLang(saved === 'th' ? 'th' : 'en');
+  document.querySelectorAll('.pill button').forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.set); }); });
+
+  /* ---- starfield ---- */
+  var cv = document.getElementById('stars'), ctx = cv.getContext('2d');
+  var W, H, DPR, stars = [], shooters = [], sparks = [];
+  var speed = 0.35, target = 0.35, warp = false;
+  var mx = 0, my = 0, cx = 0, cy = 0;
+  var COLORS = ['#ffffff', '#cfe9ff', '#5ef0ff', '#a678ff', '#ffd9a0'];
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    var n = Math.round(Math.min(900, W * H / 1800));
+    stars = []; for (var i = 0; i < n; i++) stars.push(newStar(true));
+  }
+  function newStar(any) {
+    return { x: (Math.random() - .5) * 2, y: (Math.random() - .5) * 2, z: any ? Math.random() : 1,
+             c: COLORS[Math.random() < .8 ? 0 : (1 + Math.floor(Math.random() * 4))], tw: Math.random() * 6.28 };
+  }
+  function frame(t) {
+    speed += (target - speed) * 0.05;
+    cx += (mx - cx) * 0.04; cy += (my - cy) * 0.04;
+    ctx.fillStyle = warp ? 'rgba(4,5,13,0.35)' : 'rgba(4,5,13,1)';
+    ctx.fillRect(0, 0, W, H);
+    var ox = W / 2 - cx * 40, oy = H / 2 - cy * 40, f = Math.max(W, H) * 0.6;
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i], pz = s.z;
+      s.z -= speed * 0.004;
+      if (s.z <= 0.02) { stars[i] = newStar(false); continue; }
+      var x = s.x / s.z * f + ox, y = s.y / s.z * f + oy;
+      if (x < -50 || x > W + 50 || y < -50 || y > H + 50) { stars[i] = newStar(false); continue; }
+      var r = (1 - s.z) * 2.1 + .2, a = Math.min(1, (1 - s.z) * 1.6) * (0.7 + 0.3 * Math.sin(t * 0.003 + s.tw));
+      ctx.globalAlpha = a;
+      if (speed > 2) {
+        var px = s.x / pz * f + ox, py = s.y / pz * f + oy;
+        ctx.strokeStyle = s.c; ctx.lineWidth = r; ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(x, y); ctx.stroke();
+      } else {
+        ctx.fillStyle = s.c; ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fill();
+      }
+    }
+    // shooting stars
+    if (!warp && Math.random() < 0.006) shooters.push({ x: Math.random() * W, y: Math.random() * H * .5, vx: 7 + Math.random() * 6, vy: 3 + Math.random() * 3, life: 1 });
+    for (var j = shooters.length - 1; j >= 0; j--) {
+      var sh = shooters[j]; sh.x += sh.vx; sh.y += sh.vy; sh.life -= 0.015;
+      var g = ctx.createLinearGradient(sh.x, sh.y, sh.x - sh.vx * 14, sh.y - sh.vy * 14);
+      g.addColorStop(0, 'rgba(255,255,255,' + sh.life + ')'); g.addColorStop(1, 'rgba(94,240,255,0)');
+      ctx.globalAlpha = 1; ctx.strokeStyle = g; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(sh.x, sh.y); ctx.lineTo(sh.x - sh.vx * 14, sh.y - sh.vy * 14); ctx.stroke();
+      if (sh.life <= 0) shooters.splice(j, 1);
+    }
+    // click sparks
+    for (var k = sparks.length - 1; k >= 0; k--) {
+      var p = sparks[k]; p.x += p.vx; p.y += p.vy; p.vx *= .97; p.vy *= .97; p.life -= 0.018;
+      ctx.globalAlpha = Math.max(0, p.life); ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x, p.y, p.r * p.life + .3, 0, 6.283); ctx.fill();
+      if (p.life <= 0) sparks.splice(k, 1);
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(frame);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  if (reduce) {
+    ctx.fillStyle = '#04050d'; ctx.fillRect(0, 0, W, H);
+    stars.forEach(function (s) { var x = s.x / s.z * W * .6 + W / 2, y = s.y / s.z * W * .6 + H / 2; ctx.globalAlpha = 1 - s.z; ctx.fillStyle = s.c; ctx.beginPath(); ctx.arc(x, y, (1 - s.z) * 2 + .2, 0, 6.283); ctx.fill(); });
+  } else {
+    // launch: start in hyperspace, then drop out
+    speed = 9; target = 0.35;
+    requestAnimationFrame(frame);
+  }
+
+  window.addEventListener('pointermove', function (e) {
+    mx = (e.clientX / innerWidth - .5) * 2; my = (e.clientY / innerHeight - .5) * 2;
+    if (e.pointerType === 'mouse') glow.style.transform = 'translate3d(' + e.clientX + 'px,' + e.clientY + 'px,0)';
+  }, { passive: true });
+  var glow = document.getElementById('glow');
+
+  document.addEventListener('click', function (e) {
+    if (reduce || e.target.closest('a,button,.mission,.line,.const,.fact,.orbit-stop,input')) return;
+    for (var i = 0; i < 46; i++) {
+      var a = Math.random() * 6.283, v = 1.5 + Math.random() * 5;
+      sparks.push({ x: e.clientX, y: e.clientY, vx: Math.cos(a) * v, vy: Math.sin(a) * v, r: 1 + Math.random() * 2.4, life: 1, c: COLORS[1 + (i % 4)] });
+    }
+  });
+
+  var warpBtn = document.getElementById('warp');
+  warpBtn.addEventListener('click', function () {
+    warp = !warp; target = warp ? 14 : 0.35;
+    warpBtn.setAttribute('aria-pressed', String(warp));
+  });
+
+  /* ---- typed role ---- */
+  var roles = ['AIP Engineer · Full Stack Developer', 'M-Flow toll & smart parking', 'React · Next.js · Node.js', 'C# · .NET · Java · Go', 'AWS · Docker · CI/CD'];
+  var typed = document.getElementById('typed');
+  if (!reduce) {
+    var ri = 0, ci = roles[0].length, del = true;
+    setTimeout(function tick() {
+      if (del) { ci--; if (ci <= 0) { del = false; ri = (ri + 1) % roles.length; } }
+      else { ci++; if (ci >= roles[ri].length) { del = true; typed.textContent = roles[ri]; return setTimeout(tick, 2200); } }
+      typed.textContent = roles[ri].slice(0, Math.max(0, ci)) || ' ';
+      setTimeout(tick, del ? 28 : 55);
+    }, 3200);
+  }
+
+  /* ---- name decode on load ---- */
+  var nameEl = document.getElementById('name'), finalName = nameEl.textContent;
+  if (!reduce) {
+    var glyphs = '01<>/{}*#+=ΔΣΩ', step = 0;
+    var iv = setInterval(function () {
+      step++;
+      nameEl.textContent = finalName.split('').map(function (ch, i) {
+        if (ch === ' ' || i < step / 1.4) return ch;
+        return glyphs[Math.floor(Math.random() * glyphs.length)];
+      }).join('');
+      if (step / 1.4 > finalName.length) { clearInterval(iv); nameEl.textContent = finalName; }
+    }, 40);
+  }
+
+  /* ---- scroll: fuel bar, comet, reveals ---- */
+  var fuel = document.getElementById('fuel'), traj = document.getElementById('trajectory'), comet = document.getElementById('comet');
+  function onScroll() {
+    var max = document.documentElement.scrollHeight - innerHeight;
+    fuel.style.transform = 'scaleX(' + (max > 0 ? scrollY / max : 0) + ')';
+    var r = traj.getBoundingClientRect();
+    var p = Math.min(1, Math.max(0, (innerHeight * .55 - r.top) / r.height));
+    comet.style.top = (p * (r.height - 16)) + 'px';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  if (!reduce && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (en) { if (en.isIntersecting) { en.target.classList.remove('below'); io.unobserve(en.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      if (el.getBoundingClientRect().top > innerHeight) { el.classList.add('below'); io.observe(el); }
+    });
+  }
+
+  /* ---- holographic tilt ---- */
+  if (!reduce && window.matchMedia('(hover: hover)').matches) {
+    document.querySelectorAll('.mission').forEach(function (m) {
+      m.addEventListener('pointermove', function (e) {
+        var b = m.getBoundingClientRect(), x = (e.clientX - b.left) / b.width, y = (e.clientY - b.top) / b.height;
+        m.style.setProperty('--mx', (x * 100) + '%'); m.style.setProperty('--my', (y * 100) + '%');
+        m.style.transform = 'perspective(1200px) rotateY(' + ((x - .5) * 5) + 'deg) rotateX(' + ((.5 - y) * 5) + 'deg)';
+      });
+      m.addEventListener('pointerleave', function () { m.style.transform = ''; });
+    });
+  }
+
+  /* ---- constellations ---- */
+  document.querySelectorAll('.const').forEach(function (c, ci) {
+    var svg = c.querySelector('svg'), n = +c.dataset.stars, pts = [], seed = ci * 97 + 13;
+    function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+    for (var i = 0; i < n; i++) pts.push([8 + i * (184 / (n - 1)), 10 + rnd() * 50]);
+    svg.setAttribute('viewBox', '0 0 200 70');
+    var html = '';
+    for (var j = 1; j < pts.length; j++) html += '<line x1="' + pts[j-1][0] + '" y1="' + pts[j-1][1] + '" x2="' + pts[j][0] + '" y2="' + pts[j][1] + '"/>';
+    pts.forEach(function (p, k) { html += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="' + (k % 3 === 0 ? 2.6 : 1.8) + '"/>'; });
+    svg.innerHTML = html;
+  });
+
+  /* ---- copy ---- */
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.dataset.copy, label = btn.innerHTML, th = root.dataset.lang === 'th';
+      function done(ok) { btn.textContent = ok ? (th ? 'คัดลอกแล้ว ✓' : 'Copied ✓') : (th ? 'เลือกข้อความแล้ว' : 'Selected'); setTimeout(function () { btn.innerHTML = label; }, 1600); }
+      function fallback() { var v = btn.parentElement.querySelector('.v'), r = document.createRange(); r.selectNodeContents(v); var s = getSelection(); s.removeAllRanges(); s.addRange(r); done(false); }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { done(true); }, fallback); else fallback();
+    });
+  });
+})();
+</script>
+</body>
+</html>
