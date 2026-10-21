@@ -952,7 +952,7 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
   // Section reach
   if ('IntersectionObserver' in window) {
     const reach = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { trackOnce('Section View', { section: e.target.id }); reach.unobserve(e.target); } }), { threshold: .35 });
-    $('main section[id]').forEach(s => reach.observe(s));
+    $$('main section[id]').forEach(s => reach.observe(s));
   }
 
   // Role rotator
