@@ -620,6 +620,75 @@ button { font: inherit; color: inherit; }
 .nums b { font-size: var(--t-lg); color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
 @media (max-width: 820px) { .deep-grid { grid-template-columns: 1fr; } }
 
+/* Agnos API playground */
+.scen { display: flex; flex-wrap: wrap; gap: 6px; }
+.scen button { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 5px 9px; font-size: var(--t-xs); font-family: var(--f-mono); cursor: pointer; color: var(--muted); text-align: left; }
+.scen button:hover { border-color: var(--accent); color: var(--ink); }
+.scen button.ran { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.api { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); overflow: hidden; min-width: 0; box-shadow: 0 18px 50px -28px rgba(0,0,0,.35); display: grid; }
+.api-top { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: var(--soft); border-bottom: 1px solid var(--line); font-size: var(--t-sm); flex-wrap: wrap; }
+.api-top .dots { display: flex; gap: 6px; } .api-top .dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--mark); }
+.api-top b { font-weight: 600; }
+.api-env { margin-left: auto; font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+.api-req { padding: 12px; display: grid; gap: 8px; border-bottom: 1px solid var(--line); }
+.api-line { display: flex; gap: 8px; }
+.api-line select { flex: 1; min-width: 0; font: 500 var(--t-sm) var(--f-mono); color: var(--ink); background: var(--soft); border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; }
+.api-send { border: 0; background: var(--ink); color: var(--bg); border-radius: 8px; padding: 0 14px; font: 600 var(--t-sm) var(--f-sans); cursor: pointer; white-space: nowrap; }
+.api-send:disabled { opacity: .5; cursor: progress; }
+.api-auth { display: flex; align-items: center; gap: 8px; font-family: var(--f-mono); font-size: 11px; color: var(--muted); flex-wrap: wrap; }
+.api-auth code { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); background: var(--soft); border-radius: 6px; padding: 3px 7px; }
+.api-auth label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+.api-auth .who { color: var(--accent); }
+.api-req textarea { width: 100%; resize: vertical; min-height: 92px; font: 12px/1.5 var(--f-mono); color: var(--ink); background: var(--soft); border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; tab-size: 2; }
+.api-req textarea:focus, .api-line select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.api-flow { padding: 14px 12px 10px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+.flow-grid { display: grid; grid-template-columns: repeat(6, minmax(64px, 1fr)); grid-template-rows: auto auto; gap: 18px 14px; min-width: 470px; }
+.fnode { position: relative; border: 1px solid var(--line); background: var(--soft); border-radius: 9px; padding: 6px 4px; text-align: center; font-size: 10.5px; line-height: 1.25; color: var(--muted); transition: background .2s, color .2s, border-color .2s, opacity .2s, transform .2s; }
+.fnode b { display: block; font-size: 11.5px; color: var(--ink); font-weight: 600; }
+.fnode:not(:nth-child(6)):not(.his)::after { content: ""; position: absolute; right: -14px; top: 50%; width: 14px; height: 1.5px; background: var(--mark); }
+.fnode.his { grid-column: 5; grid-row: 2; }
+.fnode.his::before { content: ""; position: absolute; top: -18px; left: 50%; width: 1.5px; height: 18px; background: var(--mark); }
+.fnode.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.fnode.on b { color: var(--accent); }
+.fnode.warn { background: #fef3c7; border-color: #d97706; color: #92400e; } .fnode.warn b { color: #92400e; }
+.fnode.bad { background: #fee2e2; border-color: #dc2626; color: #991b1b; } .fnode.bad b { color: #991b1b; }
+.fnode.skip { opacity: .4; }
+.fnode.ping { transform: translateY(-2px); }
+.flow-legend { grid-column: 1 / 5; grid-row: 2; align-self: center; font-size: 10.5px; color: var(--faint); }
+
+.api-res { padding: 10px 12px 12px; border-bottom: 1px solid var(--line); display: grid; gap: 6px; min-width: 0; }
+.api-res-h { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+.api-status { font-weight: 600; border-radius: 6px; padding: 2px 8px; background: var(--soft); color: var(--ink); }
+.api-status.ok { background: var(--accent-soft); color: var(--accent); }
+.api-status.warn { background: #fef3c7; color: #92400e; }
+.api-status.bad { background: #fee2e2; color: #991b1b; }
+.api-note { font-family: var(--f-sans); font-size: var(--t-xs); color: var(--ink); }
+.api-json { margin: 0; max-height: 230px; overflow: auto; font: 11.5px/1.5 var(--f-mono); background: var(--soft); border-radius: 8px; padding: 9px 10px; color: var(--ink); white-space: pre-wrap; overflow-wrap: anywhere; }
+.api-json .k { color: var(--accent); font-weight: 500; } .api-json .s { color: var(--ink); } .api-json .n { color: var(--muted); }
+
+.api-bottom { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.api-trace { padding: 10px 12px 12px; border-right: 1px solid var(--line); min-width: 0; }
+.api-trace ol { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 4px; font: 10.5px/1.4 var(--f-mono); max-height: 190px; overflow: auto; }
+.api-trace li { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 6px; color: var(--muted); animation: apiIn .2s ease-out; }
+.api-trace li .ms { color: var(--faint); text-align: right; font-variant-numeric: tabular-nums; }
+.api-trace li b { color: var(--ink); font-weight: 600; }
+.api-trace li.warn b { color: #d97706; } .api-trace li.bad b { color: #dc2626; }
+@keyframes apiIn { from { opacity: 0; transform: translateY(-3px); } }
+.api-db { padding: 10px 12px 12px; min-width: 0; }
+.api-tabs { display: flex; gap: 4px; }
+.api-tabs button { border: 1px solid var(--line); background: var(--surface); border-radius: 6px; padding: 2px 8px; font: 500 11px var(--f-mono); color: var(--muted); cursor: pointer; }
+.api-tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.api-tabs button i { font-style: normal; opacity: .7; }
+.api-dbv { margin-top: 8px; max-height: 190px; overflow: auto; }
+.api-dbv table { width: 100%; border-collapse: collapse; font: 10.5px/1.35 var(--f-mono); }
+.api-dbv th { text-align: left; color: var(--faint); font-weight: 500; border-bottom: 1px solid var(--line); padding: 3px 4px; white-space: nowrap; }
+.api-dbv td { padding: 3px 4px; border-bottom: 1px solid var(--line); color: var(--ink); white-space: nowrap; max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
+.api-dbv tr.fresh td { background: var(--accent-soft); }
+.api-dbv .empty { color: var(--faint); font-size: var(--t-xs); padding: 8px 0; }
+.api-dbv pre { margin: 0; font: 10.5px/1.45 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink); }
+@media (max-width: 640px) { .api-bottom { grid-template-columns: 1fr; } .api-trace { border-right: 0; border-bottom: 1px solid var(--line); } }
+
 /* About row */
 .about { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px 48px; }
 .about h3 { font-size: var(--t-lg); font-weight: 600; margin-top: 6px; }
@@ -743,13 +812,13 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
           <button class="chip" data-skill="react">React.js</button><button class="chip" data-skill="next">Next.js</button><button class="chip" data-skill="ts">TypeScript</button><button class="chip" data-skill="js">JavaScript</button><button class="chip" data-skill="tailwind">Tailwind CSS</button><button class="chip" data-skill="rn">React Native</button>
         </div></div>
         <div class="skill-group"><span class="eyebrow">Backend</span><div class="chips">
-          <button class="chip" data-skill="node">Node.js</button><button class="chip" data-skill="express">Express.js</button><button class="chip" data-skill="dotnet">.NET / ASP.NET Core</button><button class="chip" data-skill="csharp">C#</button><button class="chip" data-skill="java">Java</button><button class="chip" data-skill="python">Python</button><button class="chip" data-skill="rest">RESTful API</button>
+          <button class="chip" data-skill="node">Node.js</button><button class="chip" data-skill="express">Express.js</button><button class="chip" data-skill="dotnet">.NET / ASP.NET Core</button><button class="chip" data-skill="csharp">C#</button><button class="chip" data-skill="java">Java</button><button class="chip" data-skill="python">Python</button><button class="chip" data-skill="go">Go</button><button class="chip" data-skill="rest">RESTful API</button>
         </div></div>
         <div class="skill-group"><span class="eyebrow">Database</span><div class="chips">
           <button class="chip" data-skill="sqlserver">SQL Server</button><button class="chip" data-skill="mysql">MySQL</button><button class="chip" data-skill="mongodb">MongoDB</button><button class="chip" data-skill="postgres">PostgreSQL</button><button class="chip" data-skill="sql">SQL</button>
         </div></div>
         <div class="skill-group"><span class="eyebrow">DevOps / Cloud</span><div class="chips">
-          <button class="chip" data-skill="git">Git</button><button class="chip" data-skill="docker">Docker</button><button class="chip" data-skill="cicd">CI/CD</button><button class="chip" data-skill="gha">GitHub Actions</button><button class="chip" data-skill="aws">AWS</button>
+          <button class="chip" data-skill="git">Git</button><button class="chip" data-skill="docker">Docker</button><button class="chip" data-skill="nginx">Nginx</button><button class="chip" data-skill="cicd">CI/CD</button><button class="chip" data-skill="gha">GitHub Actions</button><button class="chip" data-skill="aws">AWS</button>
         </div></div>
       </div>
       <div class="filter-bar" id="filterBar" aria-live="polite">Showing all roles and projects.</div>
@@ -1248,6 +1317,102 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
           </details>
         </article>
 
+        <article class="case" data-skills="go rest postgres sql docker nginx">
+          <div class="case-info">
+            <span class="eyebrow">Backend · healthcare API</span>
+            <h3>Agnos Hospital Middleware</h3>
+            <p>A Go service that lets hospital staff log in and search the patients of their own hospital. When a patient is not in the local database yet, it fetches the record from the hospital's information system (HIS), caches it, and keeps answering even when the HIS is down.</p>
+            <ul>
+              <li>Go + Gin in clean layers (handler → service → repository) with GORM on PostgreSQL 16.</li>
+              <li>Staff accounts with bcrypt passwords and HS256 JWT. The hospital comes from the token, never the request body, so staff cannot read another hospital's patients.</li>
+              <li>Search by national ID, passport, Thai or English name, date of birth, phone or email. An ID that misses locally falls through to the HIS, gets cached, and the full filter runs again.</li>
+              <li>Docker Compose with Nginx in front (rate limit on login), PostgreSQL and a mock HIS, plus OpenAPI docs at /swagger.</li>
+              <li>50 unit tests with in-memory fakes and httptest servers, no database needed: 94–100% coverage on handler, service, auth and HIS client.</li>
+            </ul>
+            <span class="eyebrow">Try a scenario</span>
+            <div class="scen" data-scen>
+              <button type="button" data-s="create">1 · Create staff</button>
+              <button type="button" data-s="login">2 · Log in</button>
+              <button type="button" data-s="his">3 · Search by ID (HIS)</button>
+              <button type="button" data-s="name">4 · Search by name</button>
+              <button type="button" data-s="passport">Passport</button>
+              <button type="button" data-s="down">HIS outage</button>
+              <button type="button" data-s="wrong">Wrong password</button>
+              <button type="button" data-s="other">Hospital B isolation</button>
+              <button type="button" data-s="burst">Brute-force login</button>
+              <button type="button" data-s="expired">Expired token</button>
+              <button type="button" data-s="baddate">Bad date</button>
+            </div>
+            <div class="tags"></div>
+          </div>
+
+          <div class="api" id="pv-api">
+            <div class="api-top"><span class="dots"><i></i><i></i><i></i></span><b>API playground</b><span class="api-env">nginx → Gin → PostgreSQL · mock HIS</span></div>
+            <div class="api-req">
+              <div class="api-line">
+                <select id="api-ep" data-api-ep aria-label="Endpoint">
+                  <option value="create">POST /staff/create</option>
+                  <option value="login">POST /staff/login</option>
+                  <option value="search">POST /patient/search</option>
+                  <option value="health">GET /health</option>
+                </select>
+                <button type="button" class="api-send" data-api-send>Send ▸</button>
+              </div>
+              <div class="api-auth"><span>Authorization:</span><code data-api-tok>no token yet · log in first</code><label><input type="checkbox" id="api-usetok" data-api-usetok checked> send</label></div>
+              <textarea id="api-body" data-api-body spellcheck="false" aria-label="Request body (JSON)"></textarea>
+            </div>
+            <div class="api-flow">
+              <div class="flow-grid" data-api-flow>
+                <div class="fnode" data-n="client"><b>Client</b>browser</div>
+                <div class="fnode" data-n="nginx"><b>Nginx</b>rate limit</div>
+                <div class="fnode" data-n="gin"><b>Gin</b>bind + validate</div>
+                <div class="fnode" data-n="jwt"><b>JWT</b>middleware</div>
+                <div class="fnode" data-n="svc"><b>Service</b>business rules</div>
+                <div class="fnode" data-n="db"><b>PostgreSQL</b>GORM</div>
+                <span class="flow-legend">Each request lights up the path it takes through the real architecture.</span>
+                <div class="fnode his" data-n="his"><b>HIS</b>hospital API</div>
+              </div>
+            </div>
+            <div class="api-res">
+              <div class="api-res-h"><span class="api-status" data-api-status>—</span><span data-api-time></span><span class="api-note" data-api-note>Pick a scenario on the left, or edit the JSON and press Send.</span></div>
+              <pre class="api-json" data-api-json>{ }</pre>
+            </div>
+            <div class="api-bottom">
+              <div class="api-trace"><span class="eyebrow">Request trace</span><ol data-api-trace></ol></div>
+              <div class="api-db">
+                <div class="api-tabs" role="tablist"><button type="button" role="tab" aria-selected="true" data-dbt="staff">staff <i data-dbn="staff">0</i></button><button type="button" role="tab" aria-selected="false" data-dbt="patients">patients <i data-dbn="patients">0</i></button><button type="button" role="tab" aria-selected="false" data-dbt="jwt">JWT</button></div>
+                <div class="api-dbv" data-api-dbv></div>
+              </div>
+            </div>
+          </div>
+
+          <details class="deep" data-project="Agnos Hospital Middleware">
+            <summary><span>Project details</span><small>What it does, highlights and what's under the hood</small></summary>
+            <div class="deep-grid">
+              <div><span class="eyebrow">What it does</span><ul>
+                <li>Staff are created per hospital (username, password, hospital code) and log in to get a JWT that expires after 24 hours.</li>
+                <li>With that token they search patients of their own hospital, combining any of 8 fields with AND. An empty search lists the hospital's patients, up to 100.</li>
+                <li>If a national ID or passport is not found locally, the service calls that hospital's HIS, stores the patient, then answers.</li>
+                <li>Each hospital keeps its own HIS address in the database, so a new hospital needs no code change.</li>
+              </ul></div>
+              <div><span class="eyebrow">Highlights</span><ul>
+                <li>Tenant isolation at the data layer: every query starts with the hospital ID taken from the signed token.</li>
+                <li>One generic login error for unknown hospital, unknown user or wrong password, so usernames cannot be probed.</li>
+                <li>Search is a POST with a JSON body, so national IDs and names never land in URLs or access logs.</li>
+                <li>HIS outage degrades gracefully: the failure is logged as a warning and search still answers with local data.</li>
+                <li>HIS results are upserted on (hospital, HN), then the full filter runs again so the other criteria still apply.</li>
+                <li>Nginx rate limits /staff/* to 5 requests a second (burst 10) against brute-force login. Only Nginx is exposed; the app and database stay on an internal network.</li>
+              </ul></div>
+              <div><span class="eyebrow">Under the hood</span><ul>
+                <li>Go 1.26, Gin, GORM, PostgreSQL 16, golang-jwt, bcrypt, slog structured logging, graceful shutdown.</li>
+                <li>Partial indexes on national ID and passport, a unique (hospital, HN) key and a gender check constraint.</li>
+                <li>Multi-stage Dockerfile building a small non-root image for the server and the mock HIS.</li>
+                <li>Repositories and the HIS client are interfaces, so services and handlers are tested with in-memory fakes and httptest servers.</li>
+              </ul>
+              <div class="nums"><span><b>50</b>unit tests</span><span><b>94–100%</b>core coverage</span><span><b>4</b>containers</span></div></div>
+            </div>
+          </details>
+        </article>
       </div>
     </section>
 
@@ -2116,6 +2281,294 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
     const gio = new IntersectionObserver(es => { if (es[0].isIntersecting) { gio.disconnect(); if (gCur === 'go-login') gOnEnter['go-login'](); } }, { threshold: 0.4 });
     gio.observe(phone);
   } else gOnEnter['go-login']();
+
+  // Agnos Hospital Middleware: API playground. The rules, messages and mock HIS data mirror the Go code.
+  const apiEl = $('#pv-api');
+  const aq = s => apiEl.querySelector(s);
+  const aDb = {
+    hospitals: [{ id: 1, code: 'hospital-a', his: 'http://mock-his:8081' }, { id: 2, code: 'hospital-b', his: '' }],
+    staff: [], patients: [], nextStaff: 1, nextPatient: 1, fresh: null
+  };
+  // Records served by cmd/mockhis
+  const aHisRows = [
+    { first_name_th: 'สมชาย', middle_name_th: '', last_name_th: 'ใจดี', first_name_en: 'Somchai', middle_name_en: '', last_name_en: 'Jaidee', date_of_birth: '1990-05-17', patient_hn: 'HN-A0001', national_id: '1234567890123', passport_id: '', phone_number: '0812345678', email: 'somchai@example.com', gender: 'M' },
+    { first_name_th: 'สมศรี', middle_name_th: 'มณี', last_name_th: 'รักดี', first_name_en: 'Somsri', middle_name_en: 'Manee', last_name_en: 'Rakdee', date_of_birth: '1985-11-02', patient_hn: 'HN-A0002', national_id: '1103700012345', passport_id: '', phone_number: '0898765432', email: 'somsri@example.com', gender: 'F' },
+    { first_name_th: '', middle_name_th: '', last_name_th: '', first_name_en: 'John', middle_name_en: '', last_name_en: 'Smith', date_of_birth: '1978-03-21', patient_hn: 'HN-A0003', national_id: '', passport_id: 'AA1234567', phone_number: '0861112222', email: 'john.smith@example.com', gender: 'M' },
+    { first_name_th: 'มานะ', middle_name_th: '', last_name_th: 'อดทน', first_name_en: 'Mana', middle_name_en: '', last_name_en: 'Odthon', date_of_birth: '2001-08-30', patient_hn: 'HN-A0004', national_id: '3100500099999', passport_id: '', phone_number: '0823334444', email: 'mana@example.com', gender: '' }
+  ];
+  const aHis = {};
+  aHisRows.forEach(p => { if (p.national_id) aHis[p.national_id] = p; if (p.passport_id) aHis[p.passport_id] = p; });
+  const A_FAILING_ID = '9999999999999';
+  const A_GENERIC = 'invalid username, password or hospital';
+  const A_TEMPLATES = {
+    create: { username: 'alice', password: 's3cret-pass', hospital: 'hospital-a' },
+    login: { username: 'alice', password: 's3cret-pass', hospital: 'hospital-a' },
+    search: { national_id: '1234567890123' },
+    health: null
+  };
+  const A_PATH = { create: 'POST /staff/create', login: 'POST /staff/login', search: 'POST /patient/search', health: 'GET /health' };
+  let aToken = null, aBusy = false, aDbTab = 'staff';
+  const aBucket = { tokens: 11, at: performance.now() }; // nginx: rate=5r/s burst=10 nodelay
+
+  // Tiny helpers that imitate Go / Gin output
+  const b64u = o => btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_');
+  const randStr = (n, abc = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_') => Array.from({ length: n }, () => abc[Math.random() * abc.length | 0]).join('');
+  const goType = v => Array.isArray(v) ? 'array' : typeof v === 'boolean' ? 'bool' : typeof v;
+  const runes = s => [...s].length;
+  const goTime = sec => new Date(sec * 1000).toISOString().replace(/\.\d{3}Z$/, 'Z');
+  function goJsonErr(text) {
+    const t = text.trim();
+    if (!t) return 'EOF';
+    if (!/^[\[{"\-0-9tfn]/.test(t)) return `invalid character '${t[0]}' looking for beginning of value`;
+    return 'unexpected EOF';
+  }
+  const fieldErr = (struct, field, tag) => `Key: '${struct}.${field}' Error:Field validation for '${field}' failed on the '${tag}' tag`;
+
+  function aSearchLocal(hid, f) {
+    const has = (a, b) => a.toLowerCase().includes(b.toLowerCase());
+    return aDb.patients.filter(p => p.hospital_id === hid
+      && (!f.national_id || p.national_id === f.national_id)
+      && (!f.passport_id || p.passport_id === f.passport_id)
+      && (!f.first_name || has(p.first_name_th, f.first_name) || has(p.first_name_en, f.first_name))
+      && (!f.middle_name || has(p.middle_name_th, f.middle_name) || has(p.middle_name_en, f.middle_name))
+      && (!f.last_name || has(p.last_name_th, f.last_name) || has(p.last_name_en, f.last_name))
+      && (!f.date_of_birth || p.date_of_birth === f.date_of_birth)
+      && (!f.phone_number || p.phone_number === f.phone_number)
+      && (!f.email || p.email.toLowerCase() === f.email.toLowerCase())
+    ).sort((a, b) => a.id - b.id).slice(0, 100);
+  }
+  const aOut = rows => ({ count: rows.length, patients: rows.map(({ id, hospital_id, ...rest }) => rest) });
+
+  // One request through nginx → Gin → JWT → service → PostgreSQL / HIS. Returns the response and the hops it took.
+  function aRun(ep, text, useToken) {
+    const steps = [];
+    const step = (node, cls, msg, ms) => steps.push({ node, cls, msg, ms: ms != null ? ms : +(0.3 + Math.random() * 1.4).toFixed(1) });
+    const done = (status, body, note) => ({ ep, status, body, note: note || '', steps });
+    step('client', 'on', A_PATH[ep], 0);
+
+    if (ep === 'create' || ep === 'login') {
+      const now = performance.now();
+      aBucket.tokens = Math.min(11, aBucket.tokens + (now - aBucket.at) / 1000 * 5); aBucket.at = now;
+      if (aBucket.tokens < 1) { step('nginx', 'bad', 'limit_req zone=auth exceeded (5r/s, burst 10)', 0.2); return done(503, '<html>\n<head><title>503 Service Temporarily Unavailable</title></head>\n<body><center><h1>503 Service Temporarily Unavailable</h1></center><hr><center>nginx</center></body>\n</html>', 'Nginx stopped it before it reached the Go service'); }
+      aBucket.tokens -= 1;
+      step('nginx', 'on', 'limit_req OK · proxy_pass http://app', 0.4);
+    } else step('nginx', 'on', 'proxy_pass http://app', 0.3);
+
+    if (ep === 'health') { step('gin', 'on', 'GET /health'); return done(200, { status: 'ok' }, 'Liveness check used by Docker and Nginx'); }
+
+    if (ep === 'search') {
+      if (!useToken || !aToken) { step('jwt', 'bad', 'no "Authorization: Bearer" header'); return done(401, { error: 'missing or malformed Authorization header' }, 'Search needs a token: log in first'); }
+      if (aToken.claims.exp * 1000 < Date.now()) { step('jwt', 'bad', 'exp is in the past → rejected'); return done(401, { error: 'invalid or expired token' }, 'Log in again to get a fresh token'); }
+      step('jwt', 'on', `HS256 signature OK · hospital_id=${aToken.claims.hospital_id}`);
+    }
+
+    let body = {};
+    if (ep === 'search' && !text.trim()) step('gin', 'on', 'empty body is valid → list this hospital');
+    else {
+      try { body = JSON.parse(text); } catch (e) { step('gin', 'bad', 'ShouldBindJSON: malformed JSON'); return done(400, { error: 'invalid request: ' + goJsonErr(text) }); }
+      const struct = ep === 'search' ? 'searchRequest' : 'staffRequest';
+      if (body === null) body = {};
+      if (typeof body !== 'object' || Array.isArray(body)) { step('gin', 'bad', 'ShouldBindJSON: wrong JSON type'); return done(400, { error: `invalid request: json: cannot unmarshal ${goType(body)} into Go value of type handler.${struct}` }); }
+    }
+
+    if (ep === 'create' || ep === 'login') {
+      for (const k of ['username', 'password', 'hospital']) {
+        if (body[k] != null && typeof body[k] !== 'string') { step('gin', 'bad', `${k} is not a string`); return done(400, { error: `invalid request: json: cannot unmarshal ${goType(body[k])} into Go struct field staffRequest.${k} of type string` }); }
+      }
+      const u = body.username || '', p = body.password || '', h = body.hospital || '', errs = [];
+      if (!u) errs.push(fieldErr('staffRequest', 'Username', 'required')); else if (runes(u) < 3) errs.push(fieldErr('staffRequest', 'Username', 'min')); else if (runes(u) > 100) errs.push(fieldErr('staffRequest', 'Username', 'max'));
+      if (!p) errs.push(fieldErr('staffRequest', 'Password', 'required')); else if (runes(p) < 8) errs.push(fieldErr('staffRequest', 'Password', 'min')); else if (runes(p) > 72) errs.push(fieldErr('staffRequest', 'Password', 'max'));
+      if (!h) errs.push(fieldErr('staffRequest', 'Hospital', 'required')); else if (runes(h) > 50) errs.push(fieldErr('staffRequest', 'Hospital', 'max'));
+      if (errs.length) { step('gin', 'bad', `validation failed (${errs.length})`); return done(400, { error: 'invalid request: ' + errs.join('\n') }); }
+      step('gin', 'on', 'bind + validate staffRequest');
+      const hosp = aDb.hospitals.find(x => x.code === h.trim()), user = u.trim();
+
+      if (ep === 'create') {
+        step('svc', 'on', 'AuthService.CreateStaff');
+        if (!hosp) { step('db', 'warn', `SELECT hospitals WHERE code='${h.trim()}' → 0 rows`, 1.2); return done(400, { error: 'hospital not found' }); }
+        step('db', 'on', `hospital ${hosp.code} → id ${hosp.id}`, 1.1);
+        step('svc', 'on', 'bcrypt.GenerateFromPassword (cost 10)', +(58 + Math.random() * 14).toFixed(1));
+        if (aDb.staff.some(s => s.username === user && s.hospital_id === hosp.id)) { step('db', 'bad', 'UNIQUE (username, hospital_id) violated', 1.6); return done(409, { error: 'staff already exists in this hospital' }, 'The same username may exist in a different hospital'); }
+        const s = { id: aDb.nextStaff++, username: user, hospital_id: hosp.id, password_hash: '$2a$10$' + randStr(53, './ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'), pw: p };
+        aDb.staff.push(s); aDb.fresh = { t: 'staff', id: s.id };
+        step('db', 'on', 'INSERT INTO staff', 2.3);
+        return done(201, { id: s.id, username: s.username, hospital: hosp.code }, 'Created. The password is stored only as a bcrypt hash');
+      }
+
+      step('svc', 'on', 'AuthService.Login');
+      if (!hosp) { step('db', 'warn', 'hospital not found → same generic error', 1.1); return done(401, { error: A_GENERIC }, 'Same message for every failure, so nobody can probe which accounts exist'); }
+      const s = aDb.staff.find(x => x.username === user && x.hospital_id === hosp.id);
+      if (!s) { step('db', 'warn', 'staff not found → same generic error', 1.3); return done(401, { error: A_GENERIC }, 'Same message for every failure, so nobody can probe which accounts exist'); }
+      step('db', 'on', `staff ${s.username} @ hospital ${hosp.id}`, 1.2);
+      if (s.pw !== p) { step('svc', 'warn', 'bcrypt.CompareHashAndPassword failed', +(60 + Math.random() * 12).toFixed(1)); return done(401, { error: A_GENERIC }, 'Same message for every failure, so nobody can probe which accounts exist'); }
+      step('svc', 'on', 'bcrypt OK · issue HS256 JWT (TTL 24h)', +(60 + Math.random() * 12).toFixed(1));
+      const iat = Math.floor(Date.now() / 1000), claims = { staff_id: s.id, hospital_id: hosp.id, username: s.username, iat, exp: iat + 86400 };
+      aToken = { raw: `${b64u({ alg: 'HS256', typ: 'JWT' })}.${b64u(claims)}.${randStr(43)}`, claims, hospital: hosp.code };
+      return done(200, { token: aToken.raw, expires_at: goTime(claims.exp) }, `Logged in. Searches now run as ${s.username} @ ${hosp.code}`);
+    }
+
+    // POST /patient/search
+    const fields = ['national_id', 'passport_id', 'first_name', 'middle_name', 'last_name', 'date_of_birth', 'phone_number', 'email'];
+    for (const k of fields) {
+      if (body[k] != null && typeof body[k] !== 'string') { step('gin', 'bad', `${k} is not a string`); return done(400, { error: `invalid request: json: cannot unmarshal ${goType(body[k])} into Go struct field searchRequest.${k} of type string` }); }
+    }
+    const ignored = Object.keys(body).filter(k => !fields.includes(k));
+    if (body.date_of_birth) {
+      const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(body.date_of_birth), d = m && new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+      if (!m || d.getUTCMonth() !== +m[2] - 1 || d.getUTCDate() !== +m[3]) { step('gin', 'bad', 'time.Parse("2006-01-02") failed'); return done(400, { error: 'date_of_birth must be in YYYY-MM-DD format' }); }
+    }
+    step('gin', ignored.length ? 'warn' : 'on', ignored.length ? `bind searchRequest · ignored: ${ignored.join(', ')}` : 'bind searchRequest');
+    const f = {}; fields.forEach(k => f[k] = (body[k] || '').trim());
+    const hid = aToken.claims.hospital_id, hosp = aDb.hospitals.find(x => x.id === hid);
+    step('svc', 'on', `PatientService.Search · hospital_id=${hid} (from token)`);
+    let found = aSearchLocal(hid, f);
+    step('db', found.length ? 'on' : 'warn', `SELECT … WHERE hospital_id = ${hid} … → ${found.length} row${found.length === 1 ? '' : 's'}`, +(1.8 + Math.random() * 2).toFixed(1));
+    const id = f.national_id || f.passport_id;
+    const scopeNote = ignored.includes('hospital') ? ' The "hospital" in the body was ignored; the token decides.' : '';
+    if (found.length) return done(200, aOut(found), 'Answered from the local database.' + scopeNote);
+    if (!id) return done(200, aOut(found), 'No match. Only an ID search can reach the HIS.' + scopeNote);
+    if (!hosp.his) { step('his', 'skip', `${hosp.code} has no HIS configured`, 0); return done(200, aOut(found), `${hosp.code} has no HIS, so only its own local data is searched.` + scopeNote); }
+    const url = `GET ${hosp.his}/patient/search/${id}`;
+    if (id === A_FAILING_ID) {
+      step('his', 'bad', `${url} → 500`, +(150 + Math.random() * 60).toFixed(1));
+      step('svc', 'warn', 'slog WARN "HIS lookup failed" · fall back to local results');
+      return done(200, aOut(found), 'The HIS is down, but search still answers 200 instead of failing.');
+    }
+    const rp = aHis[id];
+    if (!rp) { step('his', 'warn', `${url} → 404 patient not found`, +(110 + Math.random() * 50).toFixed(1)); return done(200, aOut(found), 'Not in the HIS either, so the list is empty.'); }
+    step('his', 'on', `${url} → 200`, +(140 + Math.random() * 120).toFixed(1));
+    step('svc', 'on', `map payload · check HN, gender "${rp.gender}", date`);
+    const existing = aDb.patients.find(p => p.hospital_id === hid && p.patient_hn === rp.patient_hn);
+    if (existing) Object.assign(existing, rp); else aDb.patients.push({ id: aDb.nextPatient++, hospital_id: hid, ...rp });
+    aDb.fresh = { t: 'patients', hn: rp.patient_hn, hid };
+    step('db', 'on', 'INSERT … ON CONFLICT (hospital_id, patient_hn) DO UPDATE', +(2.5 + Math.random() * 2).toFixed(1));
+    found = aSearchLocal(hid, f);
+    step('db', found.length ? 'on' : 'warn', `re-run full filter → ${found.length} row${found.length === 1 ? '' : 's'}`, +(1.2 + Math.random()).toFixed(1));
+    return done(200, aOut(found), found.length ? 'Fetched from the HIS and cached. The next search is answered locally.' : 'Cached, but the other criteria in the filter did not match.');
+  }
+
+  // Rendering
+  const aEsc = s => String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  function aJson(v) {
+    if (typeof v === 'string') return aEsc(v);
+    return aEsc(JSON.stringify(v, null, 2))
+      .replace(/(&quot;|")((?:[^"\\]|\\.)*)"(\s*:)/g, '<span class="k">"$2"</span>$3')
+      .replace(/: "((?:[^"\\]|\\.)*)"/g, ': <span class="s">"$1"</span>')
+      .replace(/: (-?\d+(?:\.\d+)?|true|false|null)/g, ': <span class="n">$1</span>');
+  }
+  const aRank = { skip: 1, on: 2, warn: 3, bad: 4 };
+  function aRenderToken() {
+    const code = aq('[data-api-tok]');
+    if (!aToken) { code.textContent = 'no token yet · log in first'; return; }
+    const expired = aToken.claims.exp * 1000 < Date.now();
+    code.innerHTML = `<span class="who">${aEsc(aToken.claims.username)} @ ${aToken.hospital}${expired ? ' (expired)' : ''}</span> Bearer ${aEsc(aToken.raw.slice(0, 26))}…`;
+  }
+  function aRenderDb() {
+    aq('[data-dbn="staff"]').textContent = aDb.staff.length;
+    aq('[data-dbn="patients"]').textContent = aDb.patients.length;
+    apiEl.querySelectorAll('[data-dbt]').forEach(b => b.setAttribute('aria-selected', b.dataset.dbt === aDbTab));
+    const v = aq('[data-api-dbv]'), fr = aDb.fresh || {};
+    if (aDbTab === 'staff') {
+      v.innerHTML = aDb.staff.length ? `<table><tr><th>id</th><th>username</th><th>hospital_id</th><th>password_hash</th></tr>${aDb.staff.map(s => `<tr class="${fr.t === 'staff' && fr.id === s.id ? 'fresh' : ''}"><td>${s.id}</td><td>${aEsc(s.username)}</td><td>${s.hospital_id}</td><td>${s.password_hash.slice(0, 20)}…</td></tr>`).join('')}</table>` : '<div class="empty">No staff yet. Run “1 · Create staff”.</div>';
+    } else if (aDbTab === 'patients') {
+      v.innerHTML = aDb.patients.length ? `<table><tr><th>id</th><th>hospital_id</th><th>patient_hn</th><th>name</th><th>id / passport</th><th>gender</th></tr>${aDb.patients.map(p => `<tr class="${fr.t === 'patients' && fr.hn === p.patient_hn && fr.hid === p.hospital_id ? 'fresh' : ''}"><td>${p.id}</td><td>${p.hospital_id}</td><td>${p.patient_hn}</td><td>${aEsc(p.first_name_en + ' ' + p.last_name_en)}</td><td>${p.national_id || p.passport_id}</td><td>${p.gender ? p.gender : "''"}</td></tr>`).join('')}</table>` : '<div class="empty">Empty. Patients arrive here when an ID search is fetched from the HIS.</div>';
+    } else {
+      if (!aToken) { v.innerHTML = '<div class="empty">Log in to see the decoded token.</div>'; return; }
+      const left = Math.round((aToken.claims.exp * 1000 - Date.now()) / 60000);
+      v.innerHTML = `<pre>${aJson({ alg: 'HS256', typ: 'JWT' })}\n${aJson(aToken.claims)}</pre><div class="empty">${left > 0 ? `Expires in ${Math.floor(left / 60)} h ${left % 60} min` : 'Expired'} · signature is HMAC-SHA256 with JWT_SECRET (random here)</div>`;
+    }
+  }
+  apiEl.querySelectorAll('[data-dbt]').forEach(b => b.onclick = () => { aDbTab = b.dataset.dbt; aRenderDb(); });
+
+  function aShow(r, animate) {
+    const nodes = {}; apiEl.querySelectorAll('.fnode').forEach(n => { n.className = 'fnode' + (n.dataset.n === 'his' ? ' his' : ''); nodes[n.dataset.n] = n; });
+    const trace = aq('[data-api-trace]'); trace.innerHTML = '';
+    const st = aq('[data-api-status]'), json = aq('[data-api-json]');
+    st.textContent = '…'; st.className = 'api-status'; json.innerHTML = ''; aq('[data-api-note]').textContent = ''; aq('[data-api-time]').textContent = '';
+    let t = 0, i = 0;
+    const tick = () => {
+      if (i < r.steps.length) {
+        const s = r.steps[i++], n = nodes[s.node];
+        t += s.ms;
+        if (n) {
+          const cur = ['skip', 'on', 'warn', 'bad'].find(c => n.classList.contains(c));
+          if (!cur || aRank[s.cls] >= aRank[cur]) { n.classList.remove('skip', 'on', 'warn', 'bad'); n.classList.add(s.cls); }
+          n.classList.add('ping'); setTimeout(() => n.classList.remove('ping'), 180);
+        }
+        const li = document.createElement('li'); li.className = s.cls;
+        li.innerHTML = `<span class="ms">+${s.ms.toFixed(1)}ms</span><span><b>${s.node}</b> ${aEsc(s.msg)}</span>`;
+        trace.appendChild(li); trace.scrollTop = trace.scrollHeight;
+        if (animate) setTimeout(tick, s.node === 'his' ? 420 : 170); else tick();
+        return;
+      }
+      st.textContent = `${r.status} ${({ 200: 'OK', 201: 'Created', 400: 'Bad Request', 401: 'Unauthorized', 409: 'Conflict', 503: 'Service Unavailable' })[r.status] || ''}`;
+      st.className = 'api-status ' + (r.status < 300 ? 'ok' : r.status === 503 || r.status >= 500 ? 'bad' : 'warn');
+      aq('[data-api-time]').textContent = `${t.toFixed(1)} ms`;
+      aq('[data-api-note]').textContent = r.note;
+      json.innerHTML = aJson(r.body);
+      aRenderToken(); aRenderDb();
+      aBusy = false; aq('[data-api-send]').disabled = false;
+    };
+    tick();
+  }
+
+  const aEp = aq('[data-api-ep]'), aBody = aq('[data-api-body]');
+  const aSetReq = (ep, body) => { aEp.value = ep; aBody.value = body == null ? '' : JSON.stringify(body, null, 2); aBody.disabled = ep === 'health'; };
+  aEp.addEventListener('change', () => aSetReq(aEp.value, A_TEMPLATES[aEp.value]));
+  function aSend() {
+    if (aBusy) return;
+    aBusy = true; aq('[data-api-send]').disabled = true;
+    const r = aRun(aEp.value, aEp.value === 'health' ? '' : aBody.value, aq('[data-api-usetok]').checked);
+    if (r.ep === 'login' && r.status === 200 && aDbTab === 'staff') aDbTab = 'jwt';
+    if (r.ep === 'search' && aDb.fresh && aDb.fresh.t === 'patients' && r.steps.some(s => s.node === 'his' && s.cls === 'on')) aDbTab = 'patients';
+    aShow(r, !reduce);
+  }
+  aq('[data-api-send]').onclick = aSend;
+  aBody.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); aSend(); } });
+
+  // Quietly make sure a staff member exists and is logged in, the way a tester would before a search
+  function aEnsure(username, hospital) {
+    const hosp = aDb.hospitals.find(h => h.code === hospital);
+    if (aToken && aToken.claims.username === username && aToken.hospital === hospital && aToken.claims.exp * 1000 > Date.now()) return false;
+    if (!aDb.staff.some(s => s.username === username && s.hospital_id === hosp.id)) aRun('create', JSON.stringify({ username, password: 's3cret-pass', hospital }), false);
+    aBucket.tokens = Math.max(aBucket.tokens, 1);
+    aRun('login', JSON.stringify({ username, password: 's3cret-pass', hospital }), false);
+    return true;
+  }
+  const A_SCEN = {
+    create: () => aSetReq('create', A_TEMPLATES.create),
+    login: () => { if (!aDb.staff.some(s => s.username === 'alice' && s.hospital_id === 1)) aRun('create', JSON.stringify(A_TEMPLATES.create), false); aSetReq('login', A_TEMPLATES.login); },
+    his: () => { aEnsure('alice', 'hospital-a'); aSetReq('search', { national_id: '1103700012345' }); },
+    name: () => { aEnsure('alice', 'hospital-a'); if (!aDb.patients.some(p => p.hospital_id === 1 && p.national_id === '1234567890123')) aRun('search', JSON.stringify({ national_id: '1234567890123' }), true); aSetReq('search', { first_name: 'som' }); },
+    passport: () => { aEnsure('alice', 'hospital-a'); aSetReq('search', { passport_id: 'AA1234567' }); },
+    down: () => { aEnsure('alice', 'hospital-a'); aSetReq('search', { national_id: A_FAILING_ID }); },
+    wrong: () => { if (!aDb.staff.some(s => s.username === 'alice' && s.hospital_id === 1)) aRun('create', JSON.stringify(A_TEMPLATES.create), false); aSetReq('login', { username: 'alice', password: 'wrong-password', hospital: 'hospital-a' }); },
+    other: () => { if (!aDb.patients.some(p => p.hospital_id === 1 && p.national_id === '1234567890123')) { aEnsure('alice', 'hospital-a'); aRun('search', JSON.stringify({ national_id: '1234567890123' }), true); } aEnsure('bob', 'hospital-b'); aSetReq('search', { national_id: '1234567890123', hospital: 'hospital-a' }); },
+    expired: () => { aEnsure('alice', 'hospital-a'); const c = { ...aToken.claims, iat: aToken.claims.iat - 90000, exp: Math.floor(Date.now() / 1000) - 60 }; aToken = { ...aToken, claims: c, raw: aToken.raw.split('.')[0] + '.' + b64u(c) + '.' + randStr(43) }; aSetReq('search', { national_id: '1234567890123' }); },
+    baddate: () => { aEnsure('alice', 'hospital-a'); aSetReq('search', { last_name: 'jaidee', date_of_birth: '17/05/1990' }); }
+  };
+  // The scenario buttons live beside the playground, in the project's text column
+  $('[data-scen]').addEventListener('click', e => {
+    const b = e.target.closest('[data-s]'); if (!b || aBusy) return;
+    const s = b.dataset.s; b.classList.add('ran'); trackOnce('Agnos Playground', { scenario: s });
+    aq('[data-api-usetok]').checked = true;
+    if (s === 'burst') {
+      // 15 wrong-password logins in one go: Go answers until the Nginx bucket runs dry
+      if (!aDb.staff.some(x => x.username === 'alice' && x.hospital_id === 1)) aRun('create', JSON.stringify(A_TEMPLATES.create), false);
+      const req = { username: 'alice', password: 'guess-' + randStr(4), hospital: 'hospital-a' };
+      aSetReq('login', req);
+      const results = []; let last;
+      for (let i = 0; i < 15; i++) { last = aRun('login', JSON.stringify({ ...req, password: 'guess-' + randStr(4) }), false); results.push(last.status); }
+      const n401 = results.filter(x => x === 401).length, n503 = results.filter(x => x === 503).length;
+      last.steps.unshift({ node: 'client', cls: 'on', msg: `burst of 15 logins → ${n401}× 401 from Go, ${n503}× 503 from Nginx`, ms: 0 });
+      last.note = `15 rapid logins: ${n401} reached Go and got 401, ${n503} were cut off by Nginx with 503. The bucket refills at 5 per second.`;
+      aBusy = true; aq('[data-api-send]').disabled = true; aShow(last, !reduce);
+      return;
+    }
+    A_SCEN[s](); aRenderToken(); aRenderDb(); aSend();
+  });
+
+  aSetReq('create', A_TEMPLATES.create); aRenderToken(); aRenderDb();
 
   // Project details panels
   $$('details.deep').forEach(d => d.addEventListener('toggle', () => { if (d.open) trackOnce('Project Details', { project: d.dataset.project }); }));
