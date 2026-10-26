@@ -489,7 +489,7 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
           <span>toll-system engineer.</span>
         </span>
       </div>
-      <p class="lede">Software engineer working across <strong>React, Next.js, Node.js, C#/.NET, Java and Python</strong>. I deliver the M-Flow toll collection and smart parking system end to end, from front end to database, and before that built web apps, RESTful APIs and internal systems at Synnex Thailand.</p>
+      <p class="lede">Software engineer working across <strong>React, React Native, Next.js, Node.js, C#/.NET, Java and Python</strong>. I deliver the M-Flow toll collection and smart parking system end to end, from front end to database. At Synnex Thailand I shipped a staff mobile app to the App Store and Google Play, a high-traffic Nintendo Switch 2 pre-order site on AWS, and a B2B dealer ordering portal.</p>
       <div class="cta">
         <a class="btn primary" href="#contact">Get in touch</a>
         <a class="btn" href="https://github.com/Almzaba" target="_blank" rel="noopener">GitHub</a>
@@ -531,7 +531,7 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
 
       <div class="skill-groups" id="skills">
         <div class="skill-group"><span class="eyebrow">Frontend</span><div class="chips">
-          <button class="chip" data-skill="react">React.js</button><button class="chip" data-skill="next">Next.js</button><button class="chip" data-skill="ts">TypeScript</button><button class="chip" data-skill="js">JavaScript</button><button class="chip" data-skill="tailwind">Tailwind CSS</button>
+          <button class="chip" data-skill="react">React.js</button><button class="chip" data-skill="next">Next.js</button><button class="chip" data-skill="ts">TypeScript</button><button class="chip" data-skill="js">JavaScript</button><button class="chip" data-skill="tailwind">Tailwind CSS</button><button class="chip" data-skill="rn">React Native</button>
         </div></div>
         <div class="skill-group"><span class="eyebrow">Backend</span><div class="chips">
           <button class="chip" data-skill="node">Node.js</button><button class="chip" data-skill="express">Express.js</button><button class="chip" data-skill="dotnet">.NET / ASP.NET Core</button><button class="chip" data-skill="csharp">C#</button><button class="chip" data-skill="java">Java</button><button class="chip" data-skill="python">Python</button><button class="chip" data-skill="rest">RESTful API</button>
@@ -540,7 +540,7 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
           <button class="chip" data-skill="sqlserver">SQL Server</button><button class="chip" data-skill="mysql">MySQL</button><button class="chip" data-skill="mongodb">MongoDB</button><button class="chip" data-skill="postgres">PostgreSQL</button><button class="chip" data-skill="sql">SQL</button>
         </div></div>
         <div class="skill-group"><span class="eyebrow">DevOps / Cloud</span><div class="chips">
-          <button class="chip" data-skill="git">Git</button><button class="chip" data-skill="docker">Docker</button><button class="chip" data-skill="cicd">CI/CD</button><button class="chip" data-skill="aws">AWS</button>
+          <button class="chip" data-skill="git">Git</button><button class="chip" data-skill="docker">Docker</button><button class="chip" data-skill="cicd">CI/CD</button><button class="chip" data-skill="gha">GitHub Actions</button><button class="chip" data-skill="aws">AWS</button>
         </div></div>
       </div>
       <div class="filter-bar" id="filterBar" aria-live="polite">Showing all roles and projects.</div>
@@ -559,13 +559,13 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
             <div class="tags"></div>
           </div>
         </article>
-        <article class="job" data-skills="react next ts js tailwind node express dotnet rest sqlserver mysql mongodb">
+        <article class="job" data-skills="react next rn ts js tailwind node express dotnet rest sqlserver mysql mongodb">
           <div class="when">Mar 2024 – Apr 2026</div>
           <div class="body">
             <h3>Full Stack Developer <span class="at">· Synnex Thailand</span></h3>
             <ul>
-              <li>Developed and maintained full-stack web applications and internal business systems.</li>
-              <li>Built responsive interfaces with React.js, Next.js, TypeScript/JavaScript and Tailwind CSS.</li>
+              <li>Developed and maintained web and mobile applications and internal business systems (see Selected projects).</li>
+              <li>Built responsive interfaces with React.js, Next.js, React Native, TypeScript/JavaScript and Tailwind CSS.</li>
               <li>Designed and implemented RESTful APIs with Node.js/Express.js and ASP.NET Core.</li>
               <li>Worked with SQL Server, MySQL and MongoDB for application data and business workflows.</li>
               <li>Troubleshot production issues, improved performance and fixed defects.</li>
@@ -597,15 +597,16 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
       </div>
       <div class="showcase">
 
-        <article class="case" data-skills="react next node mongodb rest tailwind">
+        <article class="case" data-skills="react js tailwind">
           <div class="case-info">
             <span class="eyebrow">E-commerce · B2B dealer store</span>
             <h3>SynnexOnline</h3>
-            <p>An online store where IT dealers browse products, claim coupons, catch flash sales and check out.</p>
+            <p>Front end for the Synnex Thailand dealer store, about 40 pages built with React 19, Tailwind CSS, MUI and Swiper.</p>
             <ul>
-              <li>Full-featured store with JWT authentication and authorization.</li>
-              <li>Stripe for online payments, plus an admin dashboard for products and orders.</li>
-              <li>Front end in React 19, Tailwind, MUI and Swiper: mega-menu, cart drawer, coupon wallet, 3-step checkout, order history and credit pages.</li>
+              <li>Homepage with rotating banners, a coupon wallet, a flash sale with live countdown, product carousels, a category mega-menu, a cart popover and an adjustable text size.</li>
+              <li>Dealer price list with category, type and brand filters, search and Excel export.</li>
+              <li>Three-step checkout: cart, delivery or pickup with Google Maps, and payment with coupon codes, 7% VAT and credit-line usage, with animated success and error states.</li>
+              <li>Account area with order history (status tabs, date filter, sorting, pagination), credit line, coupons, watchlist and addresses, plus registration with consent, OTP and password reset.</li>
             </ul>
             <div class="screens" role="tablist" data-for="pv-so">
               <button role="tab" aria-selected="true" data-scr="so-home">Homepage</button>
@@ -683,16 +684,17 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
           </div>
         </article>
 
-        <article class="case" data-skills="react rest aws js tailwind">
+        <article class="case" data-skills="react rest aws js tailwind cicd gha">
           <div class="case-info">
             <span class="eyebrow">Booking · high traffic launch</span>
             <h3>Nintendo Switch 2 Pre-order</h3>
-            <p>A pre-order site for a console launch, where thousands of fans hit the page at the same minute. It holds them in a fair queue, then lets each one book a unit at the dealer branch they pick.</p>
+            <p>Public launch site for the Nintendo Switch 2 across 8 dealers in Thailand, June 2025. It holds launch-day visitors in a fair queue, then lets each one book a unit at the branch they pick. Built with React 19, Vite and Tailwind CSS.</p>
             <ul>
-              <li>Scalable booking platform with secure RESTful APIs, backend on EC2, static assets on S3.</li>
-              <li>AWS Lambda and Amazon SQS for event-driven, asynchronous work.</li>
-              <li>Front end in React 19 + Vite: waiting room with live queue rank, countdown and date guards per route, Thai/English i18n, Thai ID validation.</li>
-              <li>Branch dashboard with PIN login, quota tracking and Excel export. GitHub Actions deploys UAT and production.</li>
+              <li>Virtual waiting room: session token, queue join, live rank polling, a capacity limit with a "too many users" page, and a 10-minute booking session that survives tab switches.</li>
+              <li>Time-window route guards on Bangkok time move visitors from countdown to registration to a closed or sold-out page automatically.</li>
+              <li>Booking form with Thai national ID checksum and passport validation, live duplicate checks on ID, phone and email, branch stock with sold-out handling, and pickup branch, date and time-slot selection, in Thai and English.</li>
+              <li>Success page with booking number and confetti. Branch dashboard prototype with PIN login, quota gauges, pickup confirmation and Excel export.</li>
+              <li>Front end on AWS API Gateway in the Bangkok region. GitHub Actions builds and deploys to Amazon S3 for UAT and production.</li>
             </ul>
             <div class="screens" role="tablist" data-for="pv-nt">
               <button role="tab" aria-selected="true" data-scr="nt-dealer">1 · Dealer</button>
@@ -785,16 +787,17 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
           </div>
         </article>
 
-        <article class="case" data-skills="react node rest js">
+        <article class="case" data-skills="rn react node express rest js">
           <div class="case-info">
-            <span class="eyebrow">Mobile app · internal tool</span>
+            <span class="eyebrow">Mobile app · App Store &amp; Google Play</span>
             <h3>SynnexGo</h3>
-            <p>An all-in-one staff app at Synnex Thailand. Employees clock in and out, request leave, log customer visits and approve documents from their phone.</p>
+            <p>All-in-one internal app for Synnex Thailand staff on iOS and Android, built with React Native and Expo.</p>
             <ul>
-              <li>React Native with Expo, built for Android and iOS through EAS, with over-the-air updates.</li>
-              <li>App launcher with favourites saved on the device, plus Thai/English and light/dark settings.</li>
-              <li>Time clock that records location, leave and overtime forms with attachments, and an Approval Center fed by the company API.</li>
-              <li>Push notifications through Expo and Firebase, with a small Node.js backend that sends them.</li>
+              <li>Company AD login with secure auto-login, forced store updates, an app launcher with saved favourites, Thai/English and light/dark mode.</li>
+              <li><strong>CustomerVisit:</strong> plan sales visits on a calendar, find places and draw routes with Google Places and Directions (alternative routes, avoid tolls, live traffic), check in/out, add follow-up tasks with photo and document attachments, and submit travel-expense claims that managers approve or reject.</li>
+              <li><strong>Prompt and Care</strong> product-request tickets with comments and file replies, <strong>Approval Center</strong> for pending company documents, and a <strong>Synnex Contact</strong> staff directory.</li>
+              <li>Push notifications with Expo and Firebase, plus a Node.js/Express service that registers device tokens and alerts approvers when new documents arrive. Builds and releases through EAS with development, preview and production channels.</li>
+              <li>The Leave screen in this preview is built in the code but not yet released in the app.</li>
             </ul>
             <div class="screens" role="tablist" data-for="pv-go">
               <button role="tab" aria-selected="true" data-scr="go-home">All apps</button>
