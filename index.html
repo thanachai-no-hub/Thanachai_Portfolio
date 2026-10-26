@@ -339,77 +339,268 @@ button { font: inherit; color: inherit; }
 @media (max-width: 560px) { .nt-dash { grid-template-columns: 1fr; } .nt-side { display: none; } .nt-kpis, .nt-grid, .nt-models { grid-template-columns: 1fr; } }
 
 /* SynnexGo phone */
-.phone-stage { display: grid; place-items: center; padding: 8px 0; }
+.phone-stage { display: grid; justify-items: center; gap: 12px; padding: 8px 0; }
+.phone-note { font-size: var(--t-xs); color: var(--faint); text-align: center; max-width: 320px; margin: 0; }
 .phone { width: 300px; max-width: 100%; height: 610px; border-radius: 44px; background: #111; padding: 10px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.5), inset 0 0 0 2px #333; position: relative; }
-.phone-screen { width: 100%; height: 100%; border-radius: 35px; overflow: hidden; background: #f8f8f8; position: relative; display: flex; flex-direction: column; font-family: "Prompt", system-ui, sans-serif; color: #000; font-size: 12.5px; line-height: 1.45; }
-.phone-screen button { font-family: inherit; cursor: pointer; }
-.island { position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 88px; height: 24px; border-radius: 14px; background: #000; z-index: 5; }
-.sbar { height: 40px; flex: none; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 22px 4px; font-size: 11px; font-weight: 600; background: #fff; }
-.g-scr { flex: 1; overflow-y: auto; display: flex; flex-direction: column; min-height: 0; }
+/* Light and dark values come from the app's config/themeColors.js */
+.phone-screen {
+  --g-bg: #f8f8f8; --g-card: #ffffff; --g-soft: #f0f0f0; --g-text: #000000; --g-sub: #656565; --g-line: #dfdfdf; --g-icon: #467db9; --g-acc: #4894a3; --g-acc-soft: #e3f1f4; --g-map: #eef2f1; --g-road: #ffffff;
+  width: 100%; height: 100%; border-radius: 35px; overflow: hidden; background: var(--g-bg); color: var(--g-text); position: relative; display: flex; flex-direction: column; font-family: "Prompt", system-ui, sans-serif; font-size: 12.5px; line-height: 1.45; transition: background .3s, color .3s;
+}
+.phone-screen.dark { --g-bg: #161616; --g-card: #212121; --g-soft: #2a2a2a; --g-text: #e6e6e6; --g-sub: #a0a0a0; --g-line: #343434; --g-icon: #e6e6e6; --g-acc-soft: #1f3438; --g-map: #1d2322; --g-road: #2c3432; }
+.phone-screen button { font-family: inherit; cursor: pointer; color: inherit; }
+.phone-screen button:active, .phone-screen .tap:active { transform: scale(.96); }
+.island { position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 88px; height: 24px; border-radius: 14px; background: #000; z-index: 9; }
+.sbar { height: 40px; flex: none; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 22px 4px; font-size: 11px; font-weight: 600; background: var(--g-card); transition: background .3s; }
+
+/* Screens: a fixed header, a scrolling body, and native-stack style push / pop transitions */
+.g-scr { flex: 1; display: flex; flex-direction: column; min-height: 0; position: relative; overflow: hidden; background: var(--g-bg); }
 .g-scr[hidden] { display: none !important; }
-.g-head { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px 12px; background: #fff; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; box-shadow: 0 4px 12px rgba(41,72,255,.06); }
-.g-head h5 { margin: 0; font-size: 20px; font-weight: 600; }
-.g-head .back { border: 0; background: none; font-size: 20px; color: #4894a3; padding: 0 6px 0 0; }
-.g-body { padding: 14px 16px 18px; display: grid; gap: 12px; align-content: start; }
+.g-scr.push-in { animation: gPush .32s cubic-bezier(.2,.8,.2,1); }
+.g-scr.pop-in { animation: gPop .32s cubic-bezier(.2,.8,.2,1); }
+@keyframes gPush { from { transform: translateX(100%); } to { transform: none; } }
+@keyframes gPop { from { transform: translateX(-28%); opacity: .5; } to { transform: none; opacity: 1; } }
+.g-head { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 8px 16px 12px; background: var(--g-card); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; box-shadow: 0 4px 12px rgba(41,72,255,.06); position: relative; z-index: 2; }
+.g-head h5 { margin: 0; font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 4px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.g-head .back { border: 0; background: none; font-size: 22px; line-height: 1; color: var(--g-acc); padding: 0 6px 0 0; }
+.g-gear { border: 0; background: none; font-size: 20px; color: var(--g-icon) !important; padding: 0; }
+.g-more { border: 0; background: var(--g-soft); border-radius: 999px; padding: 3px 10px; font-size: 11px; flex: none; }
+.g-body { flex: 1; overflow-y: auto; overscroll-behavior: contain; min-height: 0; padding: 14px 16px 22px; display: flex; flex-direction: column; gap: 12px; }
+.g-body > * { flex: none; }
 .g-sec h6 { margin: 0; font-size: 15px; font-weight: 600; }
-.g-sec small { color: #656565; }
+.g-sec small { color: var(--g-sub); }
+.g-list { display: grid; gap: 8px; }
+.g-empty { color: var(--g-sub); font-size: 11.5px; padding: 10px 0; }
+.g-hint { color: var(--g-sub); font-size: 10.5px; text-align: center; }
+.g-beta { font-size: 9.5px; background: #fdf0e6; color: #b45f06; border-radius: 999px; padding: 1px 7px; font-weight: 500; }
+
+/* Push notification, snackbar, spinner, switches */
+.g-push { position: absolute; top: 40px; left: 10px; right: 10px; border: 0; text-align: left; background: color-mix(in srgb, var(--g-card) 96%, transparent); backdrop-filter: blur(8px); border-radius: 18px; padding: 10px 12px; box-shadow: 0 10px 30px rgba(0,0,0,.25); display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; align-items: center; z-index: 8; transform: translateY(-160%); transition: transform .45s cubic-bezier(.2,.8,.2,1); }
+.g-push.show { transform: translateY(0); }
+.g-push .ic { width: 30px; height: 30px; border-radius: 8px; background: var(--g-acc); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 13px; }
+.g-push b { font-size: 12px; display: block; } .g-push small { color: var(--g-sub); font-size: 11.5px; }
+.g-snack { position: absolute; left: 14px; right: 14px; bottom: 80px; background: #323232; color: #fff; border-radius: 12px; padding: 9px 12px; font-size: 11.5px; z-index: 8; opacity: 0; transform: translateY(10px); transition: all .25s; pointer-events: none; }
+.g-snack.show { opacity: 1; transform: none; }
+.g-spin { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--g-line); border-top-color: var(--g-acc); display: inline-block; flex: none; animation: gSpin .8s linear infinite; }
+@keyframes gSpin { to { transform: rotate(360deg); } }
+.g-switch { width: 42px; height: 24px; border-radius: 999px; border: 0; background: var(--g-line); position: relative; flex: none; transition: background .2s; padding: 0; }
+.g-switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: transform .2s; }
+.g-switch.on { background: var(--g-acc); } .g-switch.on::after { transform: translateX(18px); }
+.g-badge { background: #FF3D00; color: #fff; border-radius: 999px; font-size: 10px; padding: 0 6px; margin-left: 4px; font-weight: 500; }
+
+/* Splash + login */
+.g-splash { position: absolute; inset: 0; z-index: 5; background: var(--g-card); display: grid; place-items: center; align-content: center; gap: 8px; transition: opacity .5s; }
+.g-splash.out { opacity: 0; pointer-events: none; }
+.g-splash b { font-size: 20px; font-weight: 600; } .g-splash small { color: var(--g-sub); }
+.g-logo { width: 74px; height: 74px; border-radius: 22px; background: linear-gradient(135deg, #4894a3, #2f6f7c); color: #fff; display: grid; place-items: center; font-size: 36px; font-weight: 600; box-shadow: 0 12px 28px -10px rgba(72,148,163,.7); }
+.g-splash .g-logo { animation: gBreath 1.4s ease-in-out infinite; }
+@keyframes gBreath { 50% { transform: scale(1.08); } }
+.g-logo.sm { width: 54px; height: 54px; font-size: 26px; border-radius: 16px; }
+.g-login { flex: 1; display: flex; flex-direction: column; gap: 12px; padding: 34px 22px 18px; overflow-y: auto; }
+.g-login h5 { margin: 6px 0 0; font-size: 22px; font-weight: 600; }
+.g-login > small { color: var(--g-sub); margin-top: -8px; }
+.g-foot { margin-top: auto; text-align: center; color: var(--g-sub); font-size: 10px; }
+.g-in-on { color: var(--g-text) !important; }
+.g-pass { display: flex; justify-content: space-between; align-items: center; }
+.g-eye { border: 0; background: none; padding: 0; font-size: 13px; opacity: .7; }
+.g-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.g-auto { display: flex; align-items: center; gap: 8px; background: var(--g-acc-soft); border-radius: 12px; padding: 9px 12px; font-size: 11.5px; }
+.g-auto[hidden] { display: none; }
+.g-auto button { margin-left: auto; border: 0; background: none; color: var(--g-acc); font-weight: 500; padding: 0; }
+.g-btn { border: 0; border-radius: 14px; padding: 11px; background: var(--g-acc); color: #fff !important; font-size: 14px; font-weight: 500; display: flex; justify-content: center; align-items: center; gap: 8px; }
+.g-btn .g-spin { border-color: rgba(255,255,255,.35); border-top-color: #fff; }
+
+/* Launcher */
 .g-favs { display: flex; gap: 10px; overflow-x: auto; padding: 4px 2px 8px; }
-.g-fav { flex: 0 0 120px; background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,.06); border: 0; padding: 0; text-align: left; }
-.g-fav .ic { height: 64px; display: grid; place-items: center; font-size: 26px; }
+.g-fav { flex: 0 0 120px; background: var(--g-card); border-radius: 18px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,.06); border: 0; padding: 0; text-align: left; }
+.g-fav .ic { height: 64px; display: grid; place-items: center; font-size: 26px; position: relative; }
 .g-fav div:last-child { padding: 6px 10px 9px; font-weight: 600; font-size: 12px; }
-.g-empty { color: #999; font-size: 11.5px; padding: 10px 0; }
-.g-app { display: grid; grid-template-columns: 44px minmax(0, 1fr) 28px; gap: 10px; align-items: center; background: #fff; border-radius: 14px; padding: 10px; border: 0; text-align: left; width: 100%; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
-.g-app .ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 20px; }
+.g-app { display: grid; grid-template-columns: 44px minmax(0, 1fr) 28px; gap: 10px; align-items: center; background: var(--g-card); border-radius: 14px; padding: 10px; border: 0; text-align: left; width: 100%; box-shadow: 0 2px 8px rgba(0,0,0,.04); cursor: pointer; }
+.g-app .ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 20px; position: relative; }
 .g-app b { font-weight: 500; font-size: 13.5px; display: block; }
-.g-app small { color: #656565; font-size: 11px; }
-.g-star { border: 0; background: none; font-size: 20px; color: #f6cb09; padding: 0; }
-.g-clock { background: #fff; border-radius: 20px; padding: 16px; text-align: center; display: grid; gap: 4px; box-shadow: 0 4px 12px rgba(0,0,0,.05); }
+.g-app small { color: var(--g-sub); font-size: 11px; }
+.g-dot { position: absolute; top: -4px; right: -4px; background: #FF3D00; color: #fff; font-size: 9.5px; font-weight: 600; min-width: 17px; height: 17px; border-radius: 999px; display: grid; place-items: center; padding: 0 4px; border: 2px solid var(--g-card); font-style: normal; }
+.g-star { border: 0; background: none; font-size: 20px; color: #f6cb09 !important; padding: 0; }
+
+/* Bottom tabs and floating action button */
+.g-tabs { flex: none; display: grid; grid-template-columns: repeat(4, 1fr); background: var(--g-card); border-top: 1px solid var(--g-line); padding: 6px 4px 14px; position: relative; z-index: 2; }
+.g-tabs button { border: 0; background: none; display: grid; justify-items: center; gap: 2px; font-size: 9.5px; color: grey !important; text-align: center; line-height: 1.2; border-top: 2px solid transparent; padding: 4px 0 0; }
+.g-tabs button.on { color: var(--g-acc) !important; border-top-color: var(--g-acc); }
+.g-tabs i { font-style: normal; font-size: 16px; }
+.g-fab { position: absolute; right: 16px; bottom: 78px; width: 50px; height: 50px; border-radius: 50%; border: 0; background: var(--g-acc); color: #fff !important; font-size: 26px; line-height: 1; box-shadow: 0 10px 20px -6px rgba(72,148,163,.8); z-index: 3; }
+.g-scr:not(:has(.g-tabs)) .g-fab { bottom: 18px; }
+
+/* CustomerVisit calendar */
+.g-cal { background: var(--g-card); border-radius: 18px; padding: 10px 10px 8px; box-shadow: 0 4px 12px rgba(0,0,0,.05); }
+.g-cal-h { display: flex; justify-content: space-between; align-items: center; padding: 0 4px 6px; }
+.g-cal-h b { color: var(--g-acc); font-weight: 600; }
+.g-cal-h button { border: 0; background: none; font-size: 18px; color: var(--g-acc) !important; padding: 0 6px; }
+.g-cal-g { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; }
+.g-cal-g .wd { font-size: 10px; color: var(--g-sub); padding-bottom: 3px; }
+.g-cal-g button { border: 0; background: none; height: 30px; border-radius: 50%; font-size: 11.5px; position: relative; padding: 0; }
+.g-cal-g button.today { color: #11b97a !important; font-weight: 600; }
+.g-cal-g button.sel { background: var(--g-acc); color: #fff !important; }
+.g-cal-g button i { position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--g-acc); }
+.g-cal-g button.sel i { background: #fff; }
+.g-visit { background: var(--g-card); border-radius: 14px; padding: 10px 12px; display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; gap: 10px; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,.04); border-left: 4px solid var(--g-acc); }
+.g-visit.done { border-left-color: #11E497; } .g-visit.cancel { border-left-color: #FF3D00; opacity: .7; }
+.g-visit .t { font-weight: 600; font-variant-numeric: tabular-nums; }
+.g-visit b { font-weight: 500; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.g-visit small { color: var(--g-sub); font-size: 10.5px; }
+.g-pill { font-size: 10px; border-radius: 999px; padding: 1px 8px; white-space: nowrap; }
+.g-pill.plan { background: var(--g-acc-soft); color: var(--g-acc); } .g-pill.done { background: #dcfbef; color: #0b7a52; } .g-pill.cancel { background: #ffe9e2; color: #c2410c; }
+.g-visit .x { border: 0; background: none; color: #FF3D00 !important; font-size: 10.5px; padding: 2px 0 0; display: block; margin-left: auto; }
+
+/* Route planner */
+.g-map { position: relative; border-radius: 16px; overflow: hidden; background: var(--g-map); box-shadow: inset 0 0 0 1px var(--g-line); }
+.g-map svg { display: block; width: 100%; height: auto; }
+.g-eta { position: absolute; left: 8px; top: 8px; background: var(--g-card); border-radius: 10px; padding: 4px 9px; font-size: 11px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+.g-toggles { display: flex; gap: 6px; flex-wrap: wrap; }
+.g-tg { border: 1px solid var(--g-line); background: var(--g-card); border-radius: 999px; padding: 4px 10px; font-size: 11px; }
+.g-tg.on { background: var(--g-acc-soft); border-color: var(--g-acc); color: var(--g-acc) !important; }
+.g-routes { display: grid; gap: 6px; }
+.g-route { border: 1.5px solid var(--g-line); background: var(--g-card); border-radius: 12px; padding: 8px 10px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; text-align: left; }
+.g-route.on { border-color: var(--g-acc); box-shadow: 0 0 0 3px var(--g-acc-soft); }
+.g-route b { font-weight: 600; } .g-route small { color: var(--g-sub); font-size: 10.5px; }
+.g-route .min { font-weight: 600; font-size: 14px; color: var(--g-acc); grid-row: 1 / 3; grid-column: 2; align-self: center; font-variant-numeric: tabular-nums; }
+.g-route .min.slow { color: #e07b00; }
+
+/* Forms, chips, misc */
+.g-field { display: grid; gap: 5px; }
+.g-field > span { font-size: 12px; font-weight: 500; }
+.g-in { background: var(--g-card); border: 1px solid var(--g-line); border-radius: 12px; padding: 9px 12px; color: var(--g-sub); font-size: 12px; }
+.g-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.g-chips button { border: 1px solid var(--g-line); background: var(--g-card); border-radius: 999px; padding: 4px 10px; font-size: 11.5px; }
+.g-chips button.on { background: var(--g-acc); color: #fff !important; border-color: var(--g-acc); }
+.g-dates { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.g-clock { background: var(--g-card); border-radius: 20px; padding: 16px; text-align: center; display: grid; gap: 4px; box-shadow: 0 4px 12px rgba(0,0,0,.05); }
 .g-clock .t { font-size: 34px; font-weight: 600; letter-spacing: .02em; font-variant-numeric: tabular-nums; }
-.g-clock small { color: #656565; }
-.g-check { width: 150px; height: 150px; border-radius: 50%; border: 0; margin: 4px auto; display: grid; place-items: center; align-content: center; gap: 2px; color: #fff; font-size: 18px; font-weight: 600; background: #4894a3; box-shadow: 0 0 0 10px rgba(72,148,163,.15), 0 12px 24px -8px rgba(72,148,163,.6); transition: background .3s, box-shadow .3s; }
+.g-clock small { color: var(--g-sub); }
+.g-check { width: 150px; height: 150px; border-radius: 50%; border: 0; margin: 4px auto; display: grid; place-items: center; align-content: center; gap: 2px; color: #fff !important; font-size: 18px; font-weight: 600; background: var(--g-acc); box-shadow: 0 0 0 10px rgba(72,148,163,.15), 0 12px 24px -8px rgba(72,148,163,.6); transition: background .3s, box-shadow .3s; }
 .g-check.out { background: #FF3D00; box-shadow: 0 0 0 10px rgba(255,61,0,.13), 0 12px 24px -8px rgba(255,61,0,.5); }
 .g-check small { font-size: 11px; font-weight: 400; opacity: .9; }
-.g-loc { display: flex; gap: 8px; align-items: center; background: #fff; border-radius: 14px; padding: 10px 12px; font-size: 11.5px; color: #333; }
+.g-loc { display: flex; gap: 8px; align-items: center; background: var(--g-card); border-radius: 14px; padding: 10px 12px; font-size: 11.5px; }
 .g-log { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.g-log div { background: #fff; border-radius: 14px; padding: 10px; display: grid; }
-.g-log small { color: #656565; font-size: 11px; }
+.g-log div { background: var(--g-card); border-radius: 14px; padding: 10px; display: grid; }
+.g-log small { color: var(--g-sub); font-size: 11px; }
 .g-log b { font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .g-log .in b { color: #11b97a; } .g-log .outv b { color: #FF3D00; }
-.g-dur { text-align: center; color: #656565; font-size: 12px; }
-.g-dur span { color: #4894a3; font-weight: 600; }
-.g-tabs { flex: none; display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border-top: 1px solid #eee; padding: 6px 4px 14px; }
-.g-tabs span { display: grid; justify-items: center; gap: 2px; font-size: 9.5px; color: grey; text-align: center; line-height: 1.2; border-top: 2px solid transparent; padding-top: 4px; }
-.g-tabs span.on { color: #4894a3; border-top-color: #4894a3; }
-.g-tabs i { font-style: normal; font-size: 16px; }
-.g-modal { position: absolute; inset: 0; background: rgba(0,0,0,.5); display: grid; place-items: center; z-index: 4; padding: 20px; }
+.g-dur { text-align: center; color: var(--g-sub); font-size: 12px; }
+.g-dur span { color: var(--g-acc); font-weight: 600; }
+
+/* Modals and bottom sheets */
+.g-modal { position: absolute; inset: 0; background: rgba(0,0,0,.5); display: grid; place-items: center; z-index: 6; padding: 20px; }
 .g-modal[hidden] { display: none; }
-.g-modal .box { background: #fff; border-radius: 20px; padding: 18px; text-align: center; display: grid; gap: 14px; width: 100%; }
+.g-modal .box { background: var(--g-card); border-radius: 20px; padding: 18px; text-align: center; display: grid; gap: 12px; width: 100%; animation: gPop2 .25s ease-out; }
+@keyframes gPop2 { from { transform: scale(.9); opacity: 0; } }
+.g-modal .box small { color: var(--g-sub); }
 .g-modal .row { display: flex; gap: 8px; }
-.g-modal .row button { flex: 1; border: 0; border-radius: 12px; padding: 9px; color: #fff; font-weight: 500; }
-.g-field { display: grid; gap: 5px; }
-.g-field label, .g-field > span { font-size: 12px; font-weight: 500; }
-.g-in { background: #fff; border: 1px solid #dfdfdf; border-radius: 12px; padding: 9px 12px; color: #999; font-size: 12px; }
-.g-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.g-chips button { border: 1px solid #dfdfdf; background: #fff; border-radius: 999px; padding: 4px 10px; font-size: 11.5px; color: #333; }
-.g-chips button.on { background: #4894a3; color: #fff; border-color: #4894a3; }
-.g-dates { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.g-btn { border: 0; border-radius: 14px; padding: 11px; background: #4894a3; color: #fff; font-size: 14px; font-weight: 500; }
-.g-search { background: #fff; border: 1px solid #dfdfdf; border-radius: 12px; padding: 8px 12px; color: #999; font-size: 12px; display: flex; justify-content: space-between; }
-.g-search b { color: #4894a3; font-weight: 500; }
-.g-doc { background: #fff; border-radius: 16px; padding: 12px; display: grid; gap: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.04); transition: opacity .3s, transform .3s; }
-.g-doc.gone { opacity: 0; transform: translateX(40px); }
+.g-modal .row button { flex: 1; border: 0; border-radius: 12px; padding: 9px; color: #fff !important; font-weight: 500; }
+.g-progress { height: 6px; background: var(--g-soft); border-radius: 3px; overflow: hidden; }
+.g-progress i { display: block; height: 100%; width: 0; background: var(--g-acc); transition: width .2s linear; }
+.g-sheet-wrap { position: absolute; inset: 0; z-index: 6; background: rgba(0,0,0,0); transition: background .25s; display: flex; align-items: flex-end; }
+.g-sheet-wrap[hidden] { display: none; }
+.g-sheet-wrap.open { background: rgba(0,0,0,.45); }
+.g-sheet { width: 100%; background: var(--g-card); border-radius: 22px 22px 0 0; padding: 8px 18px 22px; display: grid; gap: 12px; transform: translateY(100%); transition: transform .3s cubic-bezier(.2,.8,.2,1); max-height: 85%; overflow-y: auto; }
+.g-sheet-wrap.open .g-sheet { transform: none; }
+.g-grab { width: 38px; height: 4px; border-radius: 2px; background: var(--g-line); justify-self: center; }
+.g-sheet h6 { margin: 0; font-size: 15px; font-weight: 600; }
+.g-step { display: inline-flex; align-items: center; border: 1px solid var(--g-line); border-radius: 10px; overflow: hidden; }
+.g-step button { border: 0; background: none; width: 32px; height: 30px; font-size: 16px; color: var(--g-acc) !important; }
+.g-step span { min-width: 30px; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* Prompt and Care tickets and chat */
+.g-seg { flex: none; margin: 12px 16px 0; display: grid; grid-template-columns: 1fr 1fr; background: var(--g-soft); border-radius: 12px; padding: 3px; }
+.g-seg button { border: 0; background: none; border-radius: 9px; padding: 6px; font-size: 12px; font-weight: 500; }
+.g-seg button.on { background: var(--g-card); box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+.g-seg i { font-style: normal; background: #FF3D00; color: #fff; border-radius: 999px; font-size: 9.5px; padding: 0 5px; }
+.g-seg i:empty { display: none; }
+.g-ticket { border: 0; background: var(--g-card); border-radius: 14px; padding: 10px 12px; text-align: left; display: grid; gap: 3px; box-shadow: 0 2px 8px rgba(0,0,0,.04); position: relative; }
+.g-ticket.unread::after { content: ""; position: absolute; top: 12px; right: 12px; width: 8px; height: 8px; border-radius: 50%; background: #FF3D00; }
+.g-ticket .no { font-size: 10.5px; color: var(--g-acc); font-weight: 500; }
+.g-ticket b { font-weight: 500; padding-right: 14px; }
+.g-ticket .meta { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+.g-ticket small { color: var(--g-sub); font-size: 10.5px; }
+.g-pill.wait { background: #fff4e0; color: #b45f06; } .g-pill.work { background: var(--g-acc-soft); color: var(--g-acc); } .g-pill.closed { background: var(--g-soft); color: var(--g-sub); }
+.g-tk-info { flex: none; margin: 10px 16px 0; background: var(--g-card); border-radius: 14px; padding: 8px 12px; display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11px; color: var(--g-sub); }
+.g-tk-info b { color: var(--g-text); font-weight: 500; }
+.g-chat { gap: 8px; }
+.g-msg { max-width: 82%; padding: 8px 11px; border-radius: 16px; background: var(--g-card); align-self: flex-start; box-shadow: 0 1px 3px rgba(0,0,0,.06); border-bottom-left-radius: 4px; animation: gPop2 .2s ease-out; }
+.g-msg.me { align-self: flex-end; background: var(--g-acc); color: #fff; border-bottom-left-radius: 16px; border-bottom-right-radius: 4px; }
+.g-msg small { display: block; font-size: 9.5px; opacity: .65; margin-top: 2px; }
+.g-msg .who { font-size: 10px; font-weight: 600; color: var(--g-acc); display: block; }
+.g-msg.file { display: flex; gap: 8px; align-items: center; }
+.g-msg.file .doc { width: 30px; height: 36px; border-radius: 6px; background: #ffe9e2; color: #c2410c; display: grid; place-items: center; font-size: 9px; font-weight: 700; flex: none; }
+.g-msg.me.file .doc { background: rgba(255,255,255,.2); color: #fff; }
+.g-typing { align-self: flex-start; background: var(--g-card); border-radius: 16px; padding: 10px 12px; display: flex; gap: 4px; }
+.g-typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--g-sub); animation: gDot 1s infinite; }
+.g-typing i:nth-child(2) { animation-delay: .15s; } .g-typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes gDot { 0%, 60%, 100% { opacity: .3; transform: none; } 30% { opacity: 1; transform: translateY(-3px); } }
+.g-sys { align-self: center; font-size: 10.5px; color: var(--g-sub); background: var(--g-soft); border-radius: 999px; padding: 2px 10px; }
+.g-compose { flex: none; display: flex; gap: 6px; align-items: center; padding: 8px 10px 16px; background: var(--g-card); border-top: 1px solid var(--g-line); }
+.g-compose input { flex: 1; min-width: 0; border: 1px solid var(--g-line); background: var(--g-bg); color: var(--g-text); border-radius: 999px; padding: 8px 12px; font: inherit; font-size: 12px; outline: none; }
+.g-compose input:focus { border-color: var(--g-acc); }
+.g-compose button { border: 0; background: none; font-size: 16px; padding: 4px; flex: none; }
+.g-compose button[type="submit"] { width: 32px; height: 32px; border-radius: 50%; background: var(--g-acc); color: #fff !important; font-size: 13px; }
+.g-compose.off { opacity: .5; pointer-events: none; }
+
+/* Synnex Contact */
+.g-searchbox { flex: none; padding: 12px 16px 0; }
+.g-searchbox input { width: 100%; border: 1px solid var(--g-line); background: var(--g-card); color: var(--g-text); border-radius: 12px; padding: 9px 12px 9px 32px; font: inherit; font-size: 12px; outline: none; background-image: radial-gradient(circle at 15px 50%, transparent 4px, var(--g-sub) 4.5px, var(--g-sub) 5.5px, transparent 6px); }
+.g-searchbox input:focus { border-color: var(--g-acc); }
+.g-grp { font-size: 10.5px; color: var(--g-sub); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin: 4px 2px -2px; }
+.g-person { border: 0; background: var(--g-card); border-radius: 14px; padding: 9px 12px; display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 10px; align-items: center; text-align: left; width: 100%; }
+.g-av { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-weight: 600; color: #fff; font-size: 13px; flex: none; }
+.g-av.lg { width: 64px; height: 64px; font-size: 24px; justify-self: center; }
+.g-person b { font-weight: 500; display: block; } .g-person small { color: var(--g-sub); font-size: 10.5px; }
+.g-person .ext { font-size: 11px; color: var(--g-acc); font-weight: 500; font-variant-numeric: tabular-nums; }
+.g-person mark { background: #fff1a8; color: inherit; border-radius: 3px; }
+.g-prof { text-align: center; display: grid; gap: 2px; }
+.g-prof b { font-size: 16px; font-weight: 600; } .g-prof small { color: var(--g-sub); }
+.g-acts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.g-acts button { border: 0; background: var(--g-acc-soft); color: var(--g-acc) !important; border-radius: 14px; padding: 10px 4px; display: grid; justify-items: center; gap: 3px; font-size: 11px; font-weight: 500; }
+.g-acts i { font-style: normal; font-size: 18px; }
+
+/* Approval Center: pull to refresh and swipe to approve */
+.g-ptr { display: flex; justify-content: center; align-items: center; gap: 8px; height: 0; overflow: hidden; color: var(--g-sub); font-size: 11px; margin: -6px 0; transition: height .2s; }
+.g-ptr.pulling { transition: none; }
+.g-ptr .g-spin { animation-play-state: paused; }
+.g-ptr.busy .g-spin { animation-play-state: running; }
+.g-search { background: var(--g-card); border: 1px solid var(--g-line); border-radius: 12px; padding: 8px 12px; color: var(--g-sub); font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+.g-search button { border: 0; background: none; color: var(--g-acc) !important; font-weight: 500; padding: 0; font-size: 12px; }
+.g-swipe { position: relative; border-radius: 16px; overflow: hidden; background: #11E497; transition: max-height .3s, opacity .3s, margin .3s; max-height: 200px; }
+.g-swipe.left { background: #FF3D00; }
+.g-swipe::before, .g-swipe::after { position: absolute; top: 50%; transform: translateY(-50%); font-size: 12px; font-weight: 600; }
+.g-swipe::before { content: "✓ อนุมัติ"; left: 16px; color: #053b27; }
+.g-swipe::after { content: "ไม่อนุมัติ ✕"; right: 16px; color: #fff; }
+.g-swipe.left::before, .g-swipe:not(.left)::after { opacity: 0; }
+.g-swipe.gone { max-height: 0; opacity: 0; margin-top: -8px; }
+.g-doc { background: var(--g-card); border-radius: 16px; padding: 12px; display: grid; gap: 6px; position: relative; z-index: 1; touch-action: pan-y; user-select: none; cursor: grab; }
+.g-doc.drag { cursor: grabbing; }
+.g-doc.snap { transition: transform .25s cubic-bezier(.2,.8,.2,1); }
 .g-doc .top { display: flex; justify-content: space-between; gap: 8px; }
-.g-doc .no { font-size: 11px; color: #4894a3; font-weight: 500; }
-.g-doc .type { font-size: 10.5px; background: #eef6f8; color: #2f6f7c; border-radius: 999px; padding: 1px 8px; white-space: nowrap; }
-.g-doc small { color: #656565; }
+.g-doc .no { font-size: 11px; color: var(--g-acc); font-weight: 500; }
+.g-doc .type { font-size: 10.5px; background: var(--g-acc-soft); color: var(--g-acc); border-radius: 999px; padding: 1px 8px; white-space: nowrap; }
+.g-doc small { color: var(--g-sub); }
 .g-doc .acts { display: flex; gap: 6px; }
 .g-doc .acts button { flex: 1; border: 0; border-radius: 10px; padding: 7px; font-size: 12px; font-weight: 500; }
-.g-doc .ok { background: #11E497; color: #053b27; } .g-doc .no-btn { background: #fff0eb; color: #FF3D00; }
-.g-push { position: absolute; top: 40px; left: 10px; right: 10px; background: rgba(255,255,255,.96); border-radius: 18px; padding: 10px 12px; box-shadow: 0 10px 30px rgba(0,0,0,.2); display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; align-items: center; z-index: 6; transform: translateY(-140%); transition: transform .45s cubic-bezier(.2,.8,.2,1); }
-.g-push.show { transform: translateY(0); }
-.g-push .ic { width: 30px; height: 30px; border-radius: 8px; background: #4894a3; color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 13px; }
-.g-push b { font-size: 12px; display: block; } .g-push small { color: #555; font-size: 11.5px; }
-.g-badge { background: #FF3D00; color: #fff; border-radius: 999px; font-size: 10px; padding: 0 6px; margin-left: 4px; }
+.g-doc .ok { background: #11E497; color: #053b27 !important; } .g-doc .no-btn { background: #fff0eb; color: #FF3D00 !important; }
+.g-doc.new { animation: gNew 1.2s ease-out; }
+@keyframes gNew { from { box-shadow: 0 0 0 3px var(--g-acc); } }
+
+/* Settings */
+.g-me { display: flex; gap: 12px; align-items: center; background: var(--g-card); border-radius: 18px; padding: 12px; }
+.g-me b { display: block; font-weight: 600; } .g-me small { color: var(--g-sub); font-size: 11px; }
+.g-group { background: var(--g-card); border-radius: 18px; padding: 4px 14px; display: grid; }
+.g-group .g-row { padding: 11px 0; border-top: 1px solid var(--g-line); }
+.g-group .g-row:first-child { border-top: 0; }
+.g-link { border: 0; background: none; width: 100%; text-align: left; font-size: 12.5px; }
+.g-link small { color: var(--g-sub); }
+.g-segmini { display: inline-grid; grid-template-columns: 1fr 1fr; background: var(--g-soft); border-radius: 9px; padding: 2px; }
+.g-segmini button { border: 0; background: none; border-radius: 7px; padding: 3px 10px; font-size: 11px; font-weight: 600; }
+.g-segmini button.on { background: var(--g-acc); color: #fff !important; }
+.g-logout { border: 0; background: var(--g-card); color: #FF3D00 !important; border-radius: 14px; padding: 11px; font-weight: 500; }
+@media (prefers-reduced-motion: reduce) { .g-scr.push-in, .g-scr.pop-in, .g-splash .g-logo, .g-msg, .g-modal .box { animation: none; } }
 
 /* Project details panel */
 .deep { grid-column: 1 / -1; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
@@ -871,33 +1062,83 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
               <li>The Leave screen in this preview is built in the code but not yet released in the app.</li>
             </ul>
             <div class="screens" role="tablist" data-for="pv-go">
-              <button role="tab" aria-selected="true" data-scr="go-home">All apps</button>
+              <button role="tab" aria-selected="true" data-scr="go-login">Login</button>
+              <button role="tab" aria-selected="false" data-scr="go-home">All apps</button>
+              <button role="tab" aria-selected="false" data-scr="go-visits">Visits</button>
+              <button role="tab" aria-selected="false" data-scr="go-route">Route</button>
               <button role="tab" aria-selected="false" data-scr="go-clock">Clock in</button>
-              <button role="tab" aria-selected="false" data-scr="go-leave">Leave</button>
+              <button role="tab" aria-selected="false" data-scr="go-tickets">Tickets</button>
               <button role="tab" aria-selected="false" data-scr="go-approve">Approvals</button>
+              <button role="tab" aria-selected="false" data-scr="go-contacts">Contacts</button>
+              <button role="tab" aria-selected="false" data-scr="go-settings">Settings</button>
+              <button role="tab" aria-selected="false" data-scr="go-leave">Leave</button>
             </div>
             <div class="tags"></div>
           </div>
 
           <div class="phone-stage">
             <div class="phone" id="pv-go">
-              <div class="phone-screen">
+              <div class="phone-screen" data-go-root>
                 <span class="island"></span>
                 <div class="sbar"><span data-go-time>09:41</span><span>5G ▮▮▮ ▭</span></div>
-                <div class="g-push" data-push><span class="ic">S</span><div><b>SynnexGo · now</b><small data-push-text></small></div></div>
+                <button type="button" class="g-push" data-push><span class="ic">S</span><div><b>SynnexGo · <span data-t="now">ตอนนี้</span></b><small data-push-text></small></div></button>
+                <div class="g-snack" data-snack role="status"></div>
 
-                <div class="g-scr" data-scr="go-home">
-                  <div class="g-head"><h5>หน้าหลัก</h5><span style="font-size:20px;color:#467db9">⚙</span></div>
+                <div class="g-scr" data-scr="go-login">
+                  <div class="g-splash" data-splash><div class="g-logo">S</div><b>SynnexGo</b><small>v1.0.3</small></div>
+                  <div class="g-login">
+                    <div class="g-logo sm">S</div>
+                    <h5 data-t="login">เข้าสู่ระบบ</h5>
+                    <small data-t="loginSub">ใช้บัญชีผู้ใช้ของบริษัท (AD)</small>
+                    <div class="g-field"><span data-t="user">ชื่อผู้ใช้</span><div class="g-in g-in-on">your.name</div></div>
+                    <div class="g-field"><span data-t="pass">รหัสผ่าน</span><div class="g-in g-in-on g-pass"><span data-pass>••••••••</span><button type="button" class="g-eye" data-eye aria-label="Show or hide password">👁</button></div></div>
+                    <div class="g-row"><span data-t="remember">จดจำการเข้าสู่ระบบ</span><button type="button" class="g-switch on" data-remember role="switch" aria-checked="true" aria-label="Keep me signed in"></button></div>
+                    <div class="g-auto" data-auto hidden><span class="g-spin"></span><span data-t="autoLogin">กำลังเข้าสู่ระบบอัตโนมัติ…</span><button type="button" data-auto-cancel data-t="cancel">ยกเลิก</button></div>
+                    <button type="button" class="g-btn" data-login><span data-t="login">เข้าสู่ระบบ</span></button>
+                    <small class="g-foot">SYNNEX (THAILAND) · v1.0.3</small>
+                  </div>
+                </div>
+
+                <div class="g-scr" data-scr="go-home" hidden>
+                  <div class="g-head"><h5 data-t="home">หน้าหลัก</h5><button type="button" class="g-gear" data-go-to="go-settings" aria-label="Settings">⚙</button></div>
                   <div class="g-body">
-                    <div class="g-sec"><h6>รายการโปรด</h6><small>เลือกการทำงานของคุณ</small></div>
+                    <div class="g-sec"><h6 data-t="favs">รายการโปรด</h6><small data-t="chooseapp">เลือกการทำงานของคุณ</small></div>
                     <div class="g-favs" data-go-favs></div>
-                    <div class="g-sec"><h6>เเอปพลิเคชั่นทั้งหมด</h6><small>Tap ☆ to pin an app to favourites</small></div>
-                    <div style="display:grid;gap:8px" data-go-apps></div>
+                    <div class="g-sec"><h6 data-t="allapps">เเอปพลิเคชั่นทั้งหมด</h6><small data-t="pinHint">แตะ ☆ เพื่อปักหมุดแอปไว้ในรายการโปรด</small></div>
+                    <div class="g-list" data-go-apps></div>
+                  </div>
+                </div>
+
+                <div class="g-scr" data-scr="go-visits" hidden>
+                  <div class="g-head"><h5><button type="button" class="back" data-go-to="go-home" aria-label="Back">‹</button>CustomerVisit</h5></div>
+                  <div class="g-body">
+                    <div class="g-cal">
+                      <div class="g-cal-h"><button type="button" data-cal="-1" aria-label="Previous month">‹</button><b data-cal-title></b><button type="button" data-cal="1" aria-label="Next month">›</button></div>
+                      <div class="g-cal-g" data-cal-grid></div>
+                    </div>
+                    <div class="g-sec"><h6 data-day-title></h6></div>
+                    <div class="g-list" data-day-list></div>
+                  </div>
+                  <button type="button" class="g-fab" data-go-to="go-route" aria-label="New visit">+</button>
+                  <div class="g-tabs" data-tabs="go-visits"></div>
+                  <div class="g-modal" data-cancel-modal hidden><div class="box"><b>ต้องการยกเลิกนัดหมายนี้หรือไม่?</b><small data-cancel-name></small><div class="row"><button type="button" style="background:#FF3D00" data-cancel-yes>ยืนยัน</button><button type="button" style="background:grey" data-cancel-no>ยกเลิก</button></div></div></div>
+                </div>
+
+                <div class="g-scr" data-scr="go-route" hidden>
+                  <div class="g-head"><h5><button type="button" class="back" data-go-to="go-visits" aria-label="Back">‹</button>นัดหมายเข้าพบ</h5></div>
+                  <div class="g-body">
+                    <div class="g-field"><span>ลูกค้า</span><div class="g-chips" data-custs></div></div>
+                    <div class="g-map"><svg viewBox="0 0 280 190" data-map aria-label="Route map"></svg><span class="g-eta" data-eta></span></div>
+                    <div class="g-toggles"><button type="button" class="g-tg" data-avoid>🚫 หลีกเลี่ยงทางด่วน</button><button type="button" class="g-tg on" data-traffic>🚦 การจราจรสด</button></div>
+                    <div class="g-routes" data-routes></div>
+                    <div class="g-field"><span>วันที่</span><div class="g-chips" data-when-day></div></div>
+                    <div class="g-field"><span>เวลา</span><div class="g-chips" data-when-time></div></div>
+                    <button type="button" class="g-btn" data-save-visit>บันทึกนัดหมาย</button>
                   </div>
                 </div>
 
                 <div class="g-scr" data-scr="go-clock" hidden>
-                  <div class="g-head"><h5>บันทึกเวลาเข้า - ออก</h5></div>
+                  <div class="g-head"><h5 data-t="clockTitle">บันทึกเวลาเข้า - ออก</h5></div>
                   <div class="g-body">
                     <div class="g-clock"><small data-go-day>วันจันทร์</small><span class="t" data-go-clock>09:41:00</span><small data-go-date></small></div>
                     <button type="button" class="g-check" data-go-check>เข้างาน<small>แตะเพื่อบันทึกเวลา</small></button>
@@ -905,31 +1146,80 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
                     <div class="g-log"><div class="in"><small>เข้างาน</small><b data-go-in>--:--</b></div><div class="outv"><small>ออกงาน</small><b data-go-out>--:--</b></div></div>
                     <div class="g-dur" data-go-dur>ยังไม่ได้บันทึกเวลาวันนี้</div>
                   </div>
-                  <div class="g-tabs"><span><i>⌂</i>หน้าหลัก</span><span><i>↺</i>ประวัติเข้าพบ</span><span class="on"><i>◷</i>บันทึกเวลาเข้า - ออก</span><span><i>☺</i>โปรไฟล์</span></div>
+                  <div class="g-tabs" data-tabs="go-clock"></div>
                   <div class="g-modal" data-go-modal hidden><div class="box"><b data-go-q>คุณต้องการเข้างานหรือไม่?</b><div class="row"><button type="button" style="background:#4894a3" data-go-yes>ยืนยัน</button><button type="button" style="background:grey" data-go-no>ยกเลิก</button></div></div></div>
+                </div>
+
+                <div class="g-scr" data-scr="go-tickets" hidden>
+                  <div class="g-head"><h5><button type="button" class="back" data-go-to="go-home" aria-label="Back">‹</button>Prompt and Care <span class="g-beta">Beta</span></h5></div>
+                  <div class="g-seg"><button type="button" class="on" data-seg="inbox"><span data-t="inbox">กล่องเข้า</span> <i data-inbox-n></i></button><button type="button" data-seg="sent"><span data-t="sent">ส่งแล้ว</span></button></div>
+                  <div class="g-body"><div class="g-list" data-tickets></div></div>
+                  <button type="button" class="g-fab" data-new-ticket aria-label="New request">+</button>
+                  <div class="g-sheet-wrap" data-sheet-new hidden>
+                    <div class="g-sheet">
+                      <span class="g-grab"></span>
+                      <h6>คำขอสินค้าใหม่</h6>
+                      <div class="g-field"><span>ประเภทสินค้า</span><div class="g-chips" data-new-cat></div></div>
+                      <div class="g-row"><span>จำนวน</span><div class="g-step"><button type="button" data-qty="-1" aria-label="Less">−</button><span data-qty-n>5</span><button type="button" data-qty="1" aria-label="More">+</button></div></div>
+                      <div class="g-field"><span>ความเร่งด่วน</span><div class="g-chips" data-new-urg></div></div>
+                      <button type="button" class="g-btn" data-new-send>ส่งคำขอ</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="g-scr" data-scr="go-ticket" hidden>
+                  <div class="g-head"><h5><button type="button" class="back" data-go-to="go-tickets" aria-label="Back">‹</button><span data-tk-title></span></h5><button type="button" class="g-more" data-tk-close>ปิดคำขอ</button></div>
+                  <div class="g-tk-info" data-tk-info></div>
+                  <div class="g-body g-chat" data-chat></div>
+                  <form class="g-compose" data-compose><button type="button" data-attach aria-label="Attach file">📎</button><input id="go-msg" data-msg placeholder="พิมพ์ข้อความ…" autocomplete="off"><button type="submit" aria-label="Send">➤</button></form>
+                </div>
+
+                <div class="g-scr" data-scr="go-approve" hidden>
+                  <div class="g-head"><h5><button type="button" class="back" data-go-to="go-home" aria-label="Back">‹</button>Approval Center<span class="g-badge" data-go-count>4</span></h5></div>
+                  <div class="g-body" data-ptr-body>
+                    <div class="g-ptr" data-ptr><span class="g-spin"></span><small data-ptr-text data-t="pull">ดึงลงเพื่อรีเฟรช</small></div>
+                    <div class="g-search"><span data-t="searchDoc">ค้นหาด้วยเลขที่เอกสาร...</span><button type="button" data-refresh>Refresh</button></div>
+                    <small class="g-hint" data-t="swipeHint">ปัดขวาเพื่ออนุมัติ · ปัดซ้ายเพื่อไม่อนุมัติ · ดึงลงเพื่อรีเฟรช</small>
+                    <div class="g-list" data-go-docs></div>
+                  </div>
+                </div>
+
+                <div class="g-scr" data-scr="go-contacts" hidden>
+                  <div class="g-head"><h5><button type="button" class="back" data-go-to="go-home" aria-label="Back">‹</button>Synnex Contact</h5></div>
+                  <div class="g-searchbox"><input id="go-people" type="search" data-people-q placeholder="ค้นหาชื่อ แผนก หรือเบอร์ภายใน" autocomplete="off"></div>
+                  <div class="g-body"><div class="g-list" data-people></div></div>
+                  <div class="g-sheet-wrap" data-sheet-person hidden><div class="g-sheet" data-person></div></div>
+                </div>
+
+                <div class="g-scr" data-scr="go-settings" hidden>
+                  <div class="g-head"><h5><button type="button" class="back" data-go-to="go-home" aria-label="Back">‹</button><span data-t="settings">ตั้งค่า</span></h5></div>
+                  <div class="g-body">
+                    <div class="g-me"><span class="g-av" style="background:#4894a3">T</span><div><b>Thanachai J.</b><small>Full Stack Developer · SYNNEX</small></div></div>
+                    <div class="g-group">
+                      <div class="g-row"><span data-t="lang">ภาษา</span><div class="g-segmini" data-lang><button type="button" class="on" data-l="TH">TH</button><button type="button" data-l="EN">EN</button></div></div>
+                      <div class="g-row"><span data-t="dark">โหมดมืด</span><button type="button" class="g-switch" data-dark role="switch" aria-checked="false" aria-label="Dark mode"></button></div>
+                      <div class="g-row"><span data-t="notif">การแจ้งเตือน</span><button type="button" class="g-switch on" data-notif role="switch" aria-checked="true" aria-label="Notifications"></button></div>
+                      <button type="button" class="g-row g-link" data-version><span data-t="version">ตรวจสอบเวอร์ชัน</span><small>v1.0.3 ›</small></button>
+                    </div>
+                    <button type="button" class="g-logout" data-logout data-t="logout">ออกจากระบบ</button>
+                  </div>
+                  <div class="g-modal" data-update hidden><div class="box"><div class="g-logo sm" style="justify-self:center">S</div><b data-up-title>มีเวอร์ชันใหม่</b><small data-up-text>SynnexGo 1.0.4 (ตัวอย่าง) พร้อมให้อัปเดตบน App Store แล้ว กรุณาอัปเดตเพื่อใช้งานต่อ</small><span class="g-progress"><i data-up-bar></i></span><div class="row"><button type="button" style="background:#4894a3" data-up-go>อัปเดตตอนนี้</button></div></div></div>
                 </div>
 
                 <div class="g-scr" data-scr="go-leave" hidden>
                   <div class="g-head"><h5><button type="button" class="back" data-go-to="go-home" aria-label="Back">‹</button>ลาหยุดงาน</h5></div>
                   <div class="g-body">
                     <div class="g-field"><span>ประเภทการลา</span><div class="g-chips" data-go-types></div></div>
-                    <div class="g-dates"><div class="g-field"><span>เริ่ม</span><div class="g-in" style="color:#222">27 ต.ค. 2569</div></div><div class="g-field"><span>ถึง</span><div class="g-in" style="color:#222">28 ต.ค. 2569</div></div></div>
+                    <div class="g-dates"><div class="g-field"><span>เริ่ม</span><div class="g-in g-in-on">27 ต.ค. 2569</div></div><div class="g-field"><span>ถึง</span><div class="g-in g-in-on">28 ต.ค. 2569</div></div></div>
                     <div class="g-field"><span>ผู้รับหน้าที่แทน</span><div class="g-in">ผู้รับหน้าที่เเทนคนที่1</div><div class="g-in">ผู้รับหน้าที่เเทนคนที่2</div></div>
                     <div class="g-field"><span>เหตุผลการลา</span><div class="g-in">ระบุเหตุผลการลา</div></div>
                     <div class="g-field"><span>แนบไฟล์</span><div class="g-in">📎 เลือกรูปภาพ / เอกสาร</div></div>
                     <button type="button" class="g-btn" data-go-send>ยืนยันการส่งใบลา</button>
                   </div>
                 </div>
-
-                <div class="g-scr" data-scr="go-approve" hidden>
-                  <div class="g-head"><h5><button type="button" class="back" data-go-to="go-home" aria-label="Back">‹</button>Approval Center<span class="g-badge" data-go-count>4</span></h5></div>
-                  <div class="g-body">
-                    <div class="g-search"><span>ค้นหาด้วยเลขที่เอกสาร...</span><b>Refresh</b></div>
-                    <div style="display:grid;gap:8px" data-go-docs></div>
-                  </div>
-                </div>
               </div>
             </div>
+            <p class="phone-note">Try it: log in, plan a visit and pick a route, chat in Prompt and Care, pull down and swipe cards in Approval Center, then switch language or dark mode in Settings. Customers, people and documents are sample data.</p>
           </div>
           <details class="deep" data-project="SynnexGo">
             <summary><span>Project details</span><small>What it does, highlights and what's under the hood</small></summary>
@@ -1268,107 +1558,564 @@ footer { padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-conte
   renderRows();
 
   // SynnexGo: phone app preview
-  const phone = $('#pv-go');
-  function goScreen(scr) {
-    trackOnce('Preview Screen', { project: 'SynnexGo', screen: scr });
-    phone.querySelectorAll('.g-scr').forEach(s => s.hidden = s.dataset.scr !== scr);
-    phone.querySelector(`.g-scr[data-scr="${scr}"]`).scrollTop = 0;
-    $$('.screens[data-for="pv-go"] button').forEach(t => t.setAttribute('aria-selected', t.dataset.scr === scr));
-  }
-  phone.querySelectorAll('[data-go-to]').forEach(b => b.onclick = () => goScreen(b.dataset.goTo));
-  let pushT;
-  const push = msg => { const p = phone.querySelector('[data-push]'); p.querySelector('[data-push-text]').textContent = msg; p.classList.add('show'); clearTimeout(pushT); pushT = setTimeout(() => p.classList.remove('show'), 3200); };
+  const phone = $('#pv-go'), gRoot = phone.querySelector('[data-go-root]');
+  const gq = s => phone.querySelector(s), gqa = s => [...phone.querySelectorAll(s)];
   const two = n => String(n).padStart(2, '0');
-  const days = ['วันอาทิตย์', 'วันจันทร์', 'วันอังคาร', 'วันพุธ', 'วันพฤหัส', 'วันศุกร์', 'วันเสาร์'];
-  function tickPhone() {
-    const d = new Date();
-    phone.querySelector('[data-go-time]').textContent = `${two(d.getHours())}:${two(d.getMinutes())}`;
-    phone.querySelector('[data-go-clock]').textContent = `${two(d.getHours())}:${two(d.getMinutes())}:${two(d.getSeconds())}`;
-    phone.querySelector('[data-go-day]').textContent = days[d.getDay()];
-    phone.querySelector('[data-go-date]').textContent = new Intl.DateTimeFormat('th-TH', { dateStyle: 'long' }).format(d);
-    if (clockIn && !clockOut) showDur(d);
+  const hm = d => `${two(d.getHours())}:${two(d.getMinutes())}`;
+  const gAct = action => trackOnce('SynnexGo Action', { action });
+  const gState = { lang: 'TH', notif: true, remember: true };
+  const gOnEnter = {};
+  let gCur = 'go-login';
+
+  // Navigation: native-stack style push (new screen slides in from the right) and pop (back)
+  function goScreen(scr, dir) {
+    const next = gq(`.g-scr[data-scr="${scr}"]`);
+    if (!next) return;
+    trackOnce('Preview Screen', { project: 'SynnexGo', screen: scr });
+    gqa('.g-scr').forEach(s => { s.hidden = s !== next; s.classList.remove('push-in', 'pop-in'); });
+    if (dir && !reduce) { void next.offsetWidth; next.classList.add(dir === 'pop' ? 'pop-in' : 'push-in'); }
+    next.querySelectorAll('.g-body').forEach(b => b.scrollTop = 0);
+    gCur = scr;
+    $$('.screens[data-for="pv-go"] button').forEach(t => t.setAttribute('aria-selected', t.dataset.scr === scr));
+    if (gOnEnter[scr]) gOnEnter[scr]();
+  }
+  phone.addEventListener('click', e => { const b = e.target.closest('[data-go-to]'); if (b) goScreen(b.dataset.goTo, b.classList.contains('back') ? 'pop' : 'push'); });
+
+  // Push notifications (tap one to jump to its screen) and in-app snackbar
+  let gPushT, gPushTarget = null, gSnackT;
+  const push = (msg, target) => {
+    if (!gState.notif) return;
+    const p = gq('[data-push]');
+    gq('[data-push-text]').textContent = msg; gPushTarget = target || null;
+    p.classList.add('show'); clearTimeout(gPushT); gPushT = setTimeout(() => p.classList.remove('show'), 3600);
+  };
+  gq('[data-push]').onclick = () => { gq('[data-push]').classList.remove('show'); if (gPushTarget && gPushTarget !== gCur) goScreen(gPushTarget, 'push'); };
+  const snack = msg => { const s = gq('[data-snack]'); s.textContent = msg; s.classList.add('show'); clearTimeout(gSnackT); gSnackT = setTimeout(() => s.classList.remove('show'), 2200); };
+  const gToggle = (el, on) => { el.classList.toggle('on', on); el.setAttribute('aria-checked', on); };
+
+  // Thai / English, like the app's per-screen text dictionaries
+  const gDict = {
+    TH: { now: 'ตอนนี้', login: 'เข้าสู่ระบบ', loginSub: 'ใช้บัญชีผู้ใช้ของบริษัท (AD)', user: 'ชื่อผู้ใช้', pass: 'รหัสผ่าน', remember: 'จดจำการเข้าสู่ระบบ', autoLogin: 'กำลังเข้าสู่ระบบอัตโนมัติ…', cancel: 'ยกเลิก', home: 'หน้าหลัก', favs: 'รายการโปรด', chooseapp: 'เลือกการทำงานของคุณ', allapps: 'เเอปพลิเคชั่นทั้งหมด', pinHint: 'แตะ ☆ เพื่อปักหมุดแอปไว้ในรายการโปรด', clockTitle: 'บันทึกเวลาเข้า - ออก', inbox: 'กล่องเข้า', sent: 'ส่งแล้ว', pull: 'ดึงลงเพื่อรีเฟรช', release: 'ปล่อยเพื่อรีเฟรช', loading: 'กำลังโหลด…', searchDoc: 'ค้นหาด้วยเลขที่เอกสาร...', swipeHint: 'ปัดขวาเพื่ออนุมัติ · ปัดซ้ายเพื่อไม่อนุมัติ · ดึงลงเพื่อรีเฟรช', settings: 'ตั้งค่า', lang: 'ภาษา', dark: 'โหมดมืด', notif: 'การแจ้งเตือน', version: 'ตรวจสอบเวอร์ชัน', logout: 'ออกจากระบบ', people: 'ค้นหาชื่อ แผนก หรือเบอร์ภายใน', notInPreview: 'ไม่ได้อยู่ในตัวอย่างนี้', tabs: ['หน้าหลัก', 'ประวัติเข้าพบ', 'บันทึกเวลาเข้า - ออก', 'โปรไฟล์'] },
+    EN: { now: 'now', login: 'Log in', loginSub: 'Use your company (AD) account', user: 'Username', pass: 'Password', remember: 'Keep me signed in', autoLogin: 'Signing you in automatically…', cancel: 'Cancel', home: 'Home page', favs: 'Favorites', chooseapp: 'Choose your app', allapps: 'All applications', pinHint: 'Tap ☆ to pin an app to favorites', clockTitle: 'Time clock', inbox: 'Inbox', sent: 'Sent', pull: 'Pull down to refresh', release: 'Release to refresh', loading: 'Loading…', searchDoc: 'Search by document number...', swipeHint: 'Swipe right to approve · left to reject · pull to refresh', settings: 'Settings', lang: 'Language', dark: 'Dark mode', notif: 'Notifications', version: 'Check for updates', logout: 'Log out', people: 'Search name, team or extension', notInPreview: 'is not part of this preview', tabs: ['Home', 'History', 'Time clock', 'Profile'] }
+  };
+  const gt = k => gDict[gState.lang][k];
+  function applyLang() {
+    gqa('[data-t]').forEach(el => { const v = gt(el.dataset.t); if (v) el.textContent = v; });
+    gq('[data-people-q]').placeholder = gt('people');
+    renderTabs();
   }
 
-  // Launcher: app list from the repo, favourites toggle like the app's AsyncStorage list
-  const goApps = [
-    { name: 'CustomerVisit', desc: 'CustomerVisit application for employes', ic: '📍', bg: '#e3f1f4', to: 'go-clock', fav: true },
-    { name: 'Prompt and Care', desc: 'Easily check and response to product request', ic: '💬', bg: '#fdf0e6' },
-    { name: 'Leave', desc: 'Leave application for employees', ic: '🗓', bg: '#eaf6ee', to: 'go-leave', fav: true },
-    { name: 'Approval Center', desc: 'Approval Center for employees', ic: '✅', bg: '#eef0fc', to: 'go-approve', fav: true },
-    { name: 'Synnex Contact', desc: 'Synnex Contact for employees', ic: '📇', bg: '#f6eefb' }
-  ];
-  const openApp = a => a.to ? goScreen(a.to) : toast(a.name + ' is not part of this preview');
-  function renderApps() {
-    const favs = phone.querySelector('[data-go-favs]'), list = phone.querySelector('[data-go-apps]');
-    favs.innerHTML = ''; list.innerHTML = '';
-    const f = goApps.filter(a => a.fav);
-    if (!f.length) favs.innerHTML = '<div class="g-empty">ยังไม่มีรายการโปรด · No favourites yet</div>';
-    f.forEach(a => { const b = document.createElement('button'); b.type = 'button'; b.className = 'g-fav'; b.innerHTML = `<div class="ic" style="background:${a.bg}">${a.ic}</div><div></div>`; b.lastChild.textContent = a.name; b.onclick = () => openApp(a); favs.appendChild(b); });
-    goApps.forEach(a => {
-      const row = document.createElement('div'); row.className = 'g-app'; row.style.cursor = 'pointer';
-      row.innerHTML = `<span class="ic" style="background:${a.bg}">${a.ic}</span><span><b></b><small></small></span><button type="button" class="g-star" aria-label="Toggle favourite">${a.fav ? '★' : '☆'}</button>`;
-      row.querySelector('b').textContent = a.name; row.querySelector('small').textContent = a.desc;
-      row.onclick = e => { if (e.target.closest('.g-star')) { a.fav = !a.fav; renderApps(); } else openApp(a); };
-      list.appendChild(row);
+  // CustomerVisit bottom tabs (Menu.jsx): Home, History, Check in/out, Profile
+  const gTabDefs = [['⌂', 'go-visits'], ['↺', null], ['◷', 'go-clock'], ['☺', null]];
+  function renderTabs() {
+    gqa('[data-tabs]').forEach(tabBar => {
+      tabBar.innerHTML = '';
+      gTabDefs.forEach(([ic, to], i) => {
+        const b = document.createElement('button'); b.type = 'button';
+        if (to === tabBar.dataset.tabs) b.className = 'on';
+        b.innerHTML = `<i>${ic}</i><span></span>`; b.lastChild.textContent = gt('tabs')[i];
+        b.onclick = () => { if (!to) snack(`${gt('tabs')[i]} ${gt('notInPreview')}`); else if (to !== gCur) goScreen(to); };
+        tabBar.appendChild(b);
+      });
     });
   }
-  renderApps();
+
+  // Splash, login and auto-login with saved credentials (expo-secure-store in the app)
+  let gSaved = false, gSkipSplash = false, gAutoT, gSplashT;
+  const resetLoginBtn = () => { const b = gq('[data-login]'); b.disabled = false; b.innerHTML = `<span data-t="login">${gt('login')}</span>`; };
+  gOnEnter['go-login'] = () => {
+    clearTimeout(gAutoT); clearTimeout(gSplashT); gq('[data-auto]').hidden = true; resetLoginBtn();
+    const sp = gq('[data-splash]');
+    if (gSkipSplash) { gSkipSplash = false; sp.classList.add('out'); return; }
+    sp.classList.remove('out');
+    gSplashT = setTimeout(() => {
+      sp.classList.add('out');
+      if (gSaved) { gq('[data-auto]').hidden = false; gAutoT = setTimeout(() => doLogin(true), 1800); }
+    }, reduce ? 300 : 1500);
+  };
+  function doLogin(auto) {
+    const b = gq('[data-login]'); b.disabled = true; b.innerHTML = '<span class="g-spin"></span>';
+    gq('[data-auto]').hidden = true; gAct(auto ? 'auto login' : 'login');
+    setTimeout(() => {
+      gSaved = gState.remember;
+      goScreen('go-home', 'push');
+      push(auto ? 'เข้าสู่ระบบอัตโนมัติจากข้อมูลที่จดจำไว้ 🔐' : 'เข้าสู่ระบบสำเร็จ ยินดีต้อนรับ 👋');
+      resetLoginBtn();
+    }, reduce ? 200 : 1100);
+  }
+  gq('[data-login]').onclick = () => doLogin(false);
+  // Tapping the splash skips it, so the login button is never stuck underneath
+  gq('[data-splash]').onclick = () => { clearTimeout(gSplashT); gq('[data-splash]').classList.add('out'); };
+  gq('[data-auto-cancel]').onclick = () => { clearTimeout(gAutoT); gq('[data-auto]').hidden = true; };
+  gq('[data-eye]').onclick = () => { const p = gq('[data-pass]'); p.textContent = p.textContent.startsWith('•') ? 'demo-pass' : '••••••••'; };
+  gq('[data-remember]').onclick = e => { gState.remember = !gState.remember; gToggle(e.currentTarget, gState.remember); };
+
+  // Sample data shared by several screens
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const dayKey = d => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+  const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+  const thMonth = d => new Intl.DateTimeFormat('th-TH', { month: 'long', year: 'numeric' }).format(d);
+  const thDay = d => new Intl.DateTimeFormat('th-TH', { day: 'numeric', month: 'short' }).format(d);
+  const gCusts = [
+    { name: 'IT Mall บางนา', tag: 'IT Mall', who: 'คุณสมชาย · จัดซื้อ', x: 236, y: 44 },
+    { name: 'Demo Computer รังสิต', tag: 'Demo', who: 'คุณวิภา · เจ้าของร้าน', x: 222, y: 150 },
+    { name: 'Sample Tech นนทบุรี', tag: 'Sample Tech', who: 'คุณกิตติ · ฝ่ายไอที', x: 128, y: 30 }
+  ];
+  const gVisits = [
+    { d: addDays(today, 0), t: '10:00', c: 0, st: 'plan' },
+    { d: addDays(today, 0), t: '14:30', c: 1, st: 'done' },
+    { d: addDays(today, 2), t: '09:30', c: 2, st: 'plan' },
+    { d: addDays(today, 5), t: '13:00', c: 0, st: 'plan' },
+    { d: addDays(today, -1), t: '15:00', c: 2, st: 'cancel' },
+    { d: addDays(today, -3), t: '11:00', c: 1, st: 'done' }
+  ];
+  const gDocs = [['LV-69-01482', 'ใบลา', 'ลากิจ 1 วัน · ฝ่ายขาย'], ['OT-69-00317', 'ทำงานล่วงเวลา', '3 ชม. · คลังสินค้า'], ['PR-69-02210', 'ขอซื้อ', 'Notebook 2 เครื่อง · ฿58,900'], ['EX-69-00412', 'เบิกค่าเดินทาง', 'เข้าพบลูกค้า 18.4 กม. · ฿412']];
+  const gTickets = {
+    inbox: [
+      { no: 'PC-69-0142', title: 'ขอใบเสนอราคา Notebook 20 เครื่อง', from: 'ฝ่ายขายองค์กร', time: '09:12', st: 'wait', unread: true, item: 'Notebook', qty: 20,
+        msgs: [{ who: 'ฝ่ายขายองค์กร', text: 'รบกวนขอใบเสนอราคา Notebook 20 เครื่อง สำหรับลูกค้าสถานศึกษาครับ', t: '09:12' }, { who: 'ฝ่ายขายองค์กร', file: 'spec-requirement.pdf', t: '09:13' }] },
+      { no: 'PC-69-0139', title: 'สอบถามสต็อก Printer รุ่นใหม่', from: 'ร้านค้าตัวอย่าง', time: 'เมื่อวาน', st: 'work', unread: true, item: 'Printer', qty: 6,
+        msgs: [{ who: 'ร้านค้าตัวอย่าง', text: 'Printer รุ่นใหม่มีของพร้อมส่งกี่เครื่องคะ', t: '16:40' }, { me: true, text: 'กำลังเช็กสต็อกคลังให้ครับ', t: '16:52' }] },
+      { no: 'PC-69-0127', title: 'เคลม Monitor 2 เครื่อง', from: 'Service Center', time: '22 ต.ค.', st: 'closed', item: 'Monitor', qty: 2,
+        msgs: [{ who: 'Service Center', text: 'ส่งเครื่องทดแทนให้ลูกค้าเรียบร้อยแล้วครับ', t: '10:05' }, { sys: 'ปิดคำขอแล้ว' }] }
+    ],
+    sent: [
+      { no: 'PC-69-0144', title: 'ขอราคาพิเศษ Accessories 50 ชิ้น', from: 'ถึง: Product Manager', time: '08:30', st: 'wait', item: 'Accessories', qty: 50,
+        msgs: [{ me: true, text: 'ขอราคาพิเศษ Accessories 50 ชิ้น สำหรับโปรโมชันปลายปีครับ', t: '08:30' }] }
+    ]
+  };
+
+  // Launcher: app list from Allapp.jsx, favourites like its AsyncStorage list, live badges
+  const goApps = [
+    { name: 'CustomerVisit', desc: 'CustomerVisit application for employes', ic: '📍', bg: '#e3f1f4', to: 'go-visits', fav: true },
+    { name: 'Prompt and Care', desc: 'Easily check and response to product request', ic: '💬', bg: '#fdf0e6', to: 'go-tickets', fav: true, badge: () => gTickets.inbox.filter(t => t.unread).length },
+    { name: 'Approval Center', desc: 'Approval Center for employees', ic: '✅', bg: '#eef0fc', to: 'go-approve', fav: true, badge: () => gDocs.length },
+    { name: 'Synnex Contact', desc: 'Synnex Contact for employees', ic: '📇', bg: '#f6eefb', to: 'go-contacts' },
+    { name: 'Leave', desc: 'Leave application for employees (coming soon)', ic: '🗓', bg: '#eaf6ee', to: 'go-leave' }
+  ];
+  const badgeHtml = a => { const n = a.badge ? a.badge() : 0; return n ? `<i class="g-dot">${n}</i>` : ''; };
+  function renderApps() {
+    const favs = gq('[data-go-favs]'), appList = gq('[data-go-apps]');
+    favs.innerHTML = ''; appList.innerHTML = '';
+    const f = goApps.filter(a => a.fav);
+    if (!f.length) favs.innerHTML = '<div class="g-empty">ยังไม่มีรายการโปรด · No favorites yet</div>';
+    f.forEach(a => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'g-fav';
+      b.innerHTML = `<div class="ic" style="background:${a.bg}">${a.ic}${badgeHtml(a)}</div><div></div>`; b.lastChild.textContent = a.name;
+      b.onclick = () => goScreen(a.to, 'push'); favs.appendChild(b);
+    });
+    goApps.forEach(a => {
+      const row = document.createElement('div'); row.className = 'g-app tap';
+      row.innerHTML = `<span class="ic" style="background:${a.bg}">${a.ic}${badgeHtml(a)}</span><span><b></b><small></small></span><button type="button" class="g-star" aria-label="Toggle favorite">${a.fav ? '★' : '☆'}</button>`;
+      row.querySelector('b').textContent = a.name; row.querySelector('small').textContent = a.desc;
+      row.onclick = e => { if (e.target.closest('.g-star')) { a.fav = !a.fav; renderApps(); snack(a.fav ? `ปักหมุด ${a.name} แล้ว` : `เอา ${a.name} ออกจากรายการโปรดแล้ว`); } else goScreen(a.to, 'push'); };
+      appList.appendChild(row);
+    });
+  }
+  gOnEnter['go-home'] = renderApps;
+
+  // CustomerVisit: month calendar with visit dots, day list, cancel with confirm
+  let gMonth = new Date(today.getFullYear(), today.getMonth(), 1), gSel = new Date(today), gCancelIdx = -1;
+  const gStLabel = { plan: 'นัดหมาย', done: 'เข้าพบแล้ว', cancel: 'ยกเลิก' };
+  function renderCal() {
+    gq('[data-cal-title]').textContent = thMonth(gMonth);
+    const g = gq('[data-cal-grid]');
+    g.innerHTML = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'].map(w => `<span class="wd">${w}</span>`).join('');
+    const first = gMonth.getDay(), n = new Date(gMonth.getFullYear(), gMonth.getMonth() + 1, 0).getDate();
+    for (let i = 0; i < first; i++) g.appendChild(document.createElement('span'));
+    const has = new Set(gVisits.filter(v => v.st !== 'cancel').map(v => dayKey(v.d)));
+    for (let day = 1; day <= n; day++) {
+      const d = new Date(gMonth.getFullYear(), gMonth.getMonth(), day), b = document.createElement('button');
+      b.type = 'button'; b.textContent = day;
+      if (dayKey(d) === dayKey(today)) b.classList.add('today');
+      if (dayKey(d) === dayKey(gSel)) b.classList.add('sel');
+      if (has.has(dayKey(d))) b.appendChild(document.createElement('i'));
+      b.onclick = () => { gSel = d; renderCal(); };
+      g.appendChild(b);
+    }
+    renderDay();
+  }
+  function renderDay() {
+    gq('[data-day-title]').textContent = 'นัดหมาย ' + thDay(gSel) + (dayKey(gSel) === dayKey(today) ? ' · วันนี้' : '');
+    const w = gq('[data-day-list]'); w.innerHTML = '';
+    const dayVisits = gVisits.filter(v => dayKey(v.d) === dayKey(gSel)).sort((a, b) => a.t.localeCompare(b.t));
+    if (!dayVisits.length) { w.innerHTML = '<div class="g-empty" style="color:#FF3D00">ยังไม่มีการนัดหมาย · แตะ + เพื่อเพิ่ม</div>'; return; }
+    dayVisits.forEach(v => {
+      const c = gCusts[v.c], el = document.createElement('div'); el.className = 'g-visit ' + v.st;
+      el.innerHTML = `<span class="t">${v.t}</span><div><b></b><small></small></div><div><span class="g-pill ${v.st}">${gStLabel[v.st]}</span>${v.st === 'plan' ? '<button type="button" class="x">ยกเลิกนัด</button>' : ''}</div>`;
+      el.querySelector('b').textContent = c.name; el.querySelector('small').textContent = c.who + (v.route ? ' · ' + v.route : '');
+      const x = el.querySelector('.x');
+      if (x) x.onclick = () => { gCancelIdx = gVisits.indexOf(v); gq('[data-cancel-name]').textContent = `${c.name} · ${v.t} น.`; gq('[data-cancel-modal]').hidden = false; };
+      w.appendChild(el);
+    });
+  }
+  gqa('[data-cal]').forEach(b => b.onclick = () => { gMonth = new Date(gMonth.getFullYear(), gMonth.getMonth() + Number(b.dataset.cal), 1); renderCal(); });
+  gq('[data-cancel-no]').onclick = () => gq('[data-cancel-modal]').hidden = true;
+  gq('[data-cancel-yes]').onclick = () => { gq('[data-cancel-modal]').hidden = true; if (gVisits[gCancelIdx]) { gVisits[gCancelIdx].st = 'cancel'; renderCal(); snack('ยกเลิกนัดหมายแล้ว'); } };
+  gOnEnter['go-visits'] = renderCal;
+
+  // Route planner: alternative routes, avoid tolls, live traffic, a car driving the chosen route
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const gOrigin = { x: 40, y: 158 };
+  const gRouteDefs = [
+    { name: 'ทางด่วน', toll: true, speed: 75, jam: 4, k: 1, make: (o, d) => `M${o.x} ${o.y} Q ${(o.x + d.x) / 2 - 30} ${Math.min(o.y, d.y) - 34} ${d.x} ${d.y}` },
+    { name: 'ถนนสายหลัก', toll: false, speed: 42, jam: 11, k: 1, make: (o, d) => { const my = d.y + (o.y - d.y) * 0.45; return `M${o.x} ${o.y} L ${o.x} ${my} L ${d.x} ${my} L ${d.x} ${d.y}`; } },
+    // The shortcut cuts through side streets, so it is shorter than its drawn line
+    { name: 'ทางลัดในซอย', toll: false, speed: 30, jam: 6, k: 0.82, make: (o, d) => { const x1 = o.x + (d.x - o.x) / 3, x2 = o.x + 2 * (d.x - o.x) / 3, my = (o.y + d.y) / 2; return `M${o.x} ${o.y} L ${x1} ${o.y} L ${x1} ${my} L ${x2} ${my} L ${x2} ${d.y} L ${d.x} ${d.y}`; } }
+  ];
+  let gCust = 0, gRouteSel = 0, gAvoid = false, gTraffic = true, gDay = 1, gTime = '10:30', gCar = null;
+  const gPaths = [];
+  const routeStats = i => { const r = gRouteDefs[i], km = gPaths[i].getTotalLength() * 0.085 * r.k; return { km: km.toFixed(1), min: Math.round(km / r.speed * 60) + 4 + (gTraffic ? r.jam : 0) }; };
+  function renderMap() {
+    const svg = gq('[data-map]'), d = gCusts[gCust];
+    svg.innerHTML = '';
+    const el = (tag, attrs) => { const node = document.createElementNS(SVGNS, tag); Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, v)); svg.appendChild(node); return node; };
+    el('rect', { x: 0, y: 0, width: 280, height: 190, style: 'fill:var(--g-map)' });
+    el('path', { d: 'M0 112 C 60 100, 120 130, 180 108 S 260 96, 280 104', style: 'fill:none;stroke:#bfe0f0;stroke-width:9;opacity:.8' });
+    el('rect', { x: 150, y: 118, width: 40, height: 26, rx: 6, style: 'fill:#cfe9cf;opacity:.8' });
+    for (let x = 20; x < 280; x += 36) el('line', { x1: x, y1: 0, x2: x, y2: 190, style: 'stroke:var(--g-road);stroke-width:4' });
+    for (let y = 16; y < 190; y += 34) el('line', { x1: 0, y1: y, x2: 280, y2: y, style: 'stroke:var(--g-road);stroke-width:4' });
+    const defs = el('defs', {});
+    defs.innerHTML = `<linearGradient id="gTraffic" gradientUnits="userSpaceOnUse" x1="${gOrigin.x}" y1="${gOrigin.y}" x2="${d.x}" y2="${d.y}"><stop offset="0" stop-color="#16a34a"/><stop offset=".42" stop-color="#f59e0b"/><stop offset=".58" stop-color="#dc2626"/><stop offset=".78" stop-color="#f59e0b"/><stop offset="1" stop-color="#16a34a"/></linearGradient>`;
+    gPaths.length = 0;
+    const avail = gRouteDefs.map((r, i) => i).filter(i => !(gAvoid && gRouteDefs[i].toll));
+    if (!avail.includes(gRouteSel)) gRouteSel = avail[0];
+    // Alternatives first in grey, the chosen route last so it sits on top
+    [...avail.filter(i => i !== gRouteSel), gRouteSel].forEach(i => {
+      const sel = i === gRouteSel, dd = gRouteDefs[i].make(gOrigin, d);
+      if (sel) el('path', { d: dd, style: 'fill:none;stroke:#fff;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;opacity:.9' });
+      const p = el('path', { d: dd, style: `fill:none;stroke:${sel ? (gTraffic ? 'url(#gTraffic)' : '#4894a3') : '#9aa8a6'};stroke-width:${sel ? 5 : 4};stroke-linecap:round;stroke-linejoin:round;opacity:${sel ? 1 : .55};cursor:pointer${gRouteDefs[i].toll && !sel ? ';stroke-dasharray:6 5' : ''}` });
+      p.addEventListener('click', () => { gRouteSel = i; renderRoute(); });
+      gPaths[i] = p;
+    });
+    const pin = (x, y, color, label) => {
+      el('circle', { cx: x, cy: y, r: 7, style: `fill:${color};stroke:#fff;stroke-width:2.5` });
+      const t = el('text', { x, y: y - 11, 'text-anchor': 'middle', style: 'font:600 9px Prompt, sans-serif;fill:var(--g-text);paint-order:stroke;stroke:var(--g-map);stroke-width:3' });
+      t.textContent = label;
+    };
+    pin(gOrigin.x, gOrigin.y, '#4894a3', 'SYNNEX');
+    pin(d.x, d.y, '#FF3D00', d.tag);
+    gCar = el('circle', { cx: gOrigin.x, cy: gOrigin.y, r: 4.5, style: 'fill:#111;stroke:#fff;stroke-width:2' });
+  }
+  function renderRoute() {
+    renderMap();
+    const w = gq('[data-routes]'); w.innerHTML = '';
+    gRouteDefs.forEach((r, i) => {
+      if (gAvoid && r.toll) return;
+      const s = routeStats(i), slow = gTraffic && r.jam > 8;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'g-route' + (i === gRouteSel ? ' on' : '');
+      b.innerHTML = `<b>${r.name}</b><span class="min${slow ? ' slow' : ''}">${s.min} นาที</span><small>${s.km} กม.${r.toll ? ' · มีค่าผ่านทาง' : ''}${gTraffic ? (slow ? ' · รถติดหนาแน่น' : ' · การจราจรคล่องตัว') : ''}</small>`;
+      b.onclick = () => { gRouteSel = i; renderRoute(); };
+      w.appendChild(b);
+    });
+    const s = routeStats(gRouteSel);
+    gq('[data-eta]').textContent = `🚗 ${s.min} นาที · ${s.km} กม.`;
+  }
+  const chipRow = (sel, labels, get, set, after) => {
+    const w = gq(sel); w.innerHTML = '';
+    labels.forEach((t, i) => {
+      const b = document.createElement('button'); b.type = 'button'; b.textContent = t; if (i === get()) b.className = 'on';
+      b.onclick = () => { set(i); chipRow(sel, labels, get, set, after); if (after) after(); };
+      w.appendChild(b);
+    });
+  };
+  const gTimes = ['09:00', '10:30', '13:00', '15:30'];
+  function renderRouteForm() {
+    chipRow('[data-custs]', gCusts.map(c => c.name), () => gCust, v => gCust = v, renderRoute);
+    chipRow('[data-when-day]', [0, 1, 2, 3].map(n => n === 0 ? 'วันนี้' : n === 1 ? 'พรุ่งนี้' : thDay(addDays(today, n))), () => gDay, v => gDay = v);
+    chipRow('[data-when-time]', gTimes, () => gTimes.indexOf(gTime), v => gTime = gTimes[v]);
+  }
+  gq('[data-avoid]').onclick = e => { gAvoid = !gAvoid; e.currentTarget.classList.toggle('on', gAvoid); renderRoute(); snack(gAvoid ? 'ซ่อนเส้นทางที่มีค่าผ่านทางแล้ว' : 'แสดงทุกเส้นทาง'); };
+  gq('[data-traffic]').onclick = e => { gTraffic = !gTraffic; e.currentTarget.classList.toggle('on', gTraffic); renderRoute(); };
+  gq('[data-save-visit]').onclick = () => {
+    const d = addDays(today, gDay), r = gRouteDefs[gRouteSel], s = routeStats(gRouteSel);
+    gVisits.push({ d, t: gTime, c: gCust, st: 'plan', route: `${r.name} ${s.min} นาที` });
+    gSel = d; gMonth = new Date(d.getFullYear(), d.getMonth(), 1);
+    gAct('plan visit');
+    goScreen('go-visits', 'pop');
+    push(`เพิ่มนัดหมาย ${gCusts[gCust].name} ${thDay(d)} ${gTime} น. แล้ว`, 'go-visits');
+  };
+  gOnEnter['go-route'] = () => { renderRouteForm(); renderRoute(); };
+  (function carLoop(ts) {
+    if (gCur === 'go-route' && gCar && gPaths[gRouteSel] && !reduce) {
+      const p = gPaths[gRouteSel], pt = p.getPointAtLength((ts / 4200 % 1) * p.getTotalLength());
+      gCar.setAttribute('cx', pt.x); gCar.setAttribute('cy', pt.y);
+    }
+    requestAnimationFrame(carLoop);
+  })(0);
 
   // Clock in / out with the app's confirm step
   let clockIn = null, clockOut = null;
-  const checkBtn = phone.querySelector('[data-go-check]'), modal = phone.querySelector('[data-go-modal]');
-  const hm = d => `${two(d.getHours())}:${two(d.getMinutes())}`;
+  const checkBtn = gq('[data-go-check]'), clockModal = gq('[data-go-modal]');
+  const gDays = ['วันอาทิตย์', 'วันจันทร์', 'วันอังคาร', 'วันพุธ', 'วันพฤหัส', 'วันศุกร์', 'วันเสาร์'];
   function showDur(now) {
     const m = Math.max(0, Math.floor(((clockOut || now) - clockIn) / 60000));
-    phone.querySelector('[data-go-dur]').innerHTML = `ทำงานไปแล้ว <span>${Math.floor(m / 60)}</span> ชั่วโมง <span>${m % 60}</span> นาที`;
+    gq('[data-go-dur]').innerHTML = `ทำงานไปแล้ว <span>${Math.floor(m / 60)}</span> ชั่วโมง <span>${m % 60}</span> นาที`;
+  }
+  function tickPhone() {
+    const d = new Date();
+    gq('[data-go-time]').textContent = hm(d);
+    gq('[data-go-clock]').textContent = `${hm(d)}:${two(d.getSeconds())}`;
+    gq('[data-go-day]').textContent = gDays[d.getDay()];
+    gq('[data-go-date]').textContent = new Intl.DateTimeFormat('th-TH', { dateStyle: 'long' }).format(d);
+    if (clockIn && !clockOut) showDur(d);
   }
   checkBtn.onclick = () => {
-    if (clockIn && clockOut) { clockIn = clockOut = null; phone.querySelector('[data-go-in]').textContent = phone.querySelector('[data-go-out]').textContent = '--:--'; phone.querySelector('[data-go-dur]').textContent = 'ยังไม่ได้บันทึกเวลาวันนี้'; checkBtn.className = 'g-check'; checkBtn.innerHTML = 'เข้างาน<small>แตะเพื่อบันทึกเวลา</small>'; return; }
-    phone.querySelector('[data-go-q]').textContent = clockIn ? 'คุณต้องการออกงานหรือไม่?' : 'คุณต้องการเข้างานหรือไม่?';
-    modal.hidden = false;
+    if (clockIn && clockOut) { clockIn = clockOut = null; gq('[data-go-in]').textContent = gq('[data-go-out]').textContent = '--:--'; gq('[data-go-dur]').textContent = 'ยังไม่ได้บันทึกเวลาวันนี้'; checkBtn.className = 'g-check'; checkBtn.innerHTML = 'เข้างาน<small>แตะเพื่อบันทึกเวลา</small>'; return; }
+    gq('[data-go-q]').textContent = clockIn ? 'คุณต้องการออกงานหรือไม่?' : 'คุณต้องการเข้างานหรือไม่?';
+    clockModal.hidden = false;
   };
-  phone.querySelector('[data-go-no]').onclick = () => modal.hidden = true;
-  phone.querySelector('[data-go-yes]').onclick = () => {
-    modal.hidden = true; const now = new Date();
+  gq('[data-go-no]').onclick = () => clockModal.hidden = true;
+  gq('[data-go-yes]').onclick = () => {
+    clockModal.hidden = true; const now = new Date();
     if (!clockIn) {
-      clockIn = now; phone.querySelector('[data-go-in]').textContent = hm(now);
+      clockIn = now; gq('[data-go-in]').textContent = hm(now);
       checkBtn.className = 'g-check out'; checkBtn.innerHTML = 'ออกงาน<small>แตะเพื่อบันทึกเวลา</small>'; showDur(now);
-      push('เช็คอินสำเร็จ ' + hm(now) + ' น. · บริษัท ซินเน็ค');
+      gAct('clock in'); push('เช็คอินสำเร็จ ' + hm(now) + ' น. · บริษัท ซินเน็ค');
     } else {
-      clockOut = now; showDur(now); phone.querySelector('[data-go-out]').textContent = hm(now);
+      clockOut = now; showDur(now); gq('[data-go-out]').textContent = hm(now);
       checkBtn.className = 'g-check'; checkBtn.innerHTML = 'เสร็จแล้ว<small>แตะเพื่อเริ่มใหม่</small>';
       push('เช็คเอาท์สำเร็จ ' + hm(now) + ' น.');
     }
   };
-  tickPhone(); setInterval(tickPhone, 1000);
+
+  // Prompt and Care: inbox / sent tickets, chat thread with typing indicator, new request sheet
+  const gTkSt = { wait: 'รอดำเนินการ', work: 'กำลังดำเนินการ', closed: 'ปิดแล้ว' };
+  const gReplies = ['รับทราบครับ เดี๋ยวส่งรายละเอียดเพิ่มเติมให้นะครับ', 'ขอบคุณครับ ทีมจะอัปเดตให้ภายในวันนี้', 'ได้เลยครับ แนบใบเสนอราคาให้แล้วครับ 👍'];
+  let gSeg = 'inbox', gTk = null, gTkNo = 145, gReplyI = 0;
+  function renderTickets() {
+    gqa('[data-seg]').forEach(b => b.classList.toggle('on', b.dataset.seg === gSeg));
+    const n = gTickets.inbox.filter(t => t.unread).length;
+    gq('[data-inbox-n]').textContent = n || '';
+    const w = gq('[data-tickets]'); w.innerHTML = '';
+    gTickets[gSeg].forEach(t => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'g-ticket' + (t.unread ? ' unread' : '');
+      b.innerHTML = `<span class="no">${t.no}</span><b></b><div class="meta"><small></small><span class="g-pill ${t.st}">${gTkSt[t.st]}</span></div>`;
+      b.querySelector('b').textContent = t.title; b.querySelector('small').textContent = `${t.from} · ${t.time}`;
+      b.onclick = () => { t.unread = false; gTk = t; goScreen('go-ticket', 'push'); };
+      w.appendChild(b);
+    });
+  }
+  gqa('[data-seg]').forEach(b => b.onclick = () => { gSeg = b.dataset.seg; renderTickets(); });
+  gOnEnter['go-tickets'] = renderTickets;
+  function msgEl(m) {
+    const el = document.createElement('div');
+    if (m.sys) { el.className = 'g-sys'; el.textContent = m.sys; return el; }
+    el.className = 'g-msg' + (m.me ? ' me' : '') + (m.file ? ' file' : '');
+    if (m.file) {
+      el.innerHTML = '<span class="doc">PDF</span><div><b></b><small></small></div>';
+      el.querySelector('b').textContent = m.file; el.querySelector('small').textContent = (m.who ? m.who + ' · ' : '') + m.t;
+    } else {
+      el.innerHTML = (m.me ? '' : '<span class="who"></span>') + '<span class="tx"></span><small></small>';
+      if (!m.me) el.querySelector('.who').textContent = m.who;
+      el.querySelector('.tx').textContent = m.text; el.querySelector('small').textContent = m.t;
+    }
+    return el;
+  }
+  function renderChat() {
+    const t = gTk; if (!t) return;
+    gq('[data-tk-title]').textContent = t.no;
+    gq('[data-tk-info]').innerHTML = `<span>สินค้า <b></b></span><span>จำนวน <b>${t.qty}</b></span><span>สถานะ <b>${gTkSt[t.st]}</b></span>`;
+    gq('[data-tk-info] b').textContent = t.item;
+    const c = gq('[data-chat]'); c.innerHTML = '';
+    t.msgs.forEach(m => c.appendChild(msgEl(m)));
+    c.scrollTop = c.scrollHeight;
+    gq('[data-compose]').classList.toggle('off', t.st === 'closed');
+    gq('[data-tk-close]').hidden = t.st === 'closed';
+  }
+  gOnEnter['go-ticket'] = renderChat;
+  function sendMsg(m) {
+    const t = gTk; if (!t || t.st === 'closed') return;
+    m.me = true; m.t = hm(new Date()); t.msgs.push(m);
+    if (t.st === 'wait') t.st = 'work';
+    renderChat(); gAct('chat');
+    const c = gq('[data-chat]'), typing = document.createElement('div');
+    typing.className = 'g-typing'; typing.innerHTML = '<i></i><i></i><i></i>';
+    setTimeout(() => { if (gCur === 'go-ticket' && gTk === t) { c.appendChild(typing); c.scrollTop = c.scrollHeight; } }, 500);
+    setTimeout(() => {
+      typing.remove();
+      const r = { who: t.from.replace('ถึง: ', ''), text: gReplies[gReplyI++ % gReplies.length], t: hm(new Date()) };
+      t.msgs.push(r);
+      if (gCur === 'go-ticket' && gTk === t) renderChat(); else push(`${t.no}: ${r.text}`, 'go-tickets');
+    }, 2300);
+  }
+  gq('[data-compose]').addEventListener('submit', e => { e.preventDefault(); const box = gq('[data-msg]'), v = box.value.trim(); if (!v) return; box.value = ''; sendMsg({ text: v }); });
+  gq('[data-attach]').onclick = () => sendMsg({ file: `quotation-${gTk ? gTk.no : 'new'}.pdf` });
+  gq('[data-tk-close]').onclick = () => { if (!gTk) return; gTk.st = 'closed'; gTk.msgs.push({ sys: 'ปิดคำขอแล้ว · ' + hm(new Date()) }); renderChat(); snack('ปิดคำขอแล้ว'); };
+
+  function openSheet(wrap) { wrap.hidden = false; void wrap.offsetWidth; wrap.classList.add('open'); }
+  function closeSheet(wrap) { wrap.classList.remove('open'); setTimeout(() => wrap.hidden = true, reduce ? 0 : 300); }
+  gqa('.g-sheet-wrap').forEach(w => w.addEventListener('click', e => { if (e.target === w) closeSheet(w); }));
+  const gCats = ['Notebook', 'Printer', 'Monitor', 'Accessories', 'Server'], gUrg = ['ปกติ', 'ด่วน', 'ด่วนมาก'];
+  let gNewCat = 0, gNewUrg = 0, gQty = 5;
+  gq('[data-new-ticket]').onclick = () => {
+    chipRow('[data-new-cat]', gCats, () => gNewCat, v => gNewCat = v);
+    chipRow('[data-new-urg]', gUrg, () => gNewUrg, v => gNewUrg = v);
+    gq('[data-qty-n]').textContent = gQty; openSheet(gq('[data-sheet-new]'));
+  };
+  gqa('[data-qty]').forEach(b => b.onclick = () => { gQty = Math.max(1, Math.min(999, gQty + Number(b.dataset.qty))); gq('[data-qty-n]').textContent = gQty; });
+  gq('[data-new-send]').onclick = () => {
+    const now = hm(new Date()), urg = gNewUrg ? ` (${gUrg[gNewUrg]})` : '';
+    const t = { no: 'PC-69-0' + (gTkNo++), title: `ขอ ${gCats[gNewCat]} ${gQty} ชิ้น${urg}`, from: 'ถึง: Product Manager', time: now, st: 'wait', item: gCats[gNewCat], qty: gQty,
+      msgs: [{ me: true, text: `ขอ ${gCats[gNewCat]} จำนวน ${gQty} ชิ้น · ความเร่งด่วน: ${gUrg[gNewUrg]}`, t: now }] };
+    gTickets.sent.unshift(t); gSeg = 'sent';
+    closeSheet(gq('[data-sheet-new]')); renderTickets(); gAct('new request');
+    push(`ส่งคำขอ ${t.no} ถึง Product Manager แล้ว`, 'go-tickets');
+  };
+
+  // Synnex Contact: live search with highlighted matches, profile bottom sheet
+  const gPeople = [
+    ['กิตติพงษ์ ส.', 'IT Support', '2101'], ['ณัฐธิดา ร.', 'Corporate Sales', '2204'], ['ธนวัฒน์ ก.', 'Product Manager', '2310'], ['ปวีณา ม.', 'Human Resources', '1102'],
+    ['พิมพ์ชนก อ.', 'Finance', '1205'], ['วรเชษฐ์ ท.', 'Logistics', '3102'], ['ศิริพร ช.', 'Marketing', '2402'], ['สุรเชษฐ์ บ.', 'Service Center', '3301'],
+    ['อนุชา ป.', 'Dealer Sales', '2210'], ['อรวรรณ จ.', 'Customer Service', '2505'], ['Daniel W.', 'Regional Sales', '2601'], ['Mei L.', 'Vendor Relations', '2703']
+  ];
+  const gAvColors = ['#4894a3', '#e07b00', '#8f7cf7', '#e45d8c', '#2bb39a', '#4f7cff'];
+  const escHtml = s => s.replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+  const hl = (s, q) => { const i = q ? s.toLowerCase().indexOf(q) : -1; return i < 0 ? escHtml(s) : escHtml(s.slice(0, i)) + '<mark>' + escHtml(s.slice(i, i + q.length)) + '</mark>' + escHtml(s.slice(i + q.length)); };
+  function renderPeople() {
+    const q = gq('[data-people-q]').value.trim().toLowerCase(), w = gq('[data-people]');
+    w.innerHTML = '';
+    const found = gPeople.map((p, i) => ({ p, i })).filter(({ p }) => !q || p.some(f => f.toLowerCase().includes(q))).sort((a, b) => a.p[0].localeCompare(b.p[0], 'th'));
+    if (!found.length) { w.innerHTML = '<div class="g-empty" style="text-align:center;padding:24px 0">ไม่พบรายชื่อ · No matches</div>'; return; }
+    let grp = '';
+    found.forEach(({ p, i }) => {
+      if (p[0][0] !== grp) { grp = p[0][0]; const g = document.createElement('div'); g.className = 'g-grp'; g.textContent = grp; w.appendChild(g); }
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'g-person';
+      b.innerHTML = `<span class="g-av" style="background:${gAvColors[i % gAvColors.length]}">${escHtml(p[0][0])}</span><span><b>${hl(p[0], q)}</b><small>${hl(p[1], q)}</small></span><span class="ext">${hl(p[2], q)}</span>`;
+      b.onclick = () => openPerson(p, i);
+      w.appendChild(b);
+    });
+  }
+  function openPerson(p, i) {
+    const s = gq('[data-person]');
+    s.innerHTML = `<span class="g-grab"></span><span class="g-av lg" style="background:${gAvColors[i % gAvColors.length]}">${escHtml(p[0][0])}</span><div class="g-prof"><b>${escHtml(p[0])}</b><small>${escHtml(p[1])} · SYNNEX (Thailand)</small><small>เบอร์ภายใน ${p[2]}</small></div><div class="g-acts"><button type="button" data-pa="call"><i>📞</i>โทร</button><button type="button" data-pa="copy"><i>📋</i>คัดลอกเบอร์</button><button type="button" data-pa="fav"><i>⭐</i>บันทึก</button></div>`;
+    s.querySelectorAll('[data-pa]').forEach(b => b.onclick = () => {
+      const a = b.dataset.pa;
+      if (a === 'copy') { try { navigator.clipboard.writeText(p[2]).catch(() => {}); } catch (e) {} }
+      snack(a === 'call' ? `กำลังโทรเบอร์ภายใน ${p[2]}… (ตัวอย่าง)` : a === 'copy' ? `คัดลอกเบอร์ ${p[2]} แล้ว` : `บันทึก ${p[0]} ไว้ในรายการโปรดแล้ว`);
+      if (a !== 'fav') closeSheet(gq('[data-sheet-person]'));
+    });
+    openSheet(gq('[data-sheet-person]'));
+  }
+  gq('[data-people-q]').addEventListener('input', renderPeople);
+  gOnEnter['go-contacts'] = renderPeople;
+
+  // Approval Center: swipe a card to approve or reject, pull down to load new documents
+  const gDocPool = [['TM-69-00095', 'แก้ไขเวลา', 'ลืมสแกนออก 24 ต.ค.'], ['PR-69-02231', 'ขอซื้อ', 'Monitor 4 จอ · ฿27,600'], ['EX-69-00418', 'เบิกค่าเดินทาง', 'เข้าพบลูกค้า 32 กม. · ฿640'], ['LV-69-01497', 'ใบลา', 'ลาป่วย 1 วัน · บัญชี']];
+  const ptrBody = gq('[data-ptr-body]'), ptr = gq('[data-ptr]');
+  let gPoolI = 0, pY = null, pDist = 0, pBusy = false;
+  function renderDocs(fresh) {
+    const w = gq('[data-go-docs]'); w.innerHTML = '';
+    gq('[data-go-count]').textContent = gDocs.length;
+    if (!gDocs.length) { w.innerHTML = '<div class="g-empty" style="text-align:center;padding:30px 0">ไม่มีข้อมูล · All caught up 🎉<br>ดึงลงเพื่อโหลดเอกสารใหม่</div>'; return; }
+    gDocs.forEach(d => {
+      const wrap = document.createElement('div'), c = document.createElement('div');
+      wrap.className = 'g-swipe'; c.className = 'g-doc' + (fresh === d ? ' new' : '');
+      c.innerHTML = '<div class="top"><span class="no"></span><span class="type"></span></div><small></small><div class="acts"><button type="button" class="ok">อนุมัติ</button><button type="button" class="no-btn">ไม่อนุมัติ</button></div>';
+      c.querySelector('.no').textContent = d[0]; c.querySelector('.type').textContent = d[1]; c.querySelector('small').textContent = d[2];
+      wrap.appendChild(c); w.appendChild(wrap);
+      const done = ok => {
+        if (wrap.dataset.done) return;
+        wrap.dataset.done = '1'; wrap.classList.toggle('left', !ok);
+        c.classList.add('snap'); c.style.transform = `translateX(${ok ? 120 : -120}%)`;
+        setTimeout(() => wrap.classList.add('gone'), reduce ? 0 : 220);
+        setTimeout(() => { gDocs.splice(gDocs.indexOf(d), 1); renderDocs(); }, reduce ? 0 : 520);
+        gAct(ok ? 'approve' : 'reject');
+        push(`${ok ? 'อนุมัติ' : 'ไม่อนุมัติ'} ${d[0]} แล้ว`);
+      };
+      c.querySelector('.ok').onclick = () => done(true);
+      c.querySelector('.no-btn').onclick = () => done(false);
+      // Decide the axis after a few pixels: sideways swipes the card, vertical hands over to pull-to-refresh
+      let sx = null, sy = 0, dx = 0, axis = null;
+      c.addEventListener('pointerdown', e => { if (e.target.closest('button')) return; sx = e.clientX; sy = e.clientY; dx = 0; axis = null; c.classList.remove('snap'); });
+      c.addEventListener('pointermove', e => {
+        if (sx === null) return;
+        const mx = e.clientX - sx, my = e.clientY - sy;
+        if (!axis) {
+          if (Math.abs(mx) > 8 && Math.abs(mx) > Math.abs(my)) { axis = 'x'; pY = null; ptr.style.height = '0px'; c.classList.add('drag'); try { c.setPointerCapture(e.pointerId); } catch (err) {} }
+          else if (Math.abs(my) > 8) { axis = 'y'; sx = null; return; }
+          else return;
+        }
+        dx = mx; c.style.transform = `translateX(${dx}px) rotate(${dx / 40}deg)`; wrap.classList.toggle('left', dx < 0);
+      });
+      const end = () => {
+        if (sx === null) return;
+        sx = null; c.classList.remove('drag');
+        if (axis !== 'x') return;
+        if (Math.abs(dx) > 90) done(dx > 0); else { c.classList.add('snap'); c.style.transform = ''; }
+      };
+      c.addEventListener('pointerup', end); c.addEventListener('pointercancel', end);
+    });
+  }
+  function ptrMove(y) {
+    if (pY === null || pBusy) return;
+    pDist = Math.max(0, (y - pY) * 0.5);
+    ptr.classList.add('pulling'); ptr.style.height = Math.min(pDist, 70) + 'px';
+    ptr.querySelector('.g-spin').style.transform = `rotate(${pDist * 4}deg)`;
+    gq('[data-ptr-text]').textContent = pDist > 50 ? gt('release') : gt('pull');
+  }
+  function ptrEnd() { if (pY === null) return; pY = null; ptr.classList.remove('pulling'); if (pDist > 50) refreshDocs(); else ptr.style.height = '0px'; pDist = 0; }
+  function refreshDocs() {
+    if (pBusy) return;
+    pBusy = true; ptr.style.height = '44px'; ptr.classList.add('busy');
+    ptr.querySelector('.g-spin').style.transform = ''; gq('[data-ptr-text]').textContent = gt('loading');
+    setTimeout(() => {
+      const nd = gDocPool[gPoolI % gDocPool.length].slice();
+      if (gPoolI >= gDocPool.length) nd[0] = nd[0].replace(/\d+$/, n => String(Number(n) + gPoolI).padStart(n.length, '0'));
+      gPoolI++;
+      gDocs.unshift(nd); pBusy = false; ptr.classList.remove('busy'); ptr.style.height = '0px';
+      renderDocs(nd); gAct('pull to refresh');
+      push(`มีเอกสารรออนุมัติใหม่: ${nd[0]} ${nd[1]}`, 'go-approve');
+    }, reduce ? 300 : 1100);
+  }
+  ptrBody.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse' || ptrBody.scrollTop > 0 || e.target.closest('button')) return; pY = e.clientY; });
+  addEventListener('pointermove', e => { if (e.pointerType === 'mouse') ptrMove(e.clientY); });
+  addEventListener('pointerup', e => { if (e.pointerType === 'mouse') ptrEnd(); });
+  ptrBody.addEventListener('touchstart', e => { if (ptrBody.scrollTop > 0) return; pY = e.touches[0].clientY; }, { passive: true });
+  ptrBody.addEventListener('touchmove', e => ptrMove(e.touches[0].clientY), { passive: true });
+  ptrBody.addEventListener('touchend', ptrEnd);
+  gq('[data-refresh]').onclick = refreshDocs;
+  gOnEnter['go-approve'] = () => renderDocs();
+
+  // Settings: language, dark mode (themeColors.js), notifications, forced store update, log out
+  gqa('[data-lang] button').forEach(b => b.onclick = () => {
+    gState.lang = b.dataset.l;
+    gqa('[data-lang] button').forEach(x => x.classList.toggle('on', x === b));
+    applyLang(); gAct('language');
+    snack(gState.lang === 'EN' ? 'Language: English' : 'ภาษา: ไทย');
+  });
+  gq('[data-dark]').onclick = e => { const on = !gRoot.classList.contains('dark'); gRoot.classList.toggle('dark', on); gToggle(e.currentTarget, on); gAct('dark mode'); };
+  gq('[data-notif]').onclick = e => { gState.notif = !gState.notif; gToggle(e.currentTarget, gState.notif); snack(gState.notif ? 'เปิดการแจ้งเตือนแล้ว' : 'ปิดการแจ้งเตือนแล้ว · จะไม่มี push แสดง'); };
+  gq('[data-version]').onclick = () => { gq('[data-up-bar]').style.width = '0'; gq('[data-update]').hidden = false; };
+  gq('[data-up-go]').onclick = e => {
+    const btn = e.currentTarget, upBar = gq('[data-up-bar]');
+    let p = 0; btn.disabled = true;
+    const timer = setInterval(() => {
+      p += 7 + Math.random() * 12; upBar.style.width = Math.min(p, 100) + '%';
+      if (p >= 100) { clearInterval(timer); setTimeout(() => { gq('[data-update]').hidden = true; btn.disabled = false; snack('อัปเดตเป็นเวอร์ชันล่าสุดแล้ว (ตัวอย่าง)'); }, 400); }
+    }, 120);
+  };
+  gq('[data-logout]').onclick = () => { gSaved = false; gSkipSplash = true; goScreen('go-login', 'pop'); snack('ออกจากระบบแล้ว · ลบข้อมูลที่จดจำไว้'); };
 
   // Leave form: leave types from Leavework.jsx
   const types = ['ลาป่วย', 'ลากิจ', 'ฝึกอบรม', 'ลาป่วยหักเงิน', 'ลากิจหักเงิน', 'ลาทำหมัน', 'ลาฝึกวิชาทหาร', 'ลาภรรยาคลอดบุตร'];
-  const tWrap = phone.querySelector('[data-go-types]');
-  types.forEach((t, i) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = t; if (i === 1) b.classList.add('on'); b.onclick = () => tWrap.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); tWrap.appendChild(b); });
-  phone.querySelector('[data-go-send]').onclick = () => {
-    const t = tWrap.querySelector('.on').textContent;
+  let gLeaveType = 1;
+  gq('[data-go-send]').onclick = () => {
+    const t = types[gLeaveType];
     push(`ส่งใบ${t}แล้ว รอหัวหน้าอนุมัติ`);
-    setTimeout(() => push(`ใบ${t} 27–28 ต.ค. ได้รับการอนุมัติแล้ว ✅`), 3600);
-    goScreen('go-home');
+    setTimeout(() => push(`ใบ${t} 27–28 ต.ค. ได้รับการอนุมัติแล้ว ✅`), 3800);
+    goScreen('go-home', 'pop');
   };
 
-  // Approval Center: sample pending documents
-  const docs = [['LV-69-01482', 'ใบลา', 'ลากิจ 1 วัน · ฝ่ายขาย'], ['OT-69-00317', 'ทำงานล่วงเวลา', '3 ชม. · คลังสินค้า'], ['PR-69-02210', 'ขอซื้อ', 'Notebook 2 เครื่อง · ฿58,900'], ['TM-69-00095', 'แก้ไขเวลา', 'ลืมสแกนออก 24 ต.ค.']];
-  function renderDocs() {
-    const w = phone.querySelector('[data-go-docs]'); w.innerHTML = '';
-    phone.querySelector('[data-go-count]').textContent = docs.length;
-    if (!docs.length) { w.innerHTML = '<div class="g-empty" style="text-align:center;padding:30px 0">ไม่มีข้อมูล · All caught up 🎉</div>'; return; }
-    docs.forEach((d, i) => {
-      const c = document.createElement('div'); c.className = 'g-doc';
-      c.innerHTML = `<div class="top"><span class="no"></span><span class="type"></span></div><small></small><div class="acts"><button type="button" class="ok">อนุมัติ</button><button type="button" class="no-btn">ไม่อนุมัติ</button></div>`;
-      c.querySelector('.no').textContent = d[0]; c.querySelector('.type').textContent = d[1]; c.querySelector('small').textContent = d[2];
-      const done = ok => { c.classList.add('gone'); setTimeout(() => { docs.splice(docs.indexOf(d), 1); renderDocs(); }, reduce ? 0 : 300); push(`${ok ? 'อนุมัติ' : 'ไม่อนุมัติ'} ${d[0]} แล้ว`); };
-      c.querySelector('.ok').onclick = () => done(true); c.querySelector('.no-btn').onclick = () => done(false);
-      w.appendChild(c);
-    });
-  }
-  renderDocs();
+  applyLang();
+  chipRow('[data-go-types]', types, () => gLeaveType, v => gLeaveType = v);
+  renderApps(); renderDocs(); renderTickets(); renderCal();
+  tickPhone(); setInterval(tickPhone, 1000);
+  // Play the launch splash once the phone scrolls into view
+  if ('IntersectionObserver' in window) {
+    const gio = new IntersectionObserver(es => { if (es[0].isIntersecting) { gio.disconnect(); if (gCur === 'go-login') gOnEnter['go-login'](); } }, { threshold: 0.4 });
+    gio.observe(phone);
+  } else gOnEnter['go-login']();
 
   // Project details panels
   $$('details.deep').forEach(d => d.addEventListener('toggle', () => { if (d.open) trackOnce('Project Details', { project: d.dataset.project }); }));
